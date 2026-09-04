@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/nav :: head('board-detail')}"></head>
+<body>
+  <div th:replace="~{fragments/nav :: nav}"></div>
+
+  <div class="board-detail-wrap">
+
+    <div class="board-detail-main">
+
+      <div class="board-detail-header">
+        <a th:href="@{/profile/{name}(name=${board.userName})}" class="board-detail-profile-link">
+          <img th:src="${board.profileImg}" alt="프로필" class="board-detail-avatar">
+          <span class="board-detail-username" th:text="${board.userName}"></span>
+        </a>
+
+        <div class="more-menu-wrap">
+          <button class="more-menu-btn" id="more-menu-btn">
+            <i class="ti ti-dots-vertical"></i>
+          </button>
+
+          <div class="more-menu-dropdown" id="more-menu-dropdown" hidden>
+            <!-- 본인 게시글일 때 -->
+            <div th:if="${board.owner}">
+              <button class="menu-item" id="edit-board-btn">수정</button>
+              <button class="menu-item" id="delete-board-btn" th:attr="data-board-id=${board.id}">삭제</button>
+              <button class="menu-item" id="share-board-btn">공유</button>
+            </div>
+
+            <!-- 본인 게시글 아닐 때 -->
+            <div th:unless="${board.owner}">
+              <button class="menu-item" id="report-board-btn" th:attr="data-board-id=${board.id}">신고</button>
+              <button class="menu-item" id="share-board-btn">공유</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <img th:src="${board.img}" alt="게시글 이미지" class="board-detail-img">
+
+      <div class="board-detail-info">
+        <p></p>
+        <p class="board-detail-content" th:text="${board.content}"></p>
+
+        <div class="board-detail-tags">
+          <span class="feed-tag" th:each="t : ${board.tags}" th:text="'#' + ${t}"></span>
+        </div>
+
+        <div class="board-detail-actions">
+          <button class="like-btn" th:attr="data-board-id=${board.id}"
+                  th:classappend="${board.likedByMe} ? ' liked' : ''">
+            <i class="bi bi-heart-fill"></i>
+            <span class="like-count" th:text="${board.likeCount}"></span>
+          </button>
+
+          <button class="closet-btn" th:attr="data-board-id=${board.id}"
+                  th:classappend="${board.savedByMe} ? ' saved' : ''">
+            <i class="ti ti-hanger"></i>
+            <span class="check material-symbols-rounded">check</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="board-detail-related">
+      <div class="feed">
+        <div class="feed-item" th:each="rb : ${relatedBoards}">
+          <a class="feed-img-wrap" th:href="@{/board/{id}(id=${rb.id})}">
+            <img th:src="${rb.img}" alt="관련 게시글">
+          </a>
+
+          <div class="feed-info">
+            <span class="feed-username" th:text="${rb.userName}"></span>
+
+            <div class="feed-tags">
+              <span class="feed-tag" th:each="t : ${rb.tags}" th:text="'#' + ${t}"></span>
+            </div>
+
+            <button class="closet-btn" th:attr="data-board-id=${rb.id}"
+                    th:classappend="${rb.savedByMe} ? ' saved' : ''">
+              <i class="ti ti-hanger"></i>
+              <span class="check material-symbols-rounded">check</span>
+            </button>
+
+            <button class="like-btn" th:attr="data-board-id=${rb.id}"
+                    th:classappend="${rb.likedByMe} ? ' liked' : ''">
+              <i class="bi bi-heart-fill"></i>
+              <span class="like-count" th:text="${rb.likeCount}"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <button id="upload-open-btn" class="fab-upload">
+    <span>+</span>
+  </button>
+
+
+
+  <div th:replace="~{fragments/upload-modal :: uploadModal}"></div>
+  <div th:replace="~{fragments/drawer-modal :: drawerModal}"></div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/board-detail.js"></script>
+</body>
+</html>
+
+
+
+<!--
+할 거 정 리 하기 ~ =======================
+
+  1. 피드 삭제, 수정, 공유 ( +신고) 추가
+      > 나중에 공개 범위 설정도 있으면 좋을 듯
+
+  2. 피드 detail ui 수정
+      > detail이랑 관련게시글 구분짓는 선 필요함
+
+  4. about 어케할지 고민하기
+
+  5. 팔로잉 or 팔로우 누르면 팔로우한 프로필 보이는 모달 추가
+
+  6. 최신순/인기순 정렬 버튼 활성화
+
+  7. 프로필 수정 페이지 추가
+
+  8. 뒤로가기 버튼 추가 + 활성화
+
+
+고쳐아할거 ==============================
+
+  header 애니 손보기 > 스크롤 비율로 치지말고 스크롤 내리면 애니 한번에 실행해버리게 할까
+  looklog 로고 누르면 메인이동
+  looklog html에 tags 배경 추가
+  검색창 위치 넷바랑 너무 떨어진 곳 수정
+
+  아 배경 누래서 별론가 흰색할까............ 아 흰색하면 ㅓ무 인스타 핀터 느낌아ㅏㅏ아아악
+
+
+추가하면 좋을거 ============================
+
+  1. detail에 관련게시글 관련 높은 순(태그 겹치는거많은피드)우선 보이기
+  2. 서랍에서 편집 누르면 피드 선택해서 선택한 피드 삭제
+  3. alert말고 bottom:50px 쯤에 글자나오고 n초 후 사라지게
+  4. 검색기록
+  5. 태그 추가 기능 .. 생각해보기
+  6. 피드 올릴 때 글자수, 이미지 크기(200x300)이상 등 조건 추가
+  6. 서랍장, 프로필 비공개 공개 설정
+
+플랜==============================
+
+  css 전체적으로 수정하고 디테일 살리면서
+  코드 이해도 좀 높이자
+
+
+
+
+
+
+
+
+
+-->
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,394 @@
+
+.oo-bg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url('../imgs/background_dot_gradient.png') no-repeat;
+  width: 100%;
+  height: 1500px;
+}
+
+
+.oo-nav button {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 22px;
+}
+
+
+
+
+
+.looklog-title {
+  top: 0;
+  font-size: clamp(130px, 31vw, 620px);
+  white-space: nowrap;
+  transform-origin: center center;
+}
+
+
+h1 span {
+  display: inline-block;
+  transform: rotate(0);
+  transition: 0.5s;
+}
+h1 span:hover{
+  transform: rotate(15deg);
+}
+h1 span:nth-child(2):hover,
+h1 span:nth-child(5):hover,
+h1 span:nth-child(7):hover {
+  transform: rotate(-15deg);
+}
+
+
+
+header .oo-line {
+  width: clamp(500px,55vw,55vw);
+  height: 2px;
+  background: #0c3ca7;
+}
+
+header p {
+  margin-top: 25px;
+  text-align: center;
+  font-weight: 500;
+}
+
+header .oo-line,
+header p {
+  position: absolute;
+  top: clamp(580px,38vw,700px);
+  left: 50%;
+}
+
+
+
+@media (max-width: 1450px) {
+  header .oo-line,
+  header p {
+    top: clamp(405px,42vw,570px);
+  }
+}
+
+@media (max-width: 1050px) {
+  header .oo-line,
+  header p {
+    top: clamp(350px,45vw,450px);
+  }
+}
+
+@media (max-width: 850px) {
+
+  .oo-nav button {
+    top: 14px;
+  }
+
+  header .oo-line {
+    width: 60%;
+  }
+  header p {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  header p span {
+    display: block;
+  }
+
+  header .oo-line,
+  header p {
+    top: clamp(290px,52vw,390px);
+  }
+
+  header form {
+    margin-top: 20px;
+    top: auto;
+  }
+}
+
+
+
+/* ====================================================================================================================================================================================================== */
+.wrap {
+  width: 95%;
+  margin: 0 auto 0;
+}
+
+/* sort */
+.oo-sort-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: clamp(330px,55vw,700px) 20px 10px auto;
+  width: 160px;
+  height: 44px;
+  background: #d7e3f7;
+  border-radius: 22px;
+}
+.oo-sort-toggle p {
+  padding:0 13px;
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #5474bb;
+  z-index: 9;
+}
+.oo-sort-toggle p:first-of-type {
+  color: #f5f5f5;
+}
+.oo-sort-toggle div {
+  font-size: 1.5em;
+  color: #5474bb;
+  font-weight: 300;
+  z-index: 9;
+}
+.oo-sort-indicator {
+  position: absolute;
+  top: 4.5px;
+  left: 7px;
+  width: 70px;
+  height: 35px;
+  background:#0c3ca7;
+  border-radius: 17px;
+}
+
+
+/* tag */
+.oo-tag-wrap {
+  position: sticky;
+  top: 70px;
+  width: 100%;
+  margin: 0 auto 40px;
+  padding: 0 20px 10px;
+  box-sizing: border-box;
+  background: rgba(250, 248, 242, 0);
+  transition: 0.25s ease;
+  z-index: 899;
+}
+.oo-tag-wrap.is-stuck {
+  background: rgba(250,248,242,0.92);
+}
+
+.oo-tag {
+  display: flex;
+  width: 90%;
+  margin: 0 auto;
+  gap: 40px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-wrap: nowrap;
+  cursor: grab;
+}
+
+.oo-tag li {
+  height: 30px;
+  font-weight: 600;
+  line-height: 30px;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.oo-tag li a {
+  display: inline-block;
+  padding: 0 8px;   /* 클릭 영역은 여기서 넓게 */
+  color: #4e78d4;
+}
+
+.oo-tag li a span {
+  border-bottom: 2.5px solid transparent;   /* 밑줄은 글자 크기만큼만 */
+  padding-bottom: 2px;
+}
+
+.oo-tag li:hover a span {
+  color: #0c3ca7;
+}
+
+.oo-tag li.active a,
+.oo-tag li.active a span {
+  color: #0c3ca7;
+}
+
+.oo-tag li.active a span {
+  border-bottom-color: #0c3ca7;
+}
+
+
+/* oo-tag scroll */
+.oo-tag::-webkit-scrollbar {
+  display: none;
+}
+.oo-tag.dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+.oo-tag,
+.oo-tag * {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+
+@media (max-width:1300px){
+
+  .oo-sort-toggle {
+    margin: clamp(430px,47vw,570px) 20px 10px auto;
+  }
+
+  .oo-tag-wrap {
+    margin: 0 auto 30px;
+    padding: 0 20px 1px;
+  }
+  .oo-tag {
+    gap: 30px;
+    width: 80%;
+    padding-bottom: 7px;
+  }
+}
+
+@media (max-width:850px){
+
+  .oo-sort-toggle {
+    width: 132px;
+    height: 40px;
+    margin: clamp(400px,57vw,500px) 20px 10px auto;
+  }
+  .oo-sort-toggle p {
+    padding:0 8px;
+    font-size: 1em;
+    font-weight: 500;
+  }
+  .oo-sort-toggle div {
+    font-size: 1.2em;
+  }
+  .oo-sort-indicator {
+    top: 4px;
+    left: 4.5px;
+    width: 60px;
+    height: 32px;
+    border-radius: 17px;
+  }
+
+  
+  .oo-tag-wrap {
+    margin: 0 auto 20px;
+    top: 50px;
+  }
+  .oo-tag {
+    width: 97%;
+    padding-bottom: 5px;
+    gap: 25px;
+  }
+  
+  .oo-tag li {
+    height: 30px;
+    font-weight: 600;
+    line-height: 30px;
+  }
+
+}
+
+
+@media (max-width:550px){
+
+  .oo-sort-toggle {
+    margin: clamp(330px,55vw,500px) 20px 10px auto;
+  }
+}
+
+
+
+
+/* ===============================
+   FEED (매이슨리 레이아웃)
+   =============================== */
+.feed {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  padding: 0 24px;
+  align-items: start;
+}
+
+.feed-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+section {
+  width: 75%;
+  margin: 0 auto;
+}
+@media (max-width: 1600px) {
+  section {
+    width: 85%;
+    margin: 0 auto;
+  }
+}
+@media (max-width: 1300px) {
+  .feed {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1000px) {
+  section {
+    width: 95%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 750px) {
+  section {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .feed {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+
+.feed-item {
+  position: relative;
+  margin: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.feed-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+
+
+.feed-item.feed-hidden {
+  display: none;
+}
+
+#loader {
+  text-align: center;
+  padding: 20px;
+  font-size: 13px;
+  color: #999;
+}
+
+
+
+
+
+
+
+

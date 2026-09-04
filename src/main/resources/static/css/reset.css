@@ -1,0 +1,62 @@
+@charset "utf-8";
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
+@import url('https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/Paperlogy.css');
+@import url("https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded');
+
+@font-face {
+  font-family: 'BevellierBold';
+  src: url('../font/Bevellier-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'BevellierSemibold';
+  src: url('../font/Bevellier-Semibold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'nanumGangIn';
+  src: url('../font/nanum-gangin.ttf') format('truetype');
+}
+
+
+* { 
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; 
+}
+
+html, body {
+  scrollbar-width: thin;
+}
+
+body {
+  font-family: "Paperlogy", sans-serif;
+  font-size: 15px;
+  color: #222;
+  font-synthesis: none;
+  background: #f6f4eb;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+/* a { display: block;} */
+img, input, label, button, textarea, select, option { 
+  display: block;
+  outline: 0;
+}
+
+a {
+  color: #222;
+  text-decoration: none;
+}
+
+img {
+  pointer-events: none;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}

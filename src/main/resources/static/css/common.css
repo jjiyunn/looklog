@@ -1,0 +1,657 @@
+header{
+    position: sticky;
+    top: 0;
+    padding-bottom: 20px;
+    color: #0c3ca7;
+    background: #f6f4eb;
+    backdrop-filter: blur(10px);
+    border-radius: 0 0 15px 15px;
+    z-index: 899;
+}
+.board-header {
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 7px rgb(0 0 0 / 0.1);
+}
+
+.oo-nav {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 6vw 0;
+    transition: 1s;
+    z-index: 999;
+}
+.oo-nav li {
+    font-family: 'BevellierSemibold';
+    font-size: 1.5rem;
+}
+.oo-nav li a {
+    color: #0c3ca7;
+}
+
+.oo-nav button {
+    position: absolute;
+    top: 23px;
+    left: calc(50% + 55px);
+    transform: translateX(-50%);
+    font-size: 22px;
+}
+
+
+
+.board-title {
+    top: 22px;
+    font-size: 1.5rem;
+}
+.title-target {
+    width: 200px;
+    height: 30px;
+}
+
+
+h1 {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'BevellierSemibold';
+    line-height: 1;
+    z-index: 99;
+    cursor: pointer;
+}
+
+
+
+/* search */
+header form {
+    display: flex;
+    position: absolute;
+    margin: 40px auto;
+    top: 55px;
+    left: 50%;
+    width: 30vw;
+    transform: translateX(-50%);
+    z-index: 888;
+}
+
+header input {
+    width: 100%;
+    padding: 0 10px 0 clamp(15px,2vw,30px);
+    height: clamp(35px,4vw,45px);
+    font-size: clamp(13px, 1.3vw, 16px);
+    border: none;
+    border-radius: 30px;
+    appearance: none;
+}
+input::-webkit-search-cancel-button {
+    display: none;
+}
+
+form button {
+    position: absolute;
+    top: 48%;
+    right: 1.8vw;
+    transform: translateY(-50%);
+}
+
+form .ti-search {
+    font-size: clamp(22px,3vw,30px);
+}
+
+
+.nav-search-box{
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: .35s;
+    pointer-events: none;
+}
+
+.nav-search-box.open{
+    max-height: 80px;
+    opacity: 1;
+    pointer-events: all;
+}
+
+
+
+@media (max-width: 850px) {
+
+    header {
+        padding-bottom: 10px;
+    }
+
+    header form {
+        width: 45vw;
+        top: 45px;
+    }
+
+    .oo-nav {
+        padding: 10px 6vw 0;
+    }
+    .oo-nav li {
+        font-size: 1.2rem;
+        line-height: 30px;
+    }
+    .oo-nav button {
+        top: 15px;
+        left: calc(50% + 45px);
+        font-size: 20px;
+    }
+
+    .board-title {
+        top: 16px;
+        font-size: 1.2rem;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ======================== */
+.feed-info {
+    padding: 10px;
+    display: none;
+}
+
+.feed-item:hover .feed-img-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.6),
+            rgba(0, 0, 0, 0.2)
+    );
+
+    pointer-events: none;
+}
+
+.feed-item:hover {
+    background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.6),
+            rgba(0, 0, 0, 0)
+    );
+}
+
+.feed-item:hover .feed-info {
+    display: contents;
+}
+
+
+
+/* 좋아요 / 옷장 버튼 */
+.closet-btn,
+.like-btn {
+    position: absolute;
+    color: #ccc;
+    top: 10px;
+    right: 15px;
+    padding: 0 5px;
+    height: 40px;
+    border-radius: 5px;
+    line-height: 1px;
+}
+
+.closet-btn:hover,
+.like-btn:hover {
+    background: #00000066;
+}
+
+
+.like-btn {
+    right: 50px;
+    font-size: 18px;
+}
+.like-btn.liked,
+.closet-btn.saved {
+    color: #fff;
+}
+.like-btn.liked i {
+    color: #df7062;
+}
+
+.closet-btn {
+    font-size: 23px;
+}
+.closet-btn .check {
+    display: none;
+    position: absolute;
+    top: 7px;
+    right: 1px;
+
+    font-size: 12px;
+    font-variation-settings:
+            'FILL' 1,
+            'wght' 900,
+            'GRAD' 0,
+            'opsz' 24;
+}
+.closet-btn.saved .check {
+    display: block;
+    color: #7d9fe8;
+}
+
+
+.feed-username {
+    position: absolute;
+    font-weight: 800;
+    top: 17px;
+    left: 15px;
+    color: #f5f5f5;
+}
+
+.feed-tags {
+    position: absolute;
+    display: flex;
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
+    gap: 4px;
+
+    overflow: hidden;
+    white-space: nowrap;
+
+    mask-image: linear-gradient(
+            to right,
+            black 0%,
+            black 85%,
+            transparent 100%
+    );
+}
+
+
+.feed-tag {
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6), 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+
+/*===============================================*/
+/* 옷장 모달 */
+.drawer-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.drawer-modal-overlay[hidden] {
+    display: none;
+}
+
+.drawer-modal {
+    background: #fff;
+    border-radius: 12px;
+    width: 320px;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.drawer-modal-header,
+.drawer-modal-new {
+    display: flex;
+    justify-content: space-between;
+}
+.ti-x {
+    font-size: 20px;
+}
+
+.drawer-modal-new {
+    margin: 20px 0 10px;
+    gap: 12px;
+}
+
+.drawer-modal-new input {
+    width: 100%;
+    height: 36px;
+    padding-left: 10px;
+    border: 1px solid #aaa;
+    border-radius:10px;
+
+}
+.drawer-modal-new input:focus {
+    border: 1px solid #777;
+}
+
+.drawer-modal-new button {
+    padding: 4px 13px;
+    background: #e7e7e7;
+    color: #0c3ca7;
+    font-size: 24px;
+    border-radius: 10px;
+}
+.drawer-modal-new button:hover {
+    background: #d7e3f7;
+}
+
+.drawer-modal-item {
+    display: flex;
+    align-items: center;
+    margin: 2px 0;
+    padding: 10px 8px;
+    cursor: pointer;
+    gap: 3px;
+    border-radius: 10px;
+}
+.drawer-modal-item:hover {
+    background: #eee;
+}
+.drawer-modal-item-count {
+    font-size: 14px;
+}
+.drawer-modal-item-check {
+    margin-left: auto;
+    visibility: hidden;
+}
+.drawer-modal-item.saved .drawer-modal-item-check {
+    visibility: visible;
+}
+
+
+
+
+
+/* 드롭다운버튼 */
+
+.more-menu-wrap {
+    margin-left: auto;
+    position: relative;
+}
+
+.more-menu-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #666;
+}
+
+.more-menu-dropdown {
+    position: absolute;
+    top: 28px;
+    right: 0;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    z-index: 10;
+    min-width: 140px;
+}
+
+.menu-item {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    border: none;
+    background: none;
+    text-align: left;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    background: #f5f5f5;
+}
+
+
+
+
+#cancel-btn {
+    background: #f5f5f5;
+}
+#cancel-btn,
+#confirm-btn {
+    width: 80px;
+    height: 40px;
+    border-radius: 20px;
+}
+#confirm-btn {
+    background: #0c3ca7;
+    color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* upload btn */
+.fab-upload {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #f5f5f5;
+    color: #0c3ca7;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+            0 0 12px rgba(255, 255, 255, 0.6),
+            0 4px 10px rgba(0, 0, 0, 0.35);
+    z-index: 333;
+    transition: transform 0.2s ease;
+}
+
+.fab-upload:hover {
+    transform: scale(1.1);
+    font-size: 32px;
+}
+
+.fab-upload::before {
+    content: "업로드";
+    position: absolute;
+    right: 64px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    background: #000;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.fab-upload:hover::before {
+    opacity: 1;
+}
+
+
+
+
+/* ===============================
+   upload-modal
+   =============================== */
+#upload-modal.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+#upload-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#upload-modal .modal-content {
+    background: #fafafa;
+    padding: 32px;
+    margin-top: 60px;
+    border-radius: 12px;
+    width: 400px;
+    max-width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+#upload-modal .close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 24px;
+}
+
+.upload-preview-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 200px;   /* 사진 없을 때 최소 높이 확보 */
+    border: 2px dashed #0c3ca7;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 16px 0;
+    cursor: pointer;
+    background: #fafafa;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.upload-preview-box:hover {
+    background: rgba(12, 60, 167, 0.03);
+}
+
+.upload-preview-box.drag-over {
+    background: rgba(12, 60, 167, 0.08);
+}
+
+.upload-preview-box img {
+    width: 100%;
+    height: auto;       /* 고정 높이 대신 비율 그대로 */
+    max-height: 500px;  /* 너무 세로로 긴 사진은 제한 */
+    object-fit: contain;
+    display: block;
+}
+
+.upload-preview-box img[hidden] {
+    display: none !important;
+}
+
+.upload-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 60px 0;   /* min-height 대신 여백으로 세로 공간 확보 */
+    color: #999;
+    font-size: 13px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.upload-placeholder[hidden] {
+    display: none !important;
+}
+
+.upload-placeholder i {
+    font-size: 32px;
+    color: #bbb;
+}
+
+#upload-image-input {
+    display: none !important;
+}
+
+
+#upload-content {
+    width: 100%;
+    min-height: 80px;
+    margin: 12px 0;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    resize: none;
+    font-family: inherit;
+}
+
+#upload-submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #000;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+#upload-submit-btn:hover {
+    background: #333;
+}
+
+/* upBtn tag */
+
+.tag-category {
+    margin-bottom: 18px;
+}
+.tag-select-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.tag-option {
+    padding: 0 8px;
+    height: 28px;
+    background: #e8e8e8;
+    border-radius: 10px;
+}
+.tag-option:hover {
+    background: #ccc;
+}
+.tag-option.selected {
+    background: #0c3ca7;
+    color: #fff;
+    border-color: #0c3ca7;
+}
+
+/* color tag */
+.tag-color-swatch {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tag-color-swatch::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--tag-color);
+    border: 1px solid rgba(0, 0, 0, 0.15);   /* 흰색 같은 밝은 색도 테두리로 구분되게 */
+}

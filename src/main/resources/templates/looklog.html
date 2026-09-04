@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/looklog.css">
+  <title>LOOKLOG</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="js/nav.js"></script>
+  </head>
+<body>
+  <div class="oo-bg"></div>
+  <header class="looklog-header" id="header">
+
+    <ul class="oo-nav">
+      <li><a href="">ABOUT</a></li>
+      <li class="title-target" id="target"></li>
+      <li>
+        <button class="nav-search-btn" type="button">
+          <i class="ti ti-search"></i>
+        </button>
+      </li>
+      <li><a href="profile">CLOSET</a></li>
+    </ul>
+
+    <form class="hero-search" action="/search" method="get">
+      <input type="search" name="q" autocomplete="off"  placeholder="find fit archive ...">
+      <button class="nav-search-btn" type="button">
+        <i class="ti ti-search"></i>
+      </button>
+    </form>
+
+    <h1 class="looklog-title" id="title">
+      <span>L</span><span>O</span><span>O</span><span>K</span><span>L</span><span>O</span><span>G</span>
+    </h1>
+    <div class="oo-line"></div>
+    <p>
+      ARCHIVE YOUR INSPIRATION,
+      <span>SHARE YOUR STYLE.</span>
+    </p>
+
+    <div class="nav-search-box">
+      <form action="/search" method="get">
+        <input
+          type="search"
+          name="q"
+          placeholder="find fit archive ..."
+          autocomplete="off">
+        <button type="submit">
+          <i class="ti ti-search"></i>
+        </button>
+      </form>
+    </div>
+
+  </header>
+
+
+  <section>
+    
+    <div class="oo-sort-toggle">
+      <p>최신순</p> <div>|</div> <p>인기순</p>
+      <span class="oo-sort-indicator"></span>
+    </div>
+
+    <div class="oo-tag-wrap">
+      <ul class="oo-tag">
+        <li th:classappend="${selectedTag == null} ? ' active' : ''">
+          <a th:href="@{/looklog}"><span>전체</span></a>
+        </li>
+        <li th:each="tag : ${allTags}"
+            th:classappend="${selectedTag == tag.name} ? ' active' : ''">
+          <a th:href="@{/looklog(tag=${tag.name})}"><span th:text="${tag.name}"></span></a>
+        </li>
+      </ul>
+    </div>
+
+
+    <button id="upload-open-btn" class="fab-upload">
+      <span>+</span>
+    </button>
+
+
+    <div class="feed">
+      <div class="feed-item" th:each="board : ${boards}">
+        <a class="feed-img-wrap" th:href="@{/board/{id}(id=${board.id})}">
+          <img th:src="${board.img}" alt="게시글 이미지" class="feed-img">
+        </a>
+
+        <div class="feed-info">
+          <span class="feed-username" th:text="${board.userName}"></span>
+
+          <div class="feed-tags">
+            <span class="feed-tag" th:each="t : ${board.tags}" th:text="'#' + ${t}"></span>
+          </div>
+
+          <button class="closet-btn" th:attr="data-board-id=${board.id}"
+                  th:classappend="${board.savedByMe} ? ' saved' : ''">
+            <i class="ti ti-hanger"></i>
+            <span class="check material-symbols-rounded">check</span>
+          </button>
+
+          <button class="like-btn"
+                  th:attr="data-board-id=${board.id}"
+                  th:classappend="${board.likedByMe} ? ' liked' : ''">
+            <i class="bi bi-heart-fill"></i>
+            <span class="like-count" th:text="${board.likeCount}"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="loader">LOADING...</div>
+
+
+  </section>
+
+
+
+
+  <div th:replace="~{fragments/upload-modal :: uploadModal}"></div>
+  <div th:replace="~{fragments/drawer-modal :: drawerModal}"></div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/looklog.js"></script>
+</body>
+</html>

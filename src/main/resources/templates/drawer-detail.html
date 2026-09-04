@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/nav :: head('drawer-detail')}"></head>
+<body th:data-login-member-name="${loginMemberName}">
+  <div th:replace="~{fragments/nav :: nav}"></div>
+
+  <section>
+    <div class="drawer-detail-wrap">
+
+      <div class="drawer-detail-header">
+
+        <i class="bi bi-chevron-left"></i>
+        <h2 th:text="${drawer.name}"></h2>
+
+        <div class="more-menu-wrap" th:if="${isDrawerOwner and !drawer.isDefault()}">
+          <button class="more-menu-btn" id="more-menu-btn">편집</button>
+
+          <div class="more-menu-dropdown" id="more-menu-dropdown" hidden>
+            <button class="menu-item" id="rename-drawer-btn" th:attr="data-drawer-id=${drawer.id}">서랍 수정</button>
+            <button class="menu-item" id="delete-drawer-btn" th:attr="data-drawer-id=${drawer.id}">서랍 삭제</button>
+          </div>
+        </div>
+
+        <!-- 서랍 수정 모달 -->
+        <div class="rename-modal-overlay" id="rename-modal-overlay" hidden>
+          <div class="rename-modal">
+            <h3>서랍 수정</h3>
+            <input type="text" id="rename-drawer-input" maxlength="20">
+            <div class="rename-modal-actions">
+              <button id="cancel-btn" type="button">취소</button>
+              <button id="confirm-btn" type="button">확인</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="feed">
+        <div class="feed-item" th:each="board : ${boards}">
+          <a class="feed-img-wrap" th:href="@{/board/{id}(id=${board.id})}">
+            <img th:src="${board.img}" alt="게시글" class="feed-img">
+          </a>
+
+          <div class="feed-info">
+            <span class="feed-username" th:text="${board.userName}"></span>
+
+            <div class="feed-tags">
+              <span class="feed-tag" th:each="t : ${board.tags}" th:text="'#' + ${t}"></span>
+            </div>
+
+            <button class="closet-btn" th:attr="data-board-id=${board.id}"
+                    th:classappend="${board.savedByMe} ? ' saved' : ''">
+              <i class="ti ti-hanger"></i>
+              <span class="check material-symbols-rounded">check</span>
+            </button>
+
+            <button class="like-btn" th:attr="data-board-id=${board.id}"
+                    th:classappend="${board.likedByMe} ? ' liked' : ''">
+              <i class="bi bi-heart-fill"></i>
+              <span class="like-count" th:text="${board.likeCount}"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <button id="upload-open-btn" class="fab-upload">
+      <span>+</span>
+    </button>
+
+  </section>
+
+
+  <div th:replace="~{fragments/upload-modal :: uploadModal}"></div>
+  <div th:replace="~{fragments/drawer-modal :: drawerModal}"></div>
+
+  <script src="/js/drawer-modal.js"></script>
+  <script src="/js/common.js"></script>
+</body>
+</html>

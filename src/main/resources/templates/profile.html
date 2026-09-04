@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/nav :: head('profile')}"></head>
+<body>
+  <div th:replace="~{fragments/nav :: nav}"></div>
+
+  <section>
+    <div class="profile-header">
+      <div th:if="${isOwner}" class="profile-more-wrap">
+        <button class="more-menu-btn" id="more-menu-btn">
+          <i class="ti ti-dots-vertical"></i>
+        </button>
+        <div class="more-menu-dropdown" id="more-menu-dropdown" hidden>
+          <button class="menu-item" id="edit-profile-btn">프로필 수정</button>
+          <button class="menu-item" id="share-profile-btn">공유</button>
+        </div>
+      </div>
+
+      <img th:src="${profileMember.profileImg}" alt="프로필" class="profile-avatar">
+      <h2 th:text="${profileMember.name}"></h2>
+      <p class="profile-username" th:text="'@' + ${profileMember.userName}"></p>
+
+      <div class="profile-follow-count">
+        <span id="follower-count" th:text="${followerCount} + ' 팔로워'"></span>
+        <span th:text="${followingCount} + ' 팔로잉'"></span>
+      </div>
+
+      <p class="profile-bio" th:text="${profileMember.bio}"></p>
+
+      <!-- 다른 사람 프로필에서만 보임 -->
+      <button th:unless="${isOwner}" id="follow-btn"
+              th:attr="data-member-id=${profileMember.id}"
+              th:classappend="${isFollowing} ? ' following' : ''"
+              th:text="${isFollowing} ? '팔로잉' : '팔로우'">
+      </button>
+    </div>
+
+    <div class="profile-tabs">
+      <button class="tab-btn active" data-tab="feed">피드</button>
+      <button class="tab-btn" data-tab="closet">옷장</button>
+    </div>
+
+    <div class="tab-content" id="tab-feed">
+      <div class="feed">
+        <div class="feed-item" th:each="board : ${boards}">
+          <a class="feed-img-wrap" th:href="@{/board/{id}(id=${board.id})}">
+            <img th:src="${board.img}" alt="게시글" class="feed-img">
+          </a>
+
+          <div class="feed-info">
+            <span class="feed-username" th:text="${board.userName}"></span>
+
+            <div class="feed-tags">
+              <span class="feed-tag" th:each="t : ${board.tags}" th:text="'#' + ${t}"></span>
+            </div>
+
+            <button class="closet-btn" th:attr="data-board-id=${board.id}"
+                    th:classappend="${board.savedByMe} ? ' saved' : ''">
+              <i class="ti ti-hanger"></i>
+              <span class="check material-symbols-rounded">check</span>
+            </button>
+
+            <button class="like-btn"
+                    th:attr="data-board-id=${board.id}"
+                    th:classappend="${board.likedByMe} ? ' liked' : ''">
+              <i class="bi bi-heart-fill"></i>
+              <span class="like-count" th:text="${board.likeCount}"></span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-closet" hidden>
+      <div class="drawer-folder-grid">
+        <a class="drawer-folder" th:each="d : ${drawers}" th:href="@{/drawer/{id}(id=${d.id})}">
+
+          <!-- 썸네일: 3개 이하 = 이미지 1장 -->
+          <div class="drawer-thumb single" th:if="${d.itemCount <= 3}">
+            <img th:if="${!d.thumbnails.isEmpty()}" th:src="${d.thumbnails[0]}" alt="서랍 썸네일">
+            <div class="drawer-thumb-empty" th:if="${d.thumbnails.isEmpty()}"></div>
+          </div>
+
+          <!-- 썸네일: 4개 이상 = 2x2 그리드 -->
+          <div class="drawer-thumb grid" th:if="${d.itemCount >= 4}">
+            <img th:each="thumb : ${d.thumbnails}" th:src="${thumb}" alt="서랍 썸네일">
+          </div>
+
+          <div class="drawer-folder-info">
+            <span class="drawer-folder-name" th:text="${d.name}"></span>
+            <span class="drawer-folder-count" th:text="${d.itemCount} + '개'"></span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+
+
+    <button id="upload-open-btn" class="fab-upload">
+      <span>+</span>
+    </button>
+
+  </section>
+
+
+  <!-- 팔로워 확인 모달 -->
+  <div class="follow-modal-overlay" id="follow-modal-overlay">
+    <div class="follow-modal">
+      <div class="follow-modal-header">
+        <h3>팔로워</h3>
+        <button id="follow-modal-close" type="button"><i class="ti ti-x"></i></button>
+      </div>
+
+      <!-- 팔로워 -->
+      <ul class="follow-modal-list" id="follower-modal-list">
+      </ul>
+      <!-- 팔로잉 -->
+      <ul class="follow-modal-list" id="following-modal-list">
+      </ul>
+    </div>
+  </div>
+
+
+
+  <div th:replace="~{fragments/upload-modal :: uploadModal}"></div>
+  <div th:replace="~{fragments/drawer-modal :: drawerModal}"></div>
+
+  <script src="/js/board-detail.js"></script>
+  <script src="/js/common.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+<!--
+
+개뜬금취업관련메모장
+
+AI도구 : Claude, Cursor, Antigravity
+
+Node.js, PHP 기반 사이트 구축, JAVA(Spring)
+, ASP.NET
+
+클라우드: AWS, Azure, NCP
+
+
+
+-->
