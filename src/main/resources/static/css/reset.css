@@ -60,3 +60,7 @@ button {
   background: none;
   cursor: pointer;
 }
+
+input[hidden] {
+  display: none !important;
+}

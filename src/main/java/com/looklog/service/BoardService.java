@@ -97,6 +97,7 @@ public class BoardService {
     }
 
 
+
     // 게시글 하나 상세 조회
     public BoardViewDto getBoardDetail(Long boardId, Long loginMemberId) {
         Board board = boardRepository.findById(boardId)
@@ -167,14 +168,10 @@ public class BoardService {
         return toDto(board, loginMemberId);
     }
 
-    //delete
+    // 피드 삭제
     public void deleteBoard(Long boardId, Long loginMemberId) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalStateException("게시글을 찾을 수 없습니다."));
-
-        if (!board.getMember().getId().equals(loginMemberId)) {
-            throw new IllegalStateException("본인 게시글만 삭제할 수 있습니다.");
-        }
 
         deleteImageFile(board.getImg());
         boardRepository.delete(board);
@@ -182,7 +179,7 @@ public class BoardService {
 
     private void deleteImageFile(String imgPath) {
         try {
-            //"/uploads/파일명.png"
+            // /uploads/파일명.png
             String fileName = imgPath.substring(imgPath.lastIndexOf("/") + 1);
             File file = new File(uploadDir + fileName);
 

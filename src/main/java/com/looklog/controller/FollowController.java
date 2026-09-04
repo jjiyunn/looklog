@@ -4,6 +4,7 @@ import com.looklog.service.FollowService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,5 +28,18 @@ public class FollowController {
     } catch (IllegalStateException e) {
       return ResponseEntity.badRequest().body(e.getMessage());
     }
+  }
+
+  // 팔로우 확인
+  @GetMapping("/follow/followers/{memberId}")
+  public ResponseEntity<?> followers(@PathVariable Long memberId, HttpSession session) {
+    Long loginMemberId = (Long) session.getAttribute("loginMemberId");
+    return ResponseEntity.ok(followService.getFollowers(memberId, loginMemberId));
+  }
+
+  @GetMapping("/follow/followings/{memberId}")
+  public ResponseEntity<?> followings(@PathVariable Long memberId, HttpSession session) {
+    Long loginMemberId = (Long) session.getAttribute("loginMemberId");
+    return ResponseEntity.ok(followService.getFollowings(memberId, loginMemberId));
   }
 }

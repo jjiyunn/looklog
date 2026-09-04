@@ -86,7 +86,8 @@ input::-webkit-search-cancel-button {
     display: none;
 }
 
-form button {
+.hero-search button,
+.nav-search-box button {
     position: absolute;
     top: 48%;
     right: 1.8vw;
@@ -159,7 +160,7 @@ form .ti-search {
 
 
 
-/* ======================== */
+/* ======================== 피드 hover */
 .feed-info {
     padding: 10px;
     display: none;
@@ -412,21 +413,29 @@ form .ti-search {
 
 
 
-
-#cancel-btn {
-    background: #f5f5f5;
+/* cancel, confirm btn */
+.cancel-btn {
+    background: #fcfcfc;
 }
-#cancel-btn,
-#confirm-btn {
+.cancel-btn:hover {
+    background: #e7effc ;
+}
+.cancel-btn,
+.confirm-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 80px;
     height: 40px;
     border-radius: 20px;
 }
-#confirm-btn {
+.confirm-btn {
     background: #0c3ca7;
     color: #fff;
 }
-
+.confirm-btn:hover {
+    background: #0a2f85;
+}
 
 
 
@@ -574,17 +583,9 @@ form .ti-search {
     pointer-events: none;
 }
 
-.upload-placeholder[hidden] {
-    display: none !important;
-}
-
 .upload-placeholder i {
     font-size: 32px;
     color: #bbb;
-}
-
-#upload-image-input {
-    display: none !important;
 }
 
 

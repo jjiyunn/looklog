@@ -1,4 +1,4 @@
-// Follow.java
+
 package com.looklog.entity;
 
 import jakarta.persistence.*;

@@ -11,7 +11,7 @@
           <i class="ti ti-dots-vertical"></i>
         </button>
         <div class="more-menu-dropdown" id="more-menu-dropdown" hidden>
-          <button class="menu-item" id="edit-profile-btn">프로필 수정</button>
+          <a class="menu-item" id="edit-profile-btn" href="/profile/edit">프로필 수정</a>
           <button class="menu-item" id="share-profile-btn">공유</button>
         </div>
       </div>
@@ -21,8 +21,16 @@
       <p class="profile-username" th:text="'@' + ${profileMember.userName}"></p>
 
       <div class="profile-follow-count">
-        <span id="follower-count" th:text="${followerCount} + ' 팔로워'"></span>
-        <span th:text="${followingCount} + ' 팔로잉'"></span>
+        <span class="follow-count-btn" id="follower-count-btn"
+              th:attr="data-member-id=${profileMember.id}"
+              data-type="followers">
+          <span id="follower-count" th:text="${followerCount}"></span> 팔로워
+        </span>
+              <span class="follow-count-btn" id="following-count-btn"
+                    th:attr="data-member-id=${profileMember.id}"
+                    data-type="followings">
+          <span th:text="${followingCount}"></span> 팔로잉
+        </span>
       </div>
 
       <p class="profile-bio" th:text="${profileMember.bio}"></p>
@@ -105,18 +113,14 @@
 
 
   <!-- 팔로워 확인 모달 -->
-  <div class="follow-modal-overlay" id="follow-modal-overlay">
+  <div class="follow-modal-overlay" id="follow-modal-overlay" hidden>
     <div class="follow-modal">
       <div class="follow-modal-header">
-        <h3>팔로워</h3>
+        <h3 id="follow-modal-title">팔로워</h3>
         <button id="follow-modal-close" type="button"><i class="ti ti-x"></i></button>
       </div>
 
-      <!-- 팔로워 -->
-      <ul class="follow-modal-list" id="follower-modal-list">
-      </ul>
-      <!-- 팔로잉 -->
-      <ul class="follow-modal-list" id="following-modal-list">
+      <ul class="follow-modal-list" id="follow-modal-list">
       </ul>
     </div>
   </div>

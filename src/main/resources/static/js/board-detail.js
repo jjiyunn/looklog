@@ -92,16 +92,97 @@ if (followBtn) {
                 if (countEl) {
                     const currentCount = parseInt(countEl.textContent, 10) || 0;
                     const newCount = following ? currentCount + 1 : currentCount - 1;
-                    countEl.textContent = `${newCount} 팔로워`;
+                    countEl.textContent = newCount;   // ★ 숫자만 넣기
                 }
             })
             .catch(msg => alert(msg));
     });
 }
 
+const followModalOverlay = document.getElementById('follow-modal-overlay');
+const followModalTitle = document.getElementById('follow-modal-title');
+const followModalList = document.getElementById('follow-modal-list');
+
+document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.follow-count-btn');
+    if (!btn) return;
+
+    const type = btn.dataset.type;       // 'followers' or 'followings'
+    const memberId = btn.dataset.memberId;
+
+    openFollowModal(type, memberId);
+});
+
+function openFollowModal(type, memberId) {
+    followModalTitle.textContent = type === 'followers' ? '팔로워' : '팔로잉';
+
+    fetch(`/follow/${type}/${memberId}`)
+        .then(res => res.ok ? res.json() : Promise.reject('오류가 발생했습니다.'))
+        .then(users => renderFollowList(users))
+        .catch(msg => alert(msg));
+
+    followModalOverlay.hidden = false;
+}
+
+function renderFollowList(users) {
+    followModalList.innerHTML = '';
+
+    users.forEach(u => {
+        const li = document.createElement('li');
+        li.className = 'follow-modal-item';
+        li.innerHTML = `
+            <a class="follow-modal-user-link" href="/profile/${u.userName}">
+                <img class="follow-modal-avatar" src="${u.profileImg}" alt="">
+                <span class="follow-modal-username">${u.userName}</span>
+            </a>
+            ${(!u.me && !u.following) ? `<button class="follow-modal-follow-btn" data-target-id="${u.id}">팔로우</button>` : ''}
+        `;
+        followModalList.appendChild(li);
+    });
+}
+
+const followModalCloseBtn = document.getElementById('follow-modal-close');
+if (followModalCloseBtn) {
+    followModalCloseBtn.addEventListener('click', () => {
+        followModalOverlay.hidden = true;
+    });
+}
+if (followModalOverlay) {
+    followModalOverlay.addEventListener('click', (e) => {
+        if (e.target === followModalOverlay) followModalOverlay.hidden = true;
+    });
+}
+
+// 모달 안에서 "팔로우" 버튼 클릭 → 팔로우 처리 후 버튼만 사라지게
+document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.follow-modal-follow-btn');
+    if (!btn) return;
+
+    const targetId = btn.dataset.targetId;
+
+    fetch(`/follow/${targetId}`, { method: 'POST' })
+        .then(res => res.ok ? res.json() : Promise.reject('오류가 발생했습니다.'))
+        .then(following => {
+            if (following) {
+                btn.remove();
+            }
+        })
+        .catch(msg => alert(msg));
+});
 
 
-
+// profile edit
+// 파일 선택하고 바로 화면에 반영
+const profileImgInput = document.getElementById('profileImg');
+const profilePreview = document.getElementById('edit-profile-preview');
+if (profileImgInput) {
+    profileImgInput.addEventListener('change', () => {
+        const file = profileImgInput.files[0];
+        if (file) {
+            profilePreview.src = URL.createObjectURL(file);
+        }
+    });
+}
 
 
 

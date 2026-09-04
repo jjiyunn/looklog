@@ -1,7 +1,3 @@
-/* profile */
-/* ===============================
-   프로필 페이지
-   =============================== */
 
 .profile-header {
     display: flex;
@@ -21,6 +17,7 @@
     object-fit: cover;
     margin-bottom: 16px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: #fcfcfc;
 }
 
 .profile-header h2 {
@@ -41,6 +38,7 @@
     margin-top: 14px;
     font-size: 14px;
     color: #444;
+    cursor: pointer;
 }
 
 .profile-follow-count span {
@@ -53,6 +51,7 @@
     color: #666;
     line-height: 1.5;
 }
+
 
 /* 팔로우 / 팔로잉 버튼 */
 #follow-btn {
@@ -81,6 +80,98 @@
 #follow-btn.following:hover {
     background: #f0f4ff;
 }
+
+
+
+/* 팔로우 팔로잉 자세히 보기 모달 */
+.follow-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.follow-modal-overlay[hidden] {
+    display: none;
+}
+
+.follow-modal {
+    background: #fff;
+    border-radius: 12px;
+    width: 320px;
+    max-height: 70vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.follow-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.follow-modal-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    max-height: 60vh;
+}
+
+.follow-modal-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 10px;
+}
+.follow-modal-item:hover {
+    background: #eee;
+}
+
+.follow-modal-user-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+    min-width: 0; /* 이름 길 때 줄바꿈/말줄임 대응 */
+}
+
+.follow-modal-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #fcfcfc;
+}
+
+.follow-modal-username {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.follow-modal-follow-btn {
+    margin-left: auto;
+    padding: 6px 14px;
+    background: #0c3ca7;
+    color: #fff;
+    font-size: 13px;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+.follow-modal-follow-btn:hover {
+    background: #0a2f85;
+}
+
+
+
 
 /* 더보기 메뉴 */
 .profile-more-wrap {
@@ -123,6 +214,8 @@
 .menu-item:hover {
     background: #f5f5f5;
 }
+
+
 
 /* 피드 / 옷장 */
 .profile-tabs {
@@ -254,3 +347,101 @@ section {
 }
 
 
+
+
+
+
+/* ========================================= */
+/* 프로필 수정 */
+
+.edit-profile-wrap {
+    max-width: 480px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.edit-profile-wrap h2 {
+    margin-bottom: 24px;
+    font-size: 20px;
+}
+
+.edit-profile-error {
+    color: #d33;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.edit-profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 프로필 사진 */
+.edit-profile-img-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.edit-profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #eee;
+}
+
+.edit-profile-img-label {
+    font-size: 13px;
+    color: #0c3ca7;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+.edit-profile-img-label:hover {
+    background: #e7effc;
+}
+
+/* 입력 필드 */
+.edit-profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.edit-profile-field label {
+    font-size: 13px;
+    color: #555;
+    font-weight: 500;
+}
+
+.edit-profile-field input,
+.edit-profile-field textarea {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.edit-profile-field input:focus,
+.edit-profile-field textarea:focus {
+    outline: none;
+    border-color: #0c3ca7;
+}
+
+.edit-profile-field textarea {
+    resize: none;
+    height: 70px;
+}
+
+/* 버튼 영역 */
+.edit-profile-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}

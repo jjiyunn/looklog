@@ -4,17 +4,27 @@ import com.looklog.entity.Drawer;
 import com.looklog.entity.Member;
 import com.looklog.repository.DrawerRepository;
 import com.looklog.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
     private final DrawerRepository drawerRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
+
 
     // 회원가입
     public Member signUp(String email, String password, String name, String userName) {
@@ -57,4 +67,38 @@ public class MemberService {
         // 3. 다 맞으면 회원 정보 리턴
         return member;
     }
+
+
+    // 프로필 수정
+    public void updateProfile(Long memberId, String name, String userName, String bio, MultipartFile profileImg) throws IOException {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+
+        if (!member.getUserName().equals(userName)
+                && memberRepository.existsByUserName(userName)) {
+            throw new IllegalStateException("이미 사용 중인 아이디입니다.");
+        }
+
+        member.setName(name);
+        member.setUserName(userName);
+        member.setBio(bio);
+
+        if (profileImg != null && !profileImg.isEmpty()) {
+            String savedPath = saveImage(profileImg);
+            member.setProfileImg(savedPath);
+        }
+    }
+
+    // 이미지 저장 (BoardService와 동일한 방식)
+    private String saveImage(MultipartFile imageFile) throws IOException {
+        String originalFilename = imageFile.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String savedFilename = UUID.randomUUID() + extension;
+
+        File dest = new File(uploadDir + savedFilename);
+        dest.getParentFile().mkdirs();
+        imageFile.transferTo(dest);
+
+        return "/uploads/" + savedFilename;
+    }
+
 }

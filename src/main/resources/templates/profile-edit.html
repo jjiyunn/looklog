@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/nav :: head('profile')}"></head>
+<body>
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<section class="edit-profile-wrap">
+  <h2>프로필 수정</h2>
+
+  <p th:if="${error}" th:text="${error}" class="edit-profile-error"></p>
+
+  <form th:action="@{/profile/edit}" method="post" enctype="multipart/form-data" class="edit-profile-form">
+
+    <div class="edit-profile-img-wrap">
+      <img id="edit-profile-preview" th:src="${member.profileImg}" alt="프로필 미리보기" class="edit-profile-avatar">
+      <label for="profileImg" class="edit-profile-img-label">사진 변경</label>
+      <input type="file" id="profileImg" name="profileImg" accept="image/*" hidden>
+    </div>
+
+    <div class="edit-profile-field">
+      <label for="name">이름</label>
+      <input type="text" id="name" name="name" th:value="${member.name}" required>
+    </div>
+
+    <div class="edit-profile-field">
+      <label for="userName">아이디</label>
+      <input type="text" id="userName" name="userName" th:value="${member.userName}" required>
+    </div>
+
+    <div class="edit-profile-field">
+      <label for="bio">한줄소개</label>
+      <textarea id="bio" name="bio" maxlength="150" th:text="${member.bio}"></textarea>
+    </div>
+
+    <div class="edit-profile-actions">
+      <a th:href="@{/profile/{userName}(userName=${member.userName})}" class="cancel-btn">취소</a>
+      <button type="submit" class="confirm-btn">저장</button>
+    </div>
+
+  </form>
+</section>
+
+<script src="/js/board-detail.js"></script>
+</body>
+</html>
