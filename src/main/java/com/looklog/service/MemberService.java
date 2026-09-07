@@ -77,6 +77,9 @@ public class MemberService {
                 && memberRepository.existsByUserName(userName)) {
             throw new IllegalStateException("이미 사용 중인 아이디입니다.");
         }
+        if (bio != null && bio.length() > 70) {
+            throw new IllegalStateException("한줄소개는 70자 이하여야 합니다.");
+        }
 
         member.setName(name);
         member.setUserName(userName);

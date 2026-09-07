@@ -184,7 +184,39 @@ if (profileImgInput) {
     });
 }
 
+// 히스토리 안쌓이게
+const editProfileForm = document.getElementById('edit-profile-form');
+if (editProfileForm) {
+    editProfileForm.addEventListener('submit', function (e) {
+        e.preventDefault();
 
+        const formData = new FormData(editProfileForm);
+
+        fetch('/profile/edit', {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => {
+                if (res.redirected) {
+                    window.location.replace(res.url); // ★ back()으로 안 돌아오게
+                } else {
+                    return res.text().then(html => {
+                        document.open();
+                        document.write(html); // 에러 페이지면 그대로 표시
+                        document.close();
+                    });
+                }
+            })
+            .catch(() => alert('오류가 발생했습니다.'));
+    });
+}
+const editProfileBtn = document.getElementById('edit-profile-btn');
+if (editProfileBtn) {
+    editProfileBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.replace('/profile/edit');
+    });
+}
 
 
 

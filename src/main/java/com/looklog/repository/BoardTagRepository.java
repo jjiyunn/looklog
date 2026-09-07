@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface BoardTagRepository extends JpaRepository<BoardTag, BoardTagId> {
     List<BoardTag> findByBoard(Board board);
+    void deleteByBoard(Board board);
 }

@@ -15,6 +15,17 @@ $(".oo-nav button").on("click", function (e) {
     }
 })
 
+// 뒤로가기
+document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.back-btn');
+    if (!btn) return;
+
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        window.location.href = '/';
+    }
+});
 
 
 // 좋아요
@@ -175,24 +186,66 @@ function removeSavedItem(boardId, btn) {
 
 
 // ===============================
-// upload-modal
+// upload-modal / 피드 수정
 // ===============================
 const uploadModal = document.getElementById('upload-modal');
-const uploadOpenBtn = document.getElementById('upload-open-btn');  // 아까 만든 + 버튼
+const uploadOpenBtn = document.getElementById('upload-open-btn');
 const uploadCloseBtn = document.getElementById('upload-close');
 const uploadImageInput = document.getElementById('upload-image-input');
 const uploadPreview = document.getElementById('upload-preview');
 const uploadPlaceholder = document.querySelector('.upload-placeholder');
+const uploadSubmitBtn = document.getElementById('upload-submit-btn');
 
-// 모달 열기
+let uploadMode = 'create';
+let editingBoardId = null;
+
 if (uploadOpenBtn) {
     uploadOpenBtn.addEventListener('click', () => {
-        uploadModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        openUploadModal('create');
     });
 }
 
-// 모달 닫기
+const editBoardBtn = document.getElementById('edit-board-btn');
+if (editBoardBtn) {
+    editBoardBtn.addEventListener('click', () => {
+        openUploadModal('edit', {
+            boardId: editBoardBtn.dataset.boardId,
+            content: editBoardBtn.dataset.content,
+            img: editBoardBtn.dataset.img,
+            tags: editBoardBtn.dataset.tags
+        });
+    });
+}
+
+function openUploadModal(mode, data) {
+    uploadMode = mode;
+    resetUploadForm();
+
+    if (mode === 'edit') {
+        editingBoardId = data.boardId;
+        uploadSubmitBtn.textContent = '수정하기';
+
+        uploadPreview.src = data.img;
+        uploadPreview.hidden = false;
+        uploadPlaceholder.hidden = true;
+
+        document.getElementById('upload-content').value = data.content || '';
+
+        const existingTags = data.tags ? data.tags.split(',') : [];
+        selectedTags = existingTags.filter(t => t);
+        uploadTagsInput.value = selectedTags.join(',');
+        tagOptions.forEach(btn => {
+            btn.classList.toggle('selected', selectedTags.includes(btn.dataset.tag));
+        });
+    } else {
+        editingBoardId = null;
+        uploadSubmitBtn.textContent = '게시하기';
+    }
+
+    uploadModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
 function closeUploadModal() {
     uploadModal.classList.remove('active');
     document.body.style.overflow = '';
@@ -209,7 +262,6 @@ uploadModal.addEventListener('click', (e) => {
     }
 });
 
-// 이미지 선택하면 미리보기 보여주기
 uploadImageInput.addEventListener('change', () => {
     const file = uploadImageInput.files[0];
     if (file) {
@@ -223,7 +275,6 @@ uploadImageInput.addEventListener('change', () => {
     }
 });
 
-// 폼 초기화
 function resetUploadForm() {
     uploadImageInput.value = '';
     uploadPreview.src = '';
@@ -237,14 +288,13 @@ function resetUploadForm() {
     tagOptions.forEach(btn => btn.classList.remove('selected'));
 }
 
-// 게시하기 버튼
-document.getElementById('upload-submit-btn').addEventListener('click', function () {
+uploadSubmitBtn.addEventListener('click', function () {
     const file = uploadImageInput.files[0];
     const content = document.getElementById('upload-content').value;
-    const tags = document.getElementById('upload-tags').value;   // 추가
+    const tags = document.getElementById('upload-tags').value;
     const errorBox = document.getElementById('upload-error');
 
-    if (!file) {
+    if (uploadMode === 'create' && !file) {
         errorBox.textContent = '사진을 선택해주세요.';
         errorBox.style.display = 'block';
         return;
@@ -256,17 +306,19 @@ document.getElementById('upload-submit-btn').addEventListener('click', function 
     }
 
     const formData = new FormData();
-    formData.append('image', file);
+    if (file) formData.append('image', file);
     formData.append('content', content);
-    formData.append('tags', tags);   // 추가
+    formData.append('tags', tags);
 
-    fetch('/board/create', {
+    const url = uploadMode === 'edit' ? `/board/${editingBoardId}/edit` : '/board/create';
+
+    fetch(url, {
         method: 'POST',
         body: formData
     })
         .then(res => {
             if (res.ok) {
-                alert('게시글이 등록되었습니다!');
+                alert(uploadMode === 'edit' ? '수정되었습니다!' : '게시글이 등록되었습니다!');
                 closeUploadModal();
                 location.reload();
             } else {
@@ -332,7 +384,6 @@ tagOptions.forEach(btn => {
         }
 
         uploadTagsInput.value = selectedTags.join(',');
-
     });
 });
 

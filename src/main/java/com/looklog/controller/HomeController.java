@@ -60,10 +60,6 @@ public class HomeController {
         model.addAttribute("isLoggedIn", true);
         model.addAttribute("loginMemberName", session.getAttribute("loginMemberName"));
 
-        model.addAttribute("styleTags", tagRepository.findByType("style"));
-        model.addAttribute("seasonTags", tagRepository.findByType("season"));
-        model.addAttribute("colorTags", tagRepository.findByType("color"));
-
 
         List<Tag> filterTags = new ArrayList<>();
         filterTags.addAll(tagRepository.findByType("style"));
@@ -118,7 +114,9 @@ public class HomeController {
             return "redirect:/profile/edit";
         }
 
-      Member member = memberRepository.findById(loginMemberId).orElseThrow();
+        Member member = memberRepository.findById(loginMemberId).orElseThrow();
+        session.setAttribute("loginMemberName", member.getUserName());
+
         return "redirect:/profile/" + member.getUserName();
     }
 

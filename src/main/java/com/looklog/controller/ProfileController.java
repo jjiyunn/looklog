@@ -44,10 +44,8 @@ public class ProfileController {
     model.addAttribute("followerCount", followService.countFollowers(profileMember.getId()));
     model.addAttribute("followingCount", followService.countFollowings(profileMember.getId()));
 
-    // 이 사람이 올린 게시글 (피드 탭)
+    // 피드/옷장
     model.addAttribute("boards", boardService.getBoardsByMember(profileMember.getId(), loginMemberId));
-
-    // 이 사람이 저장한 옷장 (옷장 탭)
     model.addAttribute("drawers", drawerService.getDrawerFolders(profileMember.getId()));
 
     return "profile";

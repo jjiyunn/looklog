@@ -1,55 +1,62 @@
 
-<div class="modal" id="upload-modal"  th:fragment="uploadModal">
+
+<div class="modal" id="upload-modal" th:fragment="uploadModal">
   <div class="modal-content">
     <button class="close" id="upload-close"><i class="ti ti-x"></i></button>
 
     <h2>게시글 작성</h2>
 
-    <label for="upload-image-input" class="upload-preview-box">
-      <img id="upload-preview" src="" alt="미리보기" hidden>
-      <span class="upload-placeholder">
-          <i class="bi bi-image"></i>
-          <br>
-          사진을 선택하거나 끌어다 놓으세요
-        </span>
-    </label>
+    <div class="upload-body">
 
-    <input type="file" id="upload-image-input" accept="image/*" hidden>
+      <div class="upload-left">
+        <label for="upload-image-input" class="upload-preview-box">
+          <img id="upload-preview" src="" alt="미리보기" hidden>
+          <span class="upload-placeholder">
+              <i class="bi bi-image"></i>
+              <br>
+              사진을 선택하거나 끌어다 놓으세요
+            </span>
+        </label>
 
+        <input type="file" id="upload-image-input" accept="image/*" hidden>
 
-    <div class="tag-category">
-      <span class="tag-category-label">Style</span>
-      <div class="tag-select-list">
-        <button type="button" class="tag-option" th:each="t : ${styleTags}"
-                th:text="${t.name}" th:attr="data-tag=${t.name}"></button>
+        <p>내용</p>
+        <textarea id="upload-content" placeholder="오늘의 코디를 소개해주세요"></textarea>
       </div>
-    </div>
 
-    <div class="tag-category">
-      <span class="tag-category-label">Season</span>
-      <div class="tag-select-list">
-        <button type="button" class="tag-option" th:each="t : ${seasonTags}"
-                th:text="${t.name}" th:attr="data-tag=${t.name}"></button>
+      <div class="upload-right">
+        <div class="tag-category">
+          <span class="tag-category-label">Style</span>
+          <div class="tag-select-list">
+            <button type="button" class="tag-option" th:each="t : ${styleTags}"
+                    th:text="${t.name}" th:attr="data-tag=${t.name}"></button>
+          </div>
+        </div>
+
+        <div class="tag-category">
+          <span class="tag-category-label">Season</span>
+          <div class="tag-select-list">
+            <button type="button" class="tag-option" th:each="t : ${seasonTags}"
+                    th:text="${t.name}" th:attr="data-tag=${t.name}"></button>
+          </div>
+        </div>
+
+        <div class="tag-category">
+          <span class="tag-category-label">Color</span>
+          <div class="tag-select-list tag-color-list">
+            <button type="button" class="tag-option" th:each="t : ${colorTags}"
+                    th:text="${t.name}" th:attr="data-tag=${t.name}"></button>
+          </div>
+        </div>
+
+        <input type="hidden" id="upload-tags" value="">
+
+        <p id="upload-error" style="color: red; display: none;"></p>
+
+        <button id="upload-submit-btn">게시하기</button>
       </div>
+
     </div>
-
-    <div class="tag-category">
-      <span class="tag-category-label">Color</span>
-      <div class="tag-select-list tag-color-list">
-        <button type="button" class="tag-option" th:each="t : ${colorTags}"
-                th:text="${t.name}" th:attr="data-tag=${t.name}"></button>
-      </div>
-    </div>
-
-    <input type="hidden" id="upload-tags" value="">
-
-
-    <p>내용</p>
-    <textarea id="upload-content" placeholder="오늘의 코디를 소개해주세요"></textarea>
-
-    <p id="upload-error" style="color: red; display: none;"></p>
-
-    <button id="upload-submit-btn">게시하기</button>
 
   </div>
 </div>

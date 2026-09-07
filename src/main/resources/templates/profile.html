@@ -6,6 +6,9 @@
 
   <section>
     <div class="profile-header">
+
+      <i class="bi bi-chevron-left back-btn profile-back-btn"></i>
+
       <div th:if="${isOwner}" class="profile-more-wrap">
         <button class="more-menu-btn" id="more-menu-btn">
           <i class="ti ti-dots-vertical"></i>
@@ -130,8 +133,9 @@
   <div th:replace="~{fragments/upload-modal :: uploadModal}"></div>
   <div th:replace="~{fragments/drawer-modal :: drawerModal}"></div>
 
-  <script src="/js/board-detail.js"></script>
+
   <script src="/js/common.js"></script>
+  <script src="/js/board-detail.js"></script>
 </body>
 </html>
 

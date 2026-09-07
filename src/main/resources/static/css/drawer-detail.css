@@ -58,9 +58,6 @@ section {
   padding: 20px 24px 0;
   gap: 12px;
 }
-.drawer-detail-header i {
-  font-size: 18px;
-}
 .drawer-detail-header h2 {
   font-size: 18px;
 }

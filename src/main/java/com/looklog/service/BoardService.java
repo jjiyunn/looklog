@@ -2,6 +2,7 @@ package com.looklog.service;
 
 import com.looklog.entity.*;
 import com.looklog.repository.*;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -94,6 +96,54 @@ public class BoardService {
         }
 
         return boards.stream().map(board -> toDto(board, loginMemberId)).toList();
+    }
+
+
+
+    // 게시글 수정
+    public void updateBoard(Long boardId, Long memberId, String content, String tagsInput, MultipartFile imageFile) throws IOException {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalStateException("게시글을 찾을 수 없습니다."));
+
+        if (!board.getMember().getId().equals(memberId)) {
+            throw new IllegalStateException("권한이 없습니다.");
+        }
+
+        board.setContent(content);
+
+        // 이미지 새로 선택했을 때만 교체
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String originalFilename = imageFile.getOriginalFilename();
+            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String savedFilename = UUID.randomUUID() + extension;
+
+            File dest = new File(uploadDir + savedFilename);
+            dest.getParentFile().mkdirs();
+            imageFile.transferTo(dest);
+
+            board.setImg("/uploads/" + savedFilename);
+        }
+
+        // 기존 태그 연결 다 지우고 새로 등록
+        boardTagRepository.deleteByBoard(board);
+
+        if (tagsInput != null && !tagsInput.isBlank()) {
+            String[] tagNames = tagsInput.split(",");
+
+            for (String rawName : tagNames) {
+                String name = rawName.trim();
+                if (name.isEmpty()) continue;
+
+                Tag tag = tagRepository.findByName(name).orElse(null);
+                if (tag == null) {
+                    tag = new Tag(name);
+                    tagRepository.save(tag);
+                }
+
+                BoardTag boardTag = new BoardTag(board, tag);
+                boardTagRepository.save(boardTag);
+            }
+        }
     }
 
 

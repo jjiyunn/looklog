@@ -5,11 +5,14 @@
 <div th:replace="~{fragments/nav :: nav}"></div>
 
 <section class="edit-profile-wrap">
-  <h2>프로필 수정</h2>
 
-  <p th:if="${error}" th:text="${error}" class="edit-profile-error"></p>
+  <div class="edit-profile-header">
+    <i class="bi bi-chevron-left back-btn"></i>
+    <h2>프로필 수정</h2>
+  </div>
 
-  <form th:action="@{/profile/edit}" method="post" enctype="multipart/form-data" class="edit-profile-form">
+
+  <form id="edit-profile-form" method="post" enctype="multipart/form-data" class="edit-profile-form">
 
     <div class="edit-profile-img-wrap">
       <img id="edit-profile-preview" th:src="${member.profileImg}" alt="프로필 미리보기" class="edit-profile-avatar">
@@ -29,8 +32,11 @@
 
     <div class="edit-profile-field">
       <label for="bio">한줄소개</label>
-      <textarea id="bio" name="bio" maxlength="150" th:text="${member.bio}"></textarea>
+      <textarea id="bio" name="bio" maxlength="70" th:text="${member.bio}"></textarea>
     </div>
+
+
+    <p th:if="${error}" th:text="${error}" class="edit-profile-error"></p>
 
     <div class="edit-profile-actions">
       <a th:href="@{/profile/{userName}(userName=${member.userName})}" class="cancel-btn">취소</a>
@@ -40,6 +46,7 @@
   </form>
 </section>
 
+<script src="/js/common.js"></script>
 <script src="/js/board-detail.js"></script>
 </body>
 </html>

@@ -59,4 +59,29 @@ public class BoardController {
             return ResponseEntity.status(403).body(e.getMessage());
         }
     }
+
+    @PostMapping("/board/{id}/edit")
+    public ResponseEntity<?> updateBoard(
+            @PathVariable Long id,
+            @RequestParam(required = false) MultipartFile image,
+            @RequestParam(required = false) String content,
+            @RequestParam(required = false) String tags,
+            HttpSession session
+    ) {
+        Long loginMemberId = (Long) session.getAttribute("loginMemberId");
+
+        if (loginMemberId == null) {
+            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+        }
+
+        try {
+            boardService.updateBoard(id, loginMemberId, content, tags, image);
+            return ResponseEntity.ok().build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("게시글 수정에 실패했습니다: " + e.getMessage());
+        }
+    }
 }

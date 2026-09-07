@@ -9,10 +9,8 @@
     <div class="board-detail-main">
 
       <div class="board-detail-header">
-        <a th:href="@{/profile/{name}(name=${board.userName})}" class="board-detail-profile-link">
-          <img th:src="${board.profileImg}" alt="프로필" class="board-detail-avatar">
-          <span class="board-detail-username" th:text="${board.userName}"></span>
-        </a>
+
+        <i class="bi bi-chevron-left back-btn"></i>
 
         <div class="more-menu-wrap">
           <button class="more-menu-btn" id="more-menu-btn">
@@ -22,7 +20,13 @@
           <div class="more-menu-dropdown" id="more-menu-dropdown" hidden>
             <!-- 본인 게시글일 때 -->
             <div th:if="${board.owner}">
-              <button class="menu-item" id="edit-board-btn">수정</button>
+              <button class="menu-item" id="edit-board-btn"
+                      th:attr="data-board-id=${board.id},
+                    data-content=${board.content},
+                    data-img=${board.img},
+                    data-tags=${#strings.listJoin(board.tags, ',')}">
+                수정
+              </button>
               <button class="menu-item" id="delete-board-btn" th:attr="data-board-id=${board.id}">삭제</button>
               <button class="menu-item" id="share-board-btn">공유</button>
             </div>
@@ -39,26 +43,34 @@
       <img th:src="${board.img}" alt="게시글 이미지" class="board-detail-img">
 
       <div class="board-detail-info">
-        <p></p>
+
+        <div class="board-detail-flex">
+          <a th:href="@{/profile/{name}(name=${board.userName})}" class="board-detail-profile-link">
+            <img th:src="${board.profileImg}" alt="프로필" class="board-detail-avatar">
+            <span class="board-detail-username" th:text="${board.userName}"></span>
+          </a>
+
+          <div class="board-detail-actions">
+            <button class="like-btn" th:attr="data-board-id=${board.id}"
+                    th:classappend="${board.likedByMe} ? ' liked' : ''">
+              <i class="bi bi-heart-fill"></i>
+              <span class="like-count" th:text="${board.likeCount}"></span>
+            </button>
+
+            <button class="closet-btn" th:attr="data-board-id=${board.id}"
+                    th:classappend="${board.savedByMe} ? ' saved' : ''">
+              <i class="ti ti-hanger"></i>
+              <span class="check material-symbols-rounded">check</span>
+            </button>
+          </div>
+        </div>
+
         <p class="board-detail-content" th:text="${board.content}"></p>
 
         <div class="board-detail-tags">
           <span class="feed-tag" th:each="t : ${board.tags}" th:text="'#' + ${t}"></span>
         </div>
 
-        <div class="board-detail-actions">
-          <button class="like-btn" th:attr="data-board-id=${board.id}"
-                  th:classappend="${board.likedByMe} ? ' liked' : ''">
-            <i class="bi bi-heart-fill"></i>
-            <span class="like-count" th:text="${board.likeCount}"></span>
-          </button>
-
-          <button class="closet-btn" th:attr="data-board-id=${board.id}"
-                  th:classappend="${board.savedByMe} ? ' saved' : ''">
-            <i class="ti ti-hanger"></i>
-            <span class="check material-symbols-rounded">check</span>
-          </button>
-        </div>
       </div>
     </div>
 
@@ -117,18 +129,14 @@
 할 거 정 리 하기 ~ =======================
 
   1. 피드 삭제, 수정, 공유 ( +신고) 추가
-      > 나중에 공개 범위 설정도 있으면 좋을 듯
 
-  2. 피드 detail ui 수정
-      > detail이랑 관련게시글 구분짓는 선 필요함
+  2. 피드 detail ui 수정 (사실 전체적인 UI는 다 손보고십다.)
 
-  4. about 어케할지 고민하기
+  3. about 어케할지 고민하기
 
-  6. 최신순/인기순 정렬 버튼 활성화
+  4. 최신순/인기순 정렬 버튼 활성화
 
-  7. 프로필 수정 페이지 추가
-
-  8. 뒤로가기 버튼 추가 + 활성화
+  5. 관리자모드로 신고 처리하기....... 언제하는데이걸;
 
 
 고쳐아할거 ==============================
@@ -152,6 +160,7 @@
   6. 피드 올릴 때 글자수, 이미지 크기(200x300)이상 등 조건 추가
   6. 서랍장, 프로필 비공개 공개 설정
 
+
 플랜==============================
 
   css 전체적으로 수정하고 디테일 살리면서
@@ -166,6 +175,10 @@ git add .
 git commit -m "오늘 한 작업 요약"
 git push origin main
 
+
+  7. 프로필 수정 페이지 추가
+  8. 뒤로가기 버튼 추가 + 활성화
+  게시글작성모달 css 수정하기
 
 -->
 
