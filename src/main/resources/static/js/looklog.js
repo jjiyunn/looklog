@@ -1,6 +1,4 @@
-// ===============================
-// 피드 Masonry 무한 스크롤
-// ===============================
+
 
 const feed = document.querySelector('.feed');
 const feedLoader = document.getElementById('loader');
@@ -17,7 +15,7 @@ let feedColumns = [];
 let feedObserver = null;
 
 
-// 반응형 column 개수
+// column 개수
 function getColumnCount() {
   const width = window.innerWidth;
 
@@ -36,7 +34,7 @@ window.addEventListener('resize', () => {
     const newColumnCount = getColumnCount();
 
     if (newColumnCount !== feedColumns.length) {
-      // 컬럼 수가 바뀌면 지금까지 보여준 아이템 다시 배치
+
       const shownItems = feedItems.slice(0, shownCount);
       createColumns();
       shownItems.forEach(item => addFeedItem(item));
@@ -73,7 +71,6 @@ function createColumns() {
   }
 }
 
-// 가장 짧은 column 찾기
 function getShortestColumn() {
 
   return feedColumns.reduce((shortest, column) => {
@@ -110,13 +107,13 @@ function showInitialItems() {
 
   if (shownCount >= feedItems.length) {
     if (feedLoader) {
-      feedLoader.style.display = 'none';
+      feedLoader.textContent = '모든 게시글을 확인했어요';
     }
   }
 }
 
 
-// 로딩, 8개 추가
+// 로딩(+8개)
 function showNextBatch() {
 
   if (feedLoading) return;
@@ -137,20 +134,14 @@ function showNextBatch() {
 
   if (shownCount >= feedItems.length) {
     if (feedLoader) {
-      feedLoader.style.display = 'none';
+      feedLoader.textContent = '모든 게시글을 확인했어요';
     }
   }
 
   feedLoading = false;
 }
 
-// 피드 끝
-if (shownCount >= feedItems.length) {
-  if (feedLoader) {
-    feedLoader.textContent = '모든 게시글을 확인했어요';
-    setTimeout(() => feedLoader.style.display = 'none', 1500);
-  }
-}
+
 
 // 이미지 로딩 기다리기
 function waitForImages() {
@@ -220,3 +211,20 @@ initFeed();
 
 
 
+// sort
+$(".oo-sort-toggle p").on("click", function () {
+  const isPopular = $(this).text() === "인기순";
+
+  $(".oo-sort-toggle p").css("color", "#5474bb");
+  $(this).css("color", "#f5f5f5");
+
+  if (isPopular) {
+    $(".oo-sort-indicator").css("left", "83px"); // 값 조절해야댐
+  } else {
+    $(".oo-sort-indicator").css("left", "7px");
+  }
+
+  // 정렬 기준 바꿔서 다시 불러오기
+  const sort = isPopular ? "popular" : "latest";
+  window.location.href = `/looklog?sort=${sort}`;
+});

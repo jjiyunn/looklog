@@ -96,6 +96,7 @@
 }
 
 .feed {
+    padding-top: 37px;
     column-count: 4;
     column-gap: 16px;
 }
@@ -130,9 +131,12 @@
 
 @media (max-width: 950px) {
     .feed {
+        padding-top: 20px;
+        border-top: 1px solid #888;
         column-count: 3;
     }
     .board-detail-wrap {
+        gap: 15px;
         flex-direction: column;
     }
 

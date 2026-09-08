@@ -48,6 +48,7 @@ public class HomeController {
     @GetMapping("/looklog")
     public String looklog(
             @RequestParam(required = false) String tag,
+            @RequestParam(required = false, defaultValue = "latest") String sort,
             HttpSession session,
             Model model
     ) {
@@ -67,8 +68,9 @@ public class HomeController {
         filterTags.addAll(tagRepository.findByType("color"));
         model.addAttribute("allTags", filterTags);
 
-        model.addAttribute("boards", boardService.getBoardListForView(loginMemberId, tag));
+        model.addAttribute("boards", boardService.getBoardListForView(loginMemberId, tag, sort));
         model.addAttribute("selectedTag", tag);
+        model.addAttribute("selectedSort", sort);
 
         return "looklog";
     }

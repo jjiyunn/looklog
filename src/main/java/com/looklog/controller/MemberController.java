@@ -31,8 +31,8 @@ public class MemberController {
 
             // 회원가입 성공 -> 바로 세션에 로그인 정보 저장 (자동 로그인)
             session.setAttribute("loginMemberId", member.getId());
-            session.setAttribute("loginMemberName", member.getName());
-            session.setAttribute("loginUserName", member.getUserName());
+            session.setAttribute("loginMemberId", member.getId());
+            session.setAttribute("loginMemberName", member.getUserName());
 
             return ResponseEntity.ok().build();
         } catch (IllegalStateException e) {
@@ -53,8 +53,8 @@ public class MemberController {
 
             // 로그인 성공 -> 세션에 회원 정보 저장
             session.setAttribute("loginMemberId", member.getId());
-            session.setAttribute("loginMemberName", member.getName());
-            session.setAttribute("loginUserName", member.getUserName());
+            session.setAttribute("loginMemberId", member.getId());
+            session.setAttribute("loginMemberName", member.getUserName());
 
             return ResponseEntity.ok().build();
         } catch (IllegalStateException e) {

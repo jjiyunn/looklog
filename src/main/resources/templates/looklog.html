@@ -33,7 +33,9 @@
     </form>
 
     <h1 class="looklog-title" id="title">
-      <span>L</span><span>O</span><span>O</span><span>K</span><span>L</span><span>O</span><span>G</span>
+      <a th:href="@{/looklog}">
+        <span>L</span><span>O</span><span>O</span><span>K</span><span>L</span><span>O</span><span>G</span>
+      </a>
     </h1>
     <div class="oo-line"></div>
     <p>
@@ -58,12 +60,15 @@
 
 
   <section>
-    
+
     <div class="oo-sort-toggle">
-      <p>최신순</p> <div>|</div> <p>인기순</p>
-      <span class="oo-sort-indicator"></span>
+      <p th:classappend="${selectedSort == 'latest'} ? ' active-sort' : ''">최신순</p>
+      <div>|</div>
+      <p th:classappend="${selectedSort == 'popular'} ? ' active-sort' : ''">인기순</p>
+      <span class="oo-sort-indicator" th:classappend="${selectedSort == 'popular'} ? ' right' : ''"></span>
     </div>
 
+    <div class="oo-tag-bg"></div>
     <div class="oo-tag-wrap">
       <ul class="oo-tag">
         <li th:classappend="${selectedTag == null} ? ' active' : ''">

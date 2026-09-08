@@ -14,4 +14,9 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Query("SELECT bt.board FROM BoardTag bt WHERE bt.tag.name = :tagName ORDER BY bt.board.regDate DESC")
     List<Board> findByTagName(@Param("tagName") String tagName);
+    
+    @Query("SELECT b FROM Board b LEFT JOIN Likes l ON l.board = b " +
+            "GROUP BY b ORDER BY COUNT(l) DESC, b.regDate DESC")
+    List<Board> findAllOrderByLikeCountDesc();
+
 }

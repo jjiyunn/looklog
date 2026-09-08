@@ -85,12 +85,14 @@ public class BoardService {
 
 
     // 화면에 보여줄 게시글 목록 (좋아요, 옷장, 태그)
-    public List<BoardViewDto> getBoardListForView(Long loginMemberId, String tagName) {
+    public List<BoardViewDto> getBoardListForView(Long loginMemberId, String tagName, String sort) {
 
         List<Board> boards;
 
         if (tagName != null && !tagName.isBlank()) {
             boards = boardRepository.findByTagName(tagName);
+        } else if ("popular".equals(sort)) {
+            boards = boardRepository.findAllOrderByLikeCountDesc();   // ★ 새로 필요
         } else {
             boards = boardRepository.findAllByOrderByRegDateDesc();
         }

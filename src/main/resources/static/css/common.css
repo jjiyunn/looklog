@@ -55,10 +55,12 @@ h1 {
     transform: translateX(-50%);
     font-family: 'BevellierSemibold';
     line-height: 1;
-    z-index: 99;
+    z-index: 999;
     cursor: pointer;
 }
-
+h1 a {
+    color: #0c3ca7;
+}
 
 
 /* search */

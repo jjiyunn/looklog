@@ -30,7 +30,7 @@ $(function(){
       const windowWidth = window.innerWidth;
       const initialFontSize = windowWidth * 0.08; // 처음 글자 크기 (8vw)
 
-      // 👇 [수정된 clamp 로직]
+
       const preferredSize = windowWidth * 0.01; // 권장 크기 (2vw)
       const targetScale = 6 / initialFontSize; // 최종 축소 비율 계산
 
@@ -66,6 +66,18 @@ $(function(){
 
 
     const sb = $(window).scrollTop();
+
+    // oo-tag bg
+    const tagWrapEl = document.querySelector(".oo-tag-wrap");
+    if (tagWrapEl) {
+      const tagWrapTop = tagWrapEl.getBoundingClientRect().top;
+      if (tagWrapTop <= 70) {
+        $(".oo-tag-bg").addClass("is-stuck");
+      } else {
+        $(".oo-tag-bg").removeClass("is-stuck");
+      }
+    }
+
 
     const progress = Math.min(Math.max((sb - 200) / 150, 0), 1);
 
