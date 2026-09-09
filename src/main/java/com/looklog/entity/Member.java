@@ -22,7 +22,7 @@ public class Member {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(nullable = false, length = 255)
+    @Column(length = 255)
     private String password;
 
     @Column(nullable = false, length = 50)
@@ -45,6 +45,9 @@ public class Member {
 
     @Column(nullable = false, length = 20)
     private String role = "USER";
+
+    @Column(nullable = false, length = 20)
+    private String provider = "LOCAL";   // LOCAL/ GOOGLE
 
     @PrePersist
     protected void onCreate() {

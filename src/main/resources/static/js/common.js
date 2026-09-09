@@ -434,8 +434,13 @@ if (reportModalOverlay) {
         const btn = e.target.closest('#report-board-btn, #report-member-btn');
         if (!btn) return;
 
-        reportTargetType = btn.id === 'report-board-btn' ? 'BOARD' : 'MEMBER';
-        reportTargetId = btn.dataset.targetId;
+        if (btn.id === 'report-board-btn') {
+            reportTargetType = 'BOARD';
+            reportTargetId = btn.dataset.targetId;
+        } else {
+            reportTargetType = 'MEMBER';
+            reportTargetId = btn.dataset.memberId;
+        }
 
         reportModalOverlay.hidden = false;
     });

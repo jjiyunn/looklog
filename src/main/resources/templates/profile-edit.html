@@ -11,6 +11,9 @@
     <h2>프로필 수정</h2>
   </div>
 
+  <p th:if="${welcome}" class="edit-profile-welcome">
+    환영해요! 사용할 아이디를 설정해주세요 🎉
+  </p>
 
   <form id="edit-profile-form" method="post" enctype="multipart/form-data" class="edit-profile-form">
 

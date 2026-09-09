@@ -89,12 +89,14 @@ public class HomeController {
 
     // 프로필 수정
     @GetMapping("/profile/edit")
-    public String editForm(HttpSession session, Model model) {
+    public String editForm(HttpSession session, Model model,
+                           @RequestParam(required = false) Boolean welcome) {
         Long loginMemberId = (Long) session.getAttribute("loginMemberId");
         if (loginMemberId == null) return "redirect:/";
 
         Member member = memberRepository.findById(loginMemberId).orElseThrow();
         model.addAttribute("member", member);
+        model.addAttribute("welcome", welcome != null && welcome);
         return "profile-edit";
     }
 
