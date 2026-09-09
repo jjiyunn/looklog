@@ -1,0 +1,34 @@
+<div xmlns:th="http://www.thymeleaf.org">
+  <div class="report-modal-overlay" id="report-modal-overlay" hidden th:fragment="reportModal">
+    <div class="report-modal">
+      <div class="report-modal-header">
+        <h3>신고하기</h3>
+        <button id="report-modal-close" type="button"><i class="ti ti-x"></i></button>
+      </div>
+
+      <div class="report-reason-list">
+        <label class="report-reason-item">
+          <input type="radio" name="report-reason" value="스팸/광고"> 스팸/광고
+        </label>
+        <label class="report-reason-item">
+          <input type="radio" name="report-reason" value="부적절한 콘텐츠"> 부적절한 콘텐츠
+        </label>
+        <label class="report-reason-item">
+          <input type="radio" name="report-reason" value="저작권 침해"> 저작권 침해
+        </label>
+        <label class="report-reason-item">
+          <input type="radio" name="report-reason" value="욕설/혐오 발언"> 욕설/혐오 발언
+        </label>
+        <label class="report-reason-item">
+          <input type="radio" name="report-reason" value="기타"> 기타
+        </label>
+      </div>
+
+      <textarea id="report-detail" placeholder="상세 설명 (선택)" maxlength="500"></textarea>
+
+      <p id="report-error" style="color: #dd3333; display: none;"></p>
+
+      <button id="report-submit-btn">신고하기</button>
+    </div>
+  </div>
+</div>

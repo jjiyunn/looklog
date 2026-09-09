@@ -414,3 +414,69 @@ document.querySelectorAll('.tag-color-list .tag-option').forEach(btn => {
         btn.classList.add('tag-color-swatch');
     }
 });
+
+
+
+
+
+
+
+// ===============================
+// report modal
+// ===============================
+const reportModalOverlay = document.getElementById('report-modal-overlay');
+
+if (reportModalOverlay) {
+    let reportTargetType = null;
+    let reportTargetId = null;
+
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('#report-board-btn, #report-member-btn');
+        if (!btn) return;
+
+        reportTargetType = btn.id === 'report-board-btn' ? 'BOARD' : 'MEMBER';
+        reportTargetId = btn.dataset.targetId;
+
+        reportModalOverlay.hidden = false;
+    });
+
+    document.getElementById('report-modal-close').addEventListener('click', () => {
+        reportModalOverlay.hidden = true;
+    });
+
+    reportModalOverlay.addEventListener('click', (e) => {
+        if (e.target === reportModalOverlay) reportModalOverlay.hidden = true;
+    });
+
+    document.getElementById('report-submit-btn').addEventListener('click', () => {
+        const selectedReason = document.querySelector('input[name="report-reason"]:checked');
+        const detail = document.getElementById('report-detail').value;
+        const errorBox = document.getElementById('report-error');
+
+        if (!selectedReason) {
+            errorBox.textContent = '신고 사유를 선택해주세요.';
+            errorBox.style.display = 'block';
+            return;
+        }
+
+        const formData = new URLSearchParams();
+        formData.append('targetType', reportTargetType);
+        formData.append('targetId', reportTargetId);
+        formData.append('reason', selectedReason.value);
+        formData.append('detail', detail);
+
+        fetch('/report', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formData
+        })
+            .then(res => res.ok ? Promise.resolve() : res.text().then(msg => Promise.reject(msg)))
+            .then(() => {
+                alert('신고가 접수되었습니다.');
+                reportModalOverlay.hidden = true;
+                document.querySelectorAll('input[name="report-reason"]').forEach(r => r.checked = false);
+                document.getElementById('report-detail').value = '';
+            })
+            .catch(msg => alert(msg));
+    });
+}

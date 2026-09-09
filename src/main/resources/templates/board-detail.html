@@ -18,22 +18,15 @@
           </button>
 
           <div class="more-menu-dropdown" id="more-menu-dropdown" hidden>
-            <!-- 본인 게시글일 때 -->
-            <div th:if="${board.owner}">
-              <button class="menu-item" id="edit-board-btn"
+            <div>
+              <button th:if="${board.owner}" class="menu-item" id="edit-board-btn"
                       th:attr="data-board-id=${board.id},
-                    data-content=${board.content},
-                    data-img=${board.img},
-                    data-tags=${#strings.listJoin(board.tags, ',')}">
-                수정
+                              data-content=${board.content},
+                              data-img=${board.img},
+                              data-tags=${#strings.listJoin(board.tags, ',')}">수정
               </button>
-              <button class="menu-item" id="delete-board-btn" th:attr="data-board-id=${board.id}">삭제</button>
-              <button class="menu-item" id="share-board-btn">공유</button>
-            </div>
-
-            <!-- 본인 게시글 아닐 때 -->
-            <div th:unless="${board.owner}">
-              <button class="menu-item" id="report-board-btn" th:attr="data-board-id=${board.id}">신고</button>
+              <button th:if="${board.owner}" class="menu-item" id="delete-board-btn" th:attr="data-board-id=${board.id}">삭제</button>
+              <button th:unless="${board.owner}" class="menu-item" id="report-board-btn" th:attr="data-target-id=${board.id}">신고</button>
               <button class="menu-item" id="share-board-btn">공유</button>
             </div>
           </div>
@@ -117,6 +110,7 @@
 
   <div th:replace="~{fragments/upload-modal :: uploadModal}"></div>
   <div th:replace="~{fragments/drawer-modal :: drawerModal}"></div>
+  <div th:replace="~{fragments/report-modal :: reportModal}"></div>
 
   <script src="/js/common.js"></script>
   <script src="/js/board-detail.js"></script>
@@ -125,65 +119,51 @@
 
 
 
-<!--
-할 거 정 리 하기 ~ =======================
 
-  2.  (사실 전체적인 UI는 다 손보고십다.)
+<!--할 거 정 리 하기 ~ =======================-->
 
-  3. about 어케할지 고민하기
+<!--  2.  (사실 전체적인 UI는 다 손보고십다.)-->
 
-  5. 관리자모드로 신고 처리하기.......  + 신고 ui
+<!--  3. about 어케할지 고민하기-->
 
 
-고쳐아할거 ==============================
 
-  header 애니 손보기 > 스크롤 비율로 치지말고 스크롤 내리면 애니 한번에 실행해버리게 할까
-  검색창 위치 넷바랑 너무 떨어진 곳 수정
-  프로필아이디 글자수 제한
+<!--고쳐아할거 ==============================-->
 
-  아 배경 누래서 별론가 흰색할까............ 아 흰색하면 ㅓ무 인스타 핀터 느낌아ㅏㅏ아아악
+<!--  header 애니 손보기 > 스크롤 비율로 치지말고 스크롤 내리면 애니 한번에 실행해버리게 할까-->
+<!--  검색창 위치 넷바랑 너무 떨어진 곳 수정-->
+<!--  프로필아이디 글자수 제한-->
 
-
-추가하면 좋을거 ============================
-
-  1. detail에 관련게시글 관련 높은 순(태그 겹치는거많은피드)우선 보이기
-  2. 서랍에서 편집 누르면 피드 선택해서 선택한 피드 삭제
-  3. alert말고 bottom:50px 쯤에 글자나오고 n초 후 사라지게
-  4. 검색기록
-  5. 태그 추가 기능 .. 생각해보기
-  6. 피드 올릴 때 글자수, 이미지 크기(200x300)이상 등 조건 추가
-  6. 서랍장, 프로필 비공개 공개 설정
-  7. 이메일 인증확인 만들면 재밋겟다
+<!--  아 배경 누래서 별론가 흰색할까............ 아 흰색하면 ㅓ무 인스타 핀터 느낌아ㅏㅏ아아악-->
 
 
-플랜==============================
+<!--추가하면 좋을거 ============================-->
 
-  css 전체적으로 수정하고 디테일 살리면서
-  코드 이해도 좀 높이자
+<!--  1. detail에 관련게시글 관련 높은 순(태그 겹치는거많은피드)우선 보이기-->
+<!--  2. 서랍에서 편집 누르면 피드 선택해서 선택한 피드 삭제-->
+<!--  3. alert말고 bottom:50px 쯤에 글자나오고 n초 후 사라지게-->
+<!--  4. 검색기록-->
+<!--  5. 태그 추가 기능 .. 생각해보기-->
+<!--  6. 피드 올릴 때 글자수, 이미지 크기(200x300)이상 등 조건 추가-->
+<!--  6. 서랍장, 프로필 비공개 공개 설정-->
+<!--  7. 이메일 인증확인 만들면 재밋겟다-->
 
+
+<!--플랜==============================-->
+
+<!--  css 전체적으로 수정하고 디테일 살리면서-->
+<!--  코드 이해도 좀 높이자-->
 
 
 
 
-git 매일 하자>!!!!! ==============================
-git add .
-git commit -m "오늘 한 작업 요약"
-git push origin main
+<!--git 매일 하자>!!!!! ==============================-->
+<!--git add .-->
+<!--git commit -m "오늘 한 작업 요약"-->
+<!--git push origin main-->
 
 
-  피드 detail ui 수정
-  looklog 로고 누르면 메인이동
-  looklog 제외 모든 페이지 피드 업로드 db 연결 안됨
-  looklog html에 tags 배경 추가
-  4. 최신순/인기순 정렬 버튼 활성화
-
--->
-
-
-
-
-
-
+<!--  관리자모드로 신고 처리하기.......  + 신고 ui-->
 
 
 

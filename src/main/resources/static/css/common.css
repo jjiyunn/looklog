@@ -714,3 +714,80 @@ form .ti-search {
 
 
 
+/* report-modal */
+.report-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.report-modal-overlay[hidden] {
+    display: none;
+}
+
+.report-modal {
+    background: #fff;
+    border-radius: 12px;
+    width: 320px;
+    max-height: 70vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.report-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.report-reason-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.report-reason-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#report-detail {
+    width: 100%;
+    min-height: 60px;
+    margin-bottom: 12px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    resize: none;
+    font-family: inherit;
+}
+
+#report-detail:focus {
+    outline: none;
+    border-color: #0c3ca7;
+}
+
+#report-submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #d5322e;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+}
+
+#report-submit-btn:hover {
+    background: #b8281f;
+}

@@ -43,6 +43,9 @@ public class Member {
     @Column(name = "mod_date", updatable = false)
     private LocalDateTime modDate;
 
+    @Column(nullable = false, length = 20)
+    private String role = "USER";
+
     @PrePersist
     protected void onCreate() {
         this.regDate = LocalDateTime.now();

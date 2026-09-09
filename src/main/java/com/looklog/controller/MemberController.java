@@ -33,6 +33,7 @@ public class MemberController {
             session.setAttribute("loginMemberId", member.getId());
             session.setAttribute("loginMemberId", member.getId());
             session.setAttribute("loginMemberName", member.getUserName());
+            session.setAttribute("loginMemberRole", member.getRole());
 
             return ResponseEntity.ok().build();
         } catch (IllegalStateException e) {
@@ -55,6 +56,7 @@ public class MemberController {
             session.setAttribute("loginMemberId", member.getId());
             session.setAttribute("loginMemberId", member.getId());
             session.setAttribute("loginMemberName", member.getUserName());
+            session.setAttribute("loginMemberRole", member.getRole());
 
             return ResponseEntity.ok().build();
         } catch (IllegalStateException e) {

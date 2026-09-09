@@ -44,14 +44,6 @@ if (deleteBtn) {
     });
 }
 
-// 신고
-const reportBtn = document.getElementById('report-board-btn');
-if (reportBtn) {
-    reportBtn.addEventListener('click', function () {
-        alert('신고가 접수되었습니다.');
-    });
-}
-
 
 
 
