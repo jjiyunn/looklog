@@ -163,6 +163,50 @@ document.addEventListener('click', function (e) {
 });
 
 
+//회원 탈퇴
+const withdrawBtn = document.getElementById('withdraw-btn');
+const withdrawModal = document.getElementById('withdraw-modal');
+const withdrawCancelBtn = document.getElementById('withdraw-cancel-btn');
+const withdrawConfirmBtn = document.getElementById('withdraw-confirm-btn');
+const withdrawPasswordInput = document.getElementById('withdraw-password');
+const withdrawError = document.getElementById('withdraw-error');
+
+if (withdrawBtn) {
+    withdrawBtn.addEventListener('click', () => {
+        document.getElementById('more-menu-dropdown').hidden = true; // 드롭다운 닫기
+        withdrawModal.hidden = false;
+        withdrawPasswordInput.value = '';
+        withdrawError.textContent = '';
+    });
+
+    withdrawCancelBtn.addEventListener('click', () => {
+        withdrawModal.hidden = true;
+    });
+
+    withdrawConfirmBtn.addEventListener('click', async () => {
+        const password = withdrawPasswordInput.value;
+        if (!password) {
+            withdrawError.textContent = '비밀번호를 입력해주세요.';
+            return;
+        }
+
+        const res = await fetch('/profile/withdraw', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `password=${encodeURIComponent(password)}`
+        });
+
+        if (res.ok) {
+            window.location.replace('/');
+        } else {
+            const msg = await res.text();
+            withdrawError.textContent = msg || '비밀번호가 일치하지 않습니다.';
+        }
+    });
+}
+
+
+
 // profile edit
 // 파일 선택하고 바로 화면에 반영
 const profileImgInput = document.getElementById('profileImg');
@@ -210,5 +254,35 @@ if (editProfileBtn) {
     });
 }
 
+const namePattern = /^[a-zA-Z0-9_.]{6,12}$/;
+
+function attachValidation(inputId, hintId) {
+    const input = document.getElementById(inputId);
+    const hint = document.getElementById(hintId);
+    if (!input) return;
+
+    input.addEventListener('input', () => {
+        const value = input.value;
+
+        if (value.length === 0) {
+            hint.textContent = '';
+            input.setCustomValidity('');
+            return;
+        }
+
+        if (!namePattern.test(value)) {
+            hint.textContent = '영문, 숫자, _, . 만 사용 가능 (6~12자)';
+            hint.classList.add('invalid');
+            input.setCustomValidity('invalid');
+        } else {
+            hint.textContent = '';
+            hint.classList.remove('invalid');
+            input.setCustomValidity('');
+        }
+    });
+}
+
+attachValidation('name', 'nameHint');
+attachValidation('userName', 'userNameHint');
 
 

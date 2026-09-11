@@ -16,12 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;import com.looklog.e
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import com.looklog.entity.Tag;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -74,6 +73,18 @@ public class HomeController {
 
         return "looklog";
     }
+
+
+    //검색
+    @GetMapping("/search")
+    public String search(@RequestParam(required = false) String q) {
+        if (q == null || q.isBlank()) {
+            return "redirect:/looklog";
+        }
+        String encoded = URLEncoder.encode(q, StandardCharsets.UTF_8);
+        return "redirect:/looklog?tag=" + encoded;
+    }
+
 
     // 프로필
     @GetMapping("/profile")

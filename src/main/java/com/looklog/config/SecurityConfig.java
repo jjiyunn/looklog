@@ -2,6 +2,7 @@ package com.looklog.config;
 
 import com.looklog.entity.Drawer;
 import com.looklog.entity.Member;
+import com.looklog.entity.MemberStatus;
 import com.looklog.repository.DrawerRepository;
 import com.looklog.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -94,6 +95,8 @@ public class SecurityConfig {
 
       } else if (!"GOOGLE".equals(member.getProvider())) {
         throw new OAuth2AuthenticationException("이미 가입된 이메일입니다.");
+      } else if (member.getStatus() == MemberStatus.WITHDRAWN) {
+        throw new OAuth2AuthenticationException("탈퇴한 계정입니다.");
       }
 
       ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();

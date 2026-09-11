@@ -64,6 +64,10 @@ header p {
   left: 50%;
 }
 
+header form {
+  z-index: 9999;
+}
+
 
 
 @media (max-width: 1450px) {

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -30,9 +32,11 @@ public class Board {
     private String content;
 
     @Column(name = "reg_date", updatable = false)
+    @CreationTimestamp
     private LocalDateTime regDate;
 
     @Column(name = "mod_date")
+    @UpdateTimestamp
     private LocalDateTime modDate;
 
     @PrePersist

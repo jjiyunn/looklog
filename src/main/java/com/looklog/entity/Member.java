@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -38,9 +40,11 @@ public class Member {
     private String bio;
 
     @Column(name = "reg_date", updatable = false)
+    @CreationTimestamp
     private LocalDateTime regDate;
 
-    @Column(name = "mod_date", updatable = false)
+    @Column(name = "mod_date")
+    @UpdateTimestamp
     private LocalDateTime modDate;
 
     @Column(nullable = false, length = 20)
@@ -48,6 +52,10 @@ public class Member {
 
     @Column(nullable = false, length = 20)
     private String provider = "LOCAL";   // LOCAL/ GOOGLE
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private MemberStatus status = MemberStatus.ACTIVE;
 
     @PrePersist
     protected void onCreate() {

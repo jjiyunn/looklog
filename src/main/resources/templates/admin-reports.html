@@ -2,43 +2,47 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/nav :: head('admin')}"></head>
 <body>
-<div th:replace="~{fragments/nav :: nav}"></div>
+  <div th:replace="~{fragments/nav :: nav}"></div>
 
-<section class="admin-wrap">
-  <h2>신고 관리</h2>
+  <section class="admin-wrap">
+    <h2>신고 관리</h2>
 
-  <table class="admin-report-table">
-    <thead>
-    <tr>
-      <th>신고자</th>
-      <th>대상</th>
-      <th>사유</th>
-      <th>상세</th>
-      <th>날짜</th>
-      <th>처리</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="r : ${reports}">
-      <td th:text="${r.reporter.userName}"></td>
-      <td>
-        <span th:text="${r.targetType == 'BOARD'} ? '게시물' : '유저'"></span>
-        <a th:if="${r.targetType == 'BOARD'}" th:href="@{/board/{id}(id=${r.targetId})}">보기</a>
-      </td>
-      <td th:text="${r.reason}"></td>
-      <td th:text="${r.detail}"></td>
-      <td th:text="${#temporals.format(r.regDate, 'yyyy-MM-dd HH:mm')}"></td>
-      <td>
-        <form th:action="@{/admin/reports/{id}/resolve(id=${r.id})}" method="post">
-          <button type="submit">처리완료</button>
-        </form>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+    <table class="admin-report-table">
+      <thead>
+      <tr>
+        <th>신고자</th>
+        <th>대상</th>
+        <th>사유</th>
+        <th>상세</th>
+        <th>날짜</th>
+        <th>처리</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="r : ${reports}">
+        <td class="reporter-cell" th:text="${r.reporter.userName}"></td>
+        <td>
+          <span class="target-badge" th:classappend="${r.targetType == 'BOARD'} ? ' target-board' : ' target-member'"
+                th:text="${r.targetType == 'BOARD'} ? '게시물' : '유저'"></span>
+          <a th:if="${r.targetType == 'BOARD'}" class="view-link" th:href="@{/board/{id}(id=${r.targetId})}">보기</a>
+        </td>
+        <td><span class="reason-badge" th:text="${r.reason}"></span></td>
+        <td class="detail-cell" th:text="${r.detail}"></td>
+        <td class="date-cell" th:text="${#temporals.format(r.regDate, 'yyyy-MM-dd HH:mm')}"></td>
+        <td>
+          <form th:action="@{/admin/reports/{id}/resolve(id=${r.id})}" method="post">
+            <button type="submit" class="resolve-btn">처리완료</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
-  <p th:if="${reports.isEmpty()}">대기 중인 신고가 없습니다.</p>
-</section>
+    <p class="empty-msg" th:if="${reports.isEmpty()}">대기 중인 신고가 없습니다.</p>
+  </section>
+
+
+  <script src="/js/common.js"></script>
 
 </body>
 </html>

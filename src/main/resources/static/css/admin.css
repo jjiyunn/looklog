@@ -1,0 +1,131 @@
+.admin-wrap {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.admin-wrap h2 {
+  margin-bottom: 24px;
+  font-size: 22px;
+}
+
+.admin-report-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.admin-report-table thead {
+  background: #f5f5f5;
+}
+
+.admin-report-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-report-table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+.admin-report-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.admin-report-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.reporter-cell {
+  font-weight: 500;
+}
+
+/* 대상 타입 배지 */
+.target-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-right: 6px;
+}
+.target-badge.target-board {
+  background: #e7effc;
+  color: #0c3ca7;
+}
+.target-badge.target-member {
+  background: #fdeaea;
+  color: #d5322e;
+}
+
+.view-link {
+  font-size: 12px;
+  color: #999;
+  text-decoration: underline;
+}
+.view-link:hover {
+  color: #0c3ca7;
+}
+
+/* 신고 사유 배지 */
+.reason-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: #f1f1f1;
+  color: #555;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.detail-cell {
+  max-width: 200px;
+  color: #777;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.detail-cell.expanded {
+  max-width: none;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.date-cell {
+  color: #999;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.resolve-btn {
+  padding: 6px 14px;
+  background: #0c3ca7;
+  color: #fff;
+  font-size: 13px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.resolve-btn:hover {
+  background: #0a2f85;
+}
+
+.empty-msg {
+  text-align: center;
+  padding: 60px 0;
+  color: #999;
+  font-size: 14px;
+}

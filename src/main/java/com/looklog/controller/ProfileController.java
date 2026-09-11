@@ -1,6 +1,7 @@
 package com.looklog.controller;
 
 import com.looklog.entity.Member;
+import com.looklog.entity.MemberStatus;
 import com.looklog.repository.MemberRepository;
 import com.looklog.service.BoardService;
 import com.looklog.service.DrawerService;
@@ -37,9 +38,11 @@ public class ProfileController {
             .orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자입니다."));
 
     boolean isOwner = profileMember.getId().equals(loginMemberId);
+    boolean isWithdrawn = profileMember.getStatus() == MemberStatus.WITHDRAWN;
 
     model.addAttribute("profileMember", profileMember);
     model.addAttribute("isOwner", isOwner);
+    model.addAttribute("isWithdrawn", isWithdrawn);
     model.addAttribute("isFollowing", followService.isFollowing(loginMemberId, profileMember.getId()));
     model.addAttribute("followerCount", followService.countFollowers(profileMember.getId()));
     model.addAttribute("followingCount", followService.countFollowings(profileMember.getId()));

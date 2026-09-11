@@ -9,7 +9,7 @@
 
       <i class="bi bi-chevron-left back-btn profile-back-btn"></i>
 
-      <div class="profile-more-wrap">
+      <div class="profile-more-wrap" th:unless="${isWithdrawn}">
         <button class="more-menu-btn" id="more-menu-btn">
           <i class="ti ti-dots-vertical"></i>
         </button>
@@ -17,6 +17,7 @@
           <a th:if="${isOwner}" class="menu-item" id="edit-profile-btn" href="/profile/edit">프로필 수정</a>
           <button class="menu-item" id="share-profile-btn">공유</button>
           <button th:unless="${isOwner}" class="menu-item" id="report-member-btn" th:attr="data-member-id=${profileMember.id}">신고</button>
+          <button th:if="${isOwner}" class="menu-item menu-item-danger" id="withdraw-btn">회원탈퇴</button>
         </div>
       </div>
 
@@ -39,14 +40,16 @@
 
       <p class="profile-bio" th:text="${profileMember.bio}"></p>
 
-      <!-- 다른 사람 프로필에서만 보임 -->
-      <button th:unless="${isOwner}" id="follow-btn"
+      <button th:if="${!isOwner && !isWithdrawn}" id="follow-btn"
               th:attr="data-member-id=${profileMember.id}"
               th:classappend="${isFollowing} ? ' following' : ''"
               th:text="${isFollowing} ? '팔로잉' : '팔로우'">
       </button>
+
     </div>
 
+
+<!--    피드/ 옷장-->
     <div class="profile-tabs">
       <button class="tab-btn active" data-tab="feed">피드</button>
       <button class="tab-btn" data-tab="closet">옷장</button>
@@ -129,6 +132,19 @@
     </div>
   </div>
 
+  <!-- 탈퇴 확인 모달 -->
+  <div class="modal-overlay" id="withdraw-modal" hidden>
+    <div class="modal-box">
+      <h3>정말 탈퇴하시겠어요?</h3>
+      <p>탈퇴 시 계정 정보는 삭제되고 되돌릴 수 없습니다.</p>
+      <input type="password" id="withdraw-password" placeholder="비밀번호 확인">
+      <small id="withdraw-error" class="field-hint invalid"></small>
+      <div class="modal-actions">
+        <button id="withdraw-cancel-btn">취소</button>
+        <button id="withdraw-confirm-btn" class="btn-danger">탈퇴하기</button>
+      </div>
+    </div>
+  </div>
 
 
   <div th:replace="~{fragments/upload-modal :: uploadModal}"></div>

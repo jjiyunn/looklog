@@ -118,51 +118,133 @@ if (agreeCheckbox && signupBtn) {
   });
 }
 
+// 회원가입
+const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const PASSWORD_PATTERN = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,20}$/;
+const NAME_PATTERN = /^[a-zA-Z0-9_.]{6,12}$/;
 
-//회원가입
-document.getElementById('join-submit-btn').addEventListener('click', function () {
-  const email = document.getElementById('join-email').value;
-  const password = document.getElementById('join-password').value;
-  const passwordCheck = document.getElementById('join-password-check').value;
-  const name = document.getElementById('join-name').value;
-  const userName = document.getElementById('join-username').value;
-  const agree = document.getElementById('agree-terms').checked;
-  const errorBox = document.getElementById('join-error');
+const joinEmail = document.getElementById('join-email');
+const joinPassword = document.getElementById('join-password');
+const joinPasswordCheck = document.getElementById('join-password-check');
+const joinName = document.getElementById('join-name');
+const joinUsername = document.getElementById('join-username');
+const agreeTerms = document.getElementById('agree-terms');
 
-  // 프론트 단 기본 검증
-  if (!email || !password || !name || !userName) {
-    errorBox.textContent = '모든 항목을 입력해주세요.';
-    errorBox.style.display = 'block';
+const emailError = document.getElementById('email-error');
+const passwordError = document.getElementById('password-error');
+const passwordCheckError = document.getElementById('password-check-error');
+const nameError = document.getElementById('name-error');
+const usernameError = document.getElementById('username-error');
+const agreeError = document.getElementById('agree-error');
+
+function setFieldError(el, message) {
+  if (!el) {
+    console.log('setFieldError: el이 null임, message:', message);
     return;
   }
-  if (password !== passwordCheck) {
-    errorBox.textContent = '비밀번호가 일치하지 않습니다.';
-    errorBox.style.display = 'block';
-    return;
+  if (message) {
+    el.textContent = message;
+    el.classList.add('show');
+  } else {
+    el.textContent = '';
+    el.classList.remove('show');
   }
-  if (!agree) {
-    errorBox.textContent = '약관에 동의해주세요.';
-    errorBox.style.display = 'block';
-    return;
-  }
+}
 
-  // 서버로 전송
-  fetch('/signup', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ email, password, name, userName })
-  })
-      .then(res => {
-        if (res.ok) {
-          window.location.href = '/looklog';   // 가입 성공 -> 바로 looklog로 이동
-        } else {
-          return res.text().then(msg => {
-            errorBox.textContent = msg;
-            errorBox.style.display = 'block';
-          });
-        }
-      });
-});
+function validateEmail() {
+  const msg = !joinEmail.value ? '이메일을 입력해주세요.'
+      : !EMAIL_PATTERN.test(joinEmail.value) ? '이메일 형식이 올바르지 않습니다.' : '';
+  setFieldError(emailError, msg);
+  return !msg;
+}
+
+function validatePassword() {
+  const msg = !joinPassword.value ? '비밀번호를 입력해주세요.'
+      : !PASSWORD_PATTERN.test(joinPassword.value) ? '8~20자, 영문/숫자/특수문자를 포함해야 합니다.' : '';
+  setFieldError(passwordError, msg);
+  return !msg;
+}
+
+function validatePasswordCheck() {
+  const msg = !joinPasswordCheck.value ? '비밀번호를 다시 입력해주세요.'
+      : joinPassword.value !== joinPasswordCheck.value ? '비밀번호가 일치하지 않습니다.' : '';
+  setFieldError(passwordCheckError, msg);
+  return !msg;
+}
+
+function validateName() {
+  const msg = !joinName.value ? '이름을 입력해주세요.'
+      : !NAME_PATTERN.test(joinName.value) ? '6~12자의 영문, 숫자, _, . 만 사용 가능합니다.' : '';
+  setFieldError(nameError, msg);
+  return !msg;
+}
+
+function validateUsername() {
+  const msg = !joinUsername.value ? '사용자이름을 입력해주세요.'
+      : !NAME_PATTERN.test(joinUsername.value) ? '6~12자의 영문, 숫자, _, . 만 사용 가능합니다.' : '';
+  setFieldError(usernameError, msg);
+  return !msg;
+}
+
+function validateAgree() {
+  console.log('validateAgree 실행됨, checked:', agreeTerms.checked); // 디버깅용
+  const msg = !agreeTerms.checked ? '약관에 동의해주세요.' : '';
+  setFieldError(agreeError, msg);
+  return !msg;
+}
+
+// ===== 실시간 검증 =====
+if (joinEmail) joinEmail.addEventListener('input', validateEmail);
+if (joinPassword) joinPassword.addEventListener('input', () => { validatePassword(); validatePasswordCheck(); });
+if (joinPasswordCheck) joinPasswordCheck.addEventListener('input', validatePasswordCheck);
+if (joinName) joinName.addEventListener('input', validateName);
+if (joinUsername) joinUsername.addEventListener('input', validateUsername);
+if (agreeTerms) agreeTerms.addEventListener('change', validateAgree);
+
+// ===== 제출 시 최종 검증 =====
+const joinSubmitBtn = document.getElementById('join-submit-btn');
+console.log('join-submit-btn 찾음?', joinSubmitBtn); // 디버깅용
+
+if (joinSubmitBtn) {
+  joinSubmitBtn.addEventListener('click', function () {
+    console.log('제출 클릭됨'); // 디버깅용
+
+    const emailOk = validateEmail();
+    const passwordOk = validatePassword();
+    const passwordCheckOk = validatePasswordCheck();
+    const nameOk = validateName();
+    const usernameOk = validateUsername();
+    const agreeOk = validateAgree();
+
+    console.log({ emailOk, passwordOk, passwordCheckOk, nameOk, usernameOk, agreeOk }); // 디버깅용
+
+    if (!emailOk || !passwordOk || !passwordCheckOk || !nameOk || !usernameOk || !agreeOk) {
+      return;
+    }
+
+    fetch('/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        email: joinEmail.value,
+        password: joinPassword.value,
+        name: joinName.value,
+        userName: joinUsername.value
+      })
+    })
+        .then(res => {
+          if (res.ok) {
+            window.location.href = '/looklog';
+          } else {
+            return res.text().then(msg => {
+              setFieldError(emailError, msg);
+            });
+          }
+        });
+  });
+}
+
+
 
 //로그인
 document.getElementById('login-submit-btn').addEventListener('click', function () {

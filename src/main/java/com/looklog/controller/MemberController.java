@@ -71,4 +71,19 @@ public class MemberController {
         session.invalidate();   // 세션 통째로 무효화(삭제)
         return ResponseEntity.ok().build();
     }
+
+    //회원 탈퇴
+    // 회원 탈퇴
+    @PostMapping("/profile/withdraw")
+    @ResponseBody
+    public ResponseEntity<?> withdraw(@RequestParam String password, HttpSession session) {
+        try {
+            Long memberId = (Long) session.getAttribute("loginMemberId");
+            memberService.withdraw(memberId, password);
+            session.invalidate(); // 강제 로그아웃
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

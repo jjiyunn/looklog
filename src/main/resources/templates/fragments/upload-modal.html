@@ -20,8 +20,12 @@
 
         <input type="file" id="upload-image-input" accept="image/*" hidden>
 
-        <p>내용</p>
-        <textarea id="upload-content" placeholder="오늘의 코디를 소개해주세요"></textarea>
+        <div class="upload-content">
+          <p>내용</p>
+          <span id="content-count">0/300</span>
+        </div>
+        <textarea id="upload-content" placeholder="오늘의 코디를 소개해주세요" maxlength="300"></textarea>
+
       </div>
 
       <div class="upload-right">

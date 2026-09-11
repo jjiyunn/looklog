@@ -77,7 +77,7 @@ header form {
 
 header input {
     width: 100%;
-    padding: 0 10px 0 clamp(15px,2vw,30px);
+    padding: 0 70px 0 clamp(15px,2vw,30px);
     height: clamp(35px,4vw,45px);
     font-size: clamp(13px, 1.3vw, 16px);
     border: none;
@@ -126,6 +126,9 @@ form .ti-search {
     header form {
         width: 45vw;
         top: 45px;
+    }
+    header input {
+        padding: 0 50px 0 clamp(15px,2vw,30px);
     }
 
     .oo-nav {
@@ -640,10 +643,18 @@ form .ti-search {
 }
 
 
+.upload-content {
+    display: flex;
+    justify-content: space-between;
+}
+#content-count {
+    font-size: 13px;
+}
+
 #upload-content {
     width: 100%;
     min-height: 80px;
-    margin: 12px 0;
+    margin: 6px 0 12px;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 6px;
@@ -714,7 +725,7 @@ form .ti-search {
 
 
 
-/* report-modal */
+    /* report-modal */
 .report-modal-overlay {
     position: fixed;
     inset: 0;

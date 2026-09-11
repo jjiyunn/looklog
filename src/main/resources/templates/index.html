@@ -227,14 +227,23 @@
 
       <p>이메일</p>
       <input type="email" id="join-email" placeholder="이메일">
+      <span class="field-error" id="email-error"></span>
+
       <p>비밀번호</p>
       <input type="password" id="join-password" placeholder="비밀번호">
+      <span class="field-error" id="password-error"></span>
+
       <p>비밀번호 확인</p>
       <input type="password" id="join-password-check" placeholder="비밀번호 확인">
+      <span class="field-error" id="password-check-error"></span>
+
       <p>이름</p>
       <input type="text" id="join-name" placeholder="이름">
+      <span class="field-error" id="name-error"></span>
+
       <p>사용자이름</p>
       <input type="text" id="join-username" placeholder="사용자이름">
+      <span class="field-error" id="username-error"></span>
 
       <div class="modal-terms">
         <input type="checkbox" id="agree-terms">
@@ -242,8 +251,7 @@
           <a href="#" class="terms-link">이용약관</a> 및 <a href="#" class="privacy-link">개인정보처리방침</a>에 동의합니다
         </label>
       </div>
-
-      <p id="join-error" style="color: red; display: none;"></p>
+      <span class="field-error" id="agree-error"></span>
 
       <button class="join-btn" id="join-submit-btn">
         회원가입
@@ -259,7 +267,7 @@
 </div>
 
 <script src="js/index.js"></script>
-<script src="js/3d.js"></script>
+
 
 </body>
 </html>
