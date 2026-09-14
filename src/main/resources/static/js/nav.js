@@ -7,103 +7,99 @@ $(function(){
       {
         scrollTop: 0,
       },
-      500 // 0.5초
+      500 // 0.5s
     );
   });
 
-  $(window).on("scroll", function () {
+  $(function () {
+    $("#title").on("click", function (e) {
+      e.preventDefault();
+      $("html, body").animate({ scrollTop: 0 }, 500);
+    });
 
-    // 최대 300px까지만 계산
-    let s = Math.min($(this).scrollTop(), 400);
+    const THRESHOLD = 50;
 
-    const title = document.querySelector("#title");
-    const target = document.querySelector("#target");
-
-    function handleScroll() {
-      const progress = Math.min(Math.max(window.scrollY / 250, 0), 1);
-
+    function getTitleStates() {
+      const target = document.querySelector("#target");
+      const title = document.querySelector("#title");
       const targetRect = target.getBoundingClientRect();
       const targetTop = targetRect.top + (targetRect.height / 2) - (title.offsetHeight / 2);
 
-      const currentTop = 120 + (targetTop - 120) * progress;
-
       const windowWidth = window.innerWidth;
-      const initialFontSize = windowWidth * 0.08; // 처음 글자 크기 (8vw)
+      const initialFontSize = windowWidth * 0.08;
+      const targetScale = 6 / initialFontSize;
 
-
-      const preferredSize = windowWidth * 0.01; // 권장 크기 (2vw)
-      const targetScale = 6 / initialFontSize; // 최종 축소 비율 계산
-
-      const currentScale = 1 + (targetScale - 1) * progress;
-
-      title.style.top = `${currentTop}px`;
-      title.style.transform = `translateX(-50%) scale(${currentScale})`;
+      return { topExpanded: 120, topCollapsed: targetTop, scaleExpanded: 1, scaleCollapsed: targetScale };
     }
 
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleScroll);
-    handleScroll();
+    function applyHeaderState(scrolled) {
+      const title = document.querySelector("#title");
+      const { topExpanded, topCollapsed, scaleExpanded, scaleCollapsed } = getTitleStates();
+
+      title.style.top = `${scrolled ? topCollapsed : topExpanded}px`;
+      title.style.transform = `translateX(-50%) scale(${scrolled ? scaleCollapsed : scaleExpanded})`;
 
 
-    // 검색창
-    $(".hero-search").css({
-      opacity: Math.max(0, 1 - s / 150),
-      transform: `translateX(-50%) translateY(${-s / 3}px)`
-    });
+      $("body").toggleClass("is-scrolled", scrolled);
 
-    // 파란 선
-    $(".oo-line").css({
-      opacity: Math.max(0, 1 - s / 150),
-      width: `${60 - s / 4}%`,
-      transform: `translateX(-50%) translateY(${-s / 0.7}px)`
-    });
+      $(".hero-search").css({
+        opacity: scrolled ? 0 : 1,
+        transform: `translateX(-50%) translateY(${scrolled ? -133 : 0}px)`
+      });
 
-    // 설명 글
-    $("header p").css({
-      opacity: Math.max(0, 1 - s / 100),
-      transform: `translateX(-50%) translateY(${-s / 1}px)`
-    });
+      $(".oo-line").css({
+        opacity: scrolled ? 0 : 1,
+        transform: `translateX(-50%) translateY(${scrolled ? -570 : 0}px)`
+      });
 
+      $("header p").css({
+        opacity: scrolled ? 0 : 1,
+        transform: `translateX(-50%) translateY(${scrolled ? -400 : 0}px)`
+      });
 
-    const sb = $(window).scrollTop();
+      $(".oo-nav button").css({
+        opacity: scrolled ? 1 : 0,
+        transform: `translateX(${scrolled ? 190 : 0}%)`
+      });
 
-    // oo-tag bg
-    const tagWrapEl = document.querySelector(".oo-tag-wrap");
-    if (tagWrapEl) {
-      const tagWrapTop = tagWrapEl.getBoundingClientRect().top;
-      if (tagWrapTop <= 70) {
-        $(".oo-tag-bg").addClass("is-stuck");
-      } else {
-        $(".oo-tag-bg").removeClass("is-stuck");
+      $("header").css({
+        background: scrolled ? "rgba(250,248,242,0.9)" : ""
+      });
+
+      if (!scrolled) {
+        $(".nav-search-box").removeClass("open");
+        $(".nav-search-btn i").removeClass("ti-x").addClass("ti-search");
       }
     }
 
 
-    const progress = Math.min(Math.max((sb - 200) / 150, 0), 1);
+    let isScrolled = null; // false 대신 null
 
-    $(".oo-nav button").css({
-      opacity: progress,
-      transform: `translateX(${progress * 190}%)`
-    });
+    function checkScrollState() {
+      const sb = $(window).scrollTop();
+      const shouldBeScrolled = sb > THRESHOLD;
 
-    
-    if (sb < 300) {
+      if (shouldBeScrolled !== isScrolled) {
+        isScrolled = shouldBeScrolled;
+        applyHeaderState(isScrolled);
+      }
 
-      $(".nav-search-box").removeClass("open");
-
-      $(".nav-search-btn i")
-        .removeClass("ti-x")
-        .addClass("ti-search");
-
+      const tagWrapEl = document.querySelector(".oo-tag-wrap");
+      if (tagWrapEl) {
+        const tagWrapTop = tagWrapEl.getBoundingClientRect().top;
+        $(".oo-tag-bg").toggleClass("is-stuck", tagWrapTop <= 70);
+      }
     }
 
-    $("header").css({
-      background: `rgba(250,248,242,${progress * 0.9})`
+    $(window).on("scroll", checkScrollState);
+    $(window).on("resize", function () {
+      applyHeaderState(isScrolled); // 리사이즈되면 target 위치 다시 계산해서 재적용
     });
 
+    checkScrollState();
   });
 
-  $(window).trigger("scroll");
+  // $(window).trigger("scroll");
 
 
 

@@ -19,11 +19,10 @@
 
 
 
-
-
 .looklog-title {
-  top: 0;
-  font-size: clamp(130px, 31vw, 620px);
+  padding-top: 50px;
+  font-size: clamp(100px, 30vw, 460px);
+  line-height: 0.8;
   white-space: nowrap;
   transform-origin: center center;
 }
@@ -60,38 +59,37 @@ header p {
 header .oo-line,
 header p {
   position: absolute;
-  top: clamp(580px,38vw,700px);
+  top: 600px;
   left: 50%;
 }
 
 header form {
+  margin-top: 55px;
   z-index: 9999;
 }
 
 
 
-@media (max-width: 1450px) {
+@media (max-width: 1400px) {
   header .oo-line,
   header p {
-    top: clamp(405px,42vw,570px);
+    top: clamp(450px,42vw,600px);
   }
 }
 
-@media (max-width: 1050px) {
-  header .oo-line,
-  header p {
-    top: clamp(350px,45vw,450px);
-  }
-}
 
 @media (max-width: 850px) {
+
+  .looklog-title {
+    padding-top: 20px;
+  }
 
   .oo-nav button {
     top: 14px;
   }
 
   header .oo-line {
-    width: 60%;
+    width: 80%;
   }
   header p {
     margin-top: 10px;
@@ -107,9 +105,30 @@ header form {
   }
 
   header form {
-    margin-top: 20px;
+    margin-top: 50px;
     top: auto;
   }
+}
+
+
+#title {
+  transition: top .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
+}
+.hero-search {
+  top: 20px;
+  transition: opacity .5s ease, transform .5s ease;
+}
+.oo-line {
+  transition: opacity .5s ease, transform .5s ease;
+}
+header p {
+  transition: opacity .5s ease, transform .5s ease;
+}
+.oo-nav button {
+  transition: opacity .5s ease, transform .5s ease;
+}
+header {
+  transition: background-color .5s ease;
 }
 
 
@@ -183,8 +202,8 @@ header form {
   position: sticky;
   top: 70px;
   width: 100%;
-  margin: 0 auto 40px;
-  padding: 0 20px 10px;
+  margin: 0 auto 50px;
+  padding: 0 20px;
   box-sizing: border-box;
   z-index: 899;
 }
@@ -290,6 +309,33 @@ header form {
     width: 60px;
     height: 32px;
     border-radius: 17px;
+  }
+
+
+
+  .oo-sort-toggle {
+    margin: clamp(330px,55vw,700px) 20px 10px auto;
+    transition: margin-top .5s ease;
+  }
+
+  body.is-scrolled .oo-sort-toggle {
+    margin-top: 100px; /* 접혔을 때 원하는 여백값으로 조절 */
+  }
+
+  @media (max-width:1300px){
+    body.is-scrolled .oo-sort-toggle {
+      margin-top: 90px;
+    }
+  }
+  @media (max-width:850px){
+    body.is-scrolled .oo-sort-toggle {
+      margin-top: 70px;
+    }
+  }
+  @media (max-width:550px){
+    body.is-scrolled .oo-sort-toggle {
+      margin-top: 60px;
+    }
   }
 
 

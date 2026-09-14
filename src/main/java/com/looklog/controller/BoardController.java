@@ -28,10 +28,6 @@ public class BoardController {
     ) {
         Long loginMemberId = (Long) session.getAttribute("loginMemberId");
 
-        if (loginMemberId == null) {
-            return ResponseEntity.status(401).body("로그인이 필요합니다.");
-        }
-
         try {
             Member member = memberRepository.findById(loginMemberId)
                     .orElseThrow(() -> new IllegalStateException("회원 정보를 찾을 수 없습니다."));
@@ -48,9 +44,6 @@ public class BoardController {
     @DeleteMapping("/board/{id}")
     public ResponseEntity<?> deleteBoard(@PathVariable Long id, HttpSession session) {
         Long loginMemberId = (Long) session.getAttribute("loginMemberId");
-        if (loginMemberId == null) {
-            return ResponseEntity.status(401).body("로그인이 필요합니다.");
-        }
 
         try {
             boardService.deleteBoard(id, loginMemberId);
@@ -69,10 +62,6 @@ public class BoardController {
             HttpSession session
     ) {
         Long loginMemberId = (Long) session.getAttribute("loginMemberId");
-
-        if (loginMemberId == null) {
-            return ResponseEntity.status(401).body("로그인이 필요합니다.");
-        }
 
         try {
             boardService.updateBoard(id, loginMemberId, content, tags, image);
