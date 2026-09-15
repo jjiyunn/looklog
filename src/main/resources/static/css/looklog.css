@@ -1,5 +1,9 @@
+/* 헤더 버그 방지 */
+html { overflow-anchor: none; }
+body { min-height: 1000px; }
 
-.oo-bg{
+
+.oo-bg {
   position: absolute;
   top: 0;
   left: 0;
@@ -7,33 +11,36 @@
   width: 100%;
   height: 1500px;
 }
-
-
 .oo-nav button {
   position: absolute;
   top: 24px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 22px;
+  transition: opacity .3s ease, transform .5s ease;
 }
 
 
+/* title*/
+#title {
+  top: 120px;
+  transition: top .6s cubic-bezier(.4,0,.2,1), font-size .6s cubic-bezier(.4,0,.2,1);
+}
 
 .looklog-title {
   padding-top: 50px;
-  font-size: clamp(100px, 30vw, 460px);
+  font-size: clamp(120px, 30vw, 460px);
   line-height: 0.8;
   white-space: nowrap;
   transform-origin: center center;
 }
-
 
 h1 span {
   display: inline-block;
   transform: rotate(0);
   transition: 0.5s;
 }
-h1 span:hover{
+h1 span:hover {
   transform: rotate(15deg);
 }
 h1 span:nth-child(2):hover,
@@ -42,18 +49,32 @@ h1 span:nth-child(7):hover {
   transform: rotate(-15deg);
 }
 
+header.is-scrolled #title {
+  top: -24px;
+  font-size: 1.5em;
+}
+
+header {
+  transition: background-color .3s ease;
+}
+header.is-scrolled {
+  background: #f8f7f2;
+}
 
 
+/* header line, p */
 header .oo-line {
-  width: clamp(500px,55vw,55vw);
+  width: clamp(500px, 55vw, 55vw);
   height: 2px;
   background: #0c3ca7;
+  transition: opacity .3s ease, transform .5s ease;
 }
 
 header p {
   margin-top: 25px;
   text-align: center;
   font-weight: 500;
+  transition: opacity .3s ease, transform .5s ease;
 }
 
 header .oo-line,
@@ -63,74 +84,64 @@ header p {
   left: 50%;
 }
 
+
+/* search form */
 header form {
   margin-top: 55px;
   z-index: 9999;
 }
 
+.hero-search {
+  top: 20px;
+  transition: opacity .3s ease, transform .5s ease;
+}
 
 
 @media (max-width: 1400px) {
   header .oo-line,
   header p {
-    top: clamp(450px,42vw,600px);
+    top: clamp(430px, 45vw, 560px);
   }
+  header p {margin-top: 15px; }
 }
-
 
 @media (max-width: 850px) {
 
-  .looklog-title {
-    padding-top: 20px;
-  }
-
+  .looklog-title { padding-top: 20px; }
   .oo-nav button {
     top: 14px;
+    left: calc(50% - 10px);
   }
 
-  header .oo-line {
-    width: 80%;
-  }
+  header .oo-line { width: 65%; }
   header p {
     margin-top: 10px;
     font-size: 14px;
   }
-  header p span {
-    display: block;
-  }
+  header p span { display: block; }
 
   header .oo-line,
   header p {
-    top: clamp(290px,52vw,390px);
+    top: clamp(330px, 48vw, 390px);
   }
 
   header form {
     margin-top: 50px;
     top: auto;
   }
+
+  header.is-scrolled #title {
+    top: -3px;
+    font-size: 1.3em;
+  }
 }
 
-
-#title {
-  transition: top .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
+@media (max-width: 600px) {
+  header .oo-line,
+  header p {
+    top: clamp(260px, 57vw, 340px);
+  }
 }
-.hero-search {
-  top: 20px;
-  transition: opacity .5s ease, transform .5s ease;
-}
-.oo-line {
-  transition: opacity .5s ease, transform .5s ease;
-}
-header p {
-  transition: opacity .5s ease, transform .5s ease;
-}
-.oo-nav button {
-  transition: opacity .5s ease, transform .5s ease;
-}
-header {
-  transition: background-color .5s ease;
-}
-
 
 
 /* ====================================================================================================================================================================================================== */
@@ -146,6 +157,7 @@ header {
   height: 44px;
   background: #d7e3f7;
   border-radius: 22px;
+  transition: margin-top .5s ease;
 }
 .oo-sort-toggle p {
   padding:0 13px;
@@ -153,10 +165,13 @@ header {
   font-weight: 500;
   color: #5474bb;
   z-index: 9;
+  transition: color .3s ease;
 }
-.oo-sort-toggle p:first-of-type {
+
+.oo-sort-toggle p.active-sort {
   color: #f5f5f5;
 }
+
 .oo-sort-toggle div {
   font-size: 1.5em;
   color: #5474bb;
@@ -171,6 +186,7 @@ header {
   height: 35px;
   background:#0c3ca7;
   border-radius: 17px;
+  transition: left .35s ease;
 }
 .oo-sort-toggle p.active-sort {
   color: #f5f5f5;
@@ -179,6 +195,46 @@ header {
   left: 83px;
 }
 
+
+
+body.is-scrolled .oo-sort-toggle {
+  margin-top: 100px;
+}
+
+@media (max-width: 1300px) {
+  .oo-sort-toggle {
+    margin: clamp(430px, 47vw, 570px) 20px 10px auto;
+  }
+  body.is-scrolled .oo-sort-toggle {
+    margin-top: 90px;
+  }
+}
+
+@media (max-width: 850px) {
+
+  .oo-sort-indicator.right {
+    left: 67px;
+  }
+
+  .oo-sort-toggle {
+    margin: clamp(450px, 57vw, 500px) 20px 10px auto;
+  }
+  body.is-scrolled .oo-sort-toggle {
+    margin-top: 70px;
+  }
+}
+
+@media (max-width: 550px) {
+  .oo-sort-toggle {
+    margin: clamp(330px, 55vw, 500px) 20px 10px auto;
+  }
+  body.is-scrolled .oo-sort-toggle {
+    margin-top: 60px;
+  }
+}
+
+
+
 /* tag */
 .oo-tag-bg {
   position: fixed;
@@ -186,7 +242,6 @@ header {
   left: 0;
   width: 100vw;
   height: 100px;
-  background: rgba(250, 248, 242, 0);
   transition: 0.25s ease;
   z-index: 888;
   pointer-events: none;
@@ -195,7 +250,7 @@ header {
 
 .oo-tag-bg.is-stuck {
   display: block;
-  background: rgba(250, 248, 242, 0.98);
+  background: #f8f7f2;
 }
 
 .oo-tag-wrap {

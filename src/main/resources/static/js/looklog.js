@@ -89,7 +89,7 @@ function addFeedItem(item) {
 }
 
 
-// 초기 표시(12개)
+// 처음 피드(12개)
 function showInitialItems() {
 
   createColumns();
@@ -121,24 +121,39 @@ function showNextBatch() {
 
   feedLoading = true;
 
-  const nextItems = feedItems.slice(
-      shownCount,
-      shownCount + batchCount
-  );
-
-  nextItems.forEach(item => {
-    addFeedItem(item);
-  });
-
-  shownCount += nextItems.length;
-
-  if (shownCount >= feedItems.length) {
-    if (feedLoader) {
-      feedLoader.textContent = '모든 게시글을 확인했어요';
-    }
+  if (feedLoader) {
+    feedLoader.textContent = '불러오는 중...';
+    feedLoader.classList.add('loading');
   }
 
-  feedLoading = false;
+  setTimeout(() => {
+
+    const nextItems = feedItems.slice(
+        shownCount,
+        shownCount + batchCount
+    );
+
+    nextItems.forEach(item => {
+      addFeedItem(item);
+    });
+
+    shownCount += nextItems.length;
+
+    if (shownCount >= feedItems.length) {
+      if (feedLoader) {
+        feedLoader.textContent = '모든 게시글을 확인했어요';
+        feedLoader.classList.remove('loading');
+      }
+    } else {
+      if (feedLoader) {
+        feedLoader.textContent = '';
+        feedLoader.classList.remove('loading');
+      }
+    }
+
+    feedLoading = false;
+
+  }, 500); // 로딩되는 딜레이 시간
 }
 
 
@@ -192,7 +207,7 @@ function setupFeedObserver() {
 
       {
         root: null,
-        rootMargin: '800px 0px',
+        rootMargin: '100px 0px',
         threshold: 0
       }
   );
@@ -200,7 +215,7 @@ function setupFeedObserver() {
 }
 
 
-// 시작
+// 시작 ( 이미지 준비 → 화면에 첫 배치 그리기 → 그 다음부터 스크롤 감시 시작 )
 async function initFeed() {
   await waitForImages();
   showInitialItems();
@@ -215,16 +230,14 @@ initFeed();
 $(".oo-sort-toggle p").on("click", function () {
   const isPopular = $(this).text() === "인기순";
 
-  $(".oo-sort-toggle p").css("color", "#5474bb");
-  $(this).css("color", "#f5f5f5");
+  $(".oo-sort-toggle p").removeClass("active-sort");
+  $(this).addClass("active-sort");
 
-  if (isPopular) {
-    $(".oo-sort-indicator").css("left", "83px"); // 값 조절해야댐
-  } else {
-    $(".oo-sort-indicator").css("left", "7px");
-  }
+  $(".oo-sort-indicator").toggleClass("right", isPopular);
 
-  // 정렬 기준 바꿔서 다시 불러오기
   const sort = isPopular ? "popular" : "latest";
-  window.location.href = `/looklog?sort=${sort}`;
+
+  setTimeout(function () {
+    window.location.href = `/looklog?sort=${sort}`;
+  }, 350);
 });

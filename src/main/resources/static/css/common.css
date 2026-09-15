@@ -3,13 +3,10 @@ header{
     top: 0;
     padding-bottom: 20px;
     color: #0c3ca7;
-    background: #f6f4eb;
-    backdrop-filter: blur(10px);
     border-radius: 0 0 15px 15px;
     z-index: 899;
 }
 .board-header {
-    backdrop-filter: blur(10px);
     box-shadow: 0 0 7px rgb(0 0 0 / 0.1);
 }
 
