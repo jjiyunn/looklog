@@ -323,7 +323,10 @@ section {
     aspect-ratio: 1 / 1;
     border-radius: 8px;
     overflow: hidden;
-    background: #f0f0f0;
+    background: #eee;
+}
+.drawer-thumb:hover {
+    background: #ccc;
 }
 
 .drawer-thumb.single img {
@@ -352,9 +355,26 @@ section {
     font-size: 14px;
 }
 
+.drawer-folder-add {
+    margin-bottom: auto;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+}
 
-
-
+.drawer-thumb.add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+}
+.drawer-thumb.add:hover {
+    background: #ccc;
+}
+.drawer-thumb.add i {
+    font-size: 36px;
+    color: #9a9a9a;
+}
 
 
 /* ========================================= */
@@ -468,4 +488,63 @@ section {
     border-radius: 10px;
     font-size: 14px;
     margin-bottom: 16px;
+}
+
+
+/* 탈퇴 모달 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+}
+
+.modal-overlay[hidden] {
+    display: none;
+}
+
+.modal-box {
+    background: #f6f4eb;
+    padding: 30px 28px 22px;
+    border-radius: 16px;
+    width: min(320px, 85vw);
+    text-align: center;
+}
+
+.modal-box h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #0c3ca7;
+    margin-bottom: 10px;
+}
+
+.modal-box p {
+    font-size: 14px;
+    color: #5474bb;
+    line-height: 1.5;
+    margin-bottom: 18px;
+}
+
+.modal-box input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #d7e3f7;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+#withdraw-error {
+    color: #dd3333;
+}
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
 }

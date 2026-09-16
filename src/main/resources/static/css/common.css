@@ -406,43 +406,6 @@ form .ti-search {
 
 
 
-/* cancel, confirm btn */
-.cancel-btn {
-    background: #fcfcfc;
-}
-.cancel-btn:hover {
-    background: #e7effc ;
-}
-.cancel-btn,
-.confirm-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    height: 40px;
-    border-radius: 20px;
-}
-.confirm-btn {
-    background: #0c3ca7;
-    color: #fff;
-}
-.confirm-btn:hover {
-    background: #0a2f85;
-}
-
-
-.back-btn {
-    font-size: 18px;
-    cursor: pointer;
-}
-
-
-
-
-
-
-
-
 
 /* upload btn */
 .fab-upload {
@@ -827,4 +790,79 @@ form .ti-search {
 
 .toast.toast-error {
     background: #c0392b;
+}
+
+
+/* confirm 삭제 모달 */
+#confirm-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+}
+
+#confirm-modal-overlay[hidden] {
+    display: none;
+}
+
+.confirm-modal {
+    background: #f6f4eb;
+    padding: 30px 24px 22px;
+    border-radius: 16px;
+    width: min(320px, 85vw);
+    text-align: center;
+}
+
+.confirm-modal p {
+    font-size: 15px;
+    font-weight: 500;
+    color: #0c3ca7;
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+
+.confirm-modal-btns {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+
+
+
+/* cancel, confirm btn */
+.cancel-btn {
+    background: #d7e3f7;
+    color: #4263ae;
+}
+.cancel-btn:hover {
+    background: #e7effc ;
+}
+.cancel-btn,
+.confirm-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 40px;
+    border-radius: 20px;
+}
+.confirm-btn {
+    background: #0c3ca7;
+    color: #fff;
+}
+.confirm-btn:hover {
+    background: #0a2f85;
+}
+
+
+.back-btn {
+    font-size: 18px;
+    cursor: pointer;
 }

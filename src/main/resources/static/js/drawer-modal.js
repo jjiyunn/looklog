@@ -1,16 +1,3 @@
-const moreMenuBtn = document.getElementById('more-menu-btn');
-const moreMenuDropdown = document.getElementById('more-menu-dropdown');
-
-if (moreMenuBtn) {
-  moreMenuBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    moreMenuDropdown.hidden = !moreMenuDropdown.hidden;
-  });
-
-  document.addEventListener('click', () => {
-    moreMenuDropdown.hidden = true;
-  });
-}
 
 
 // 서랍 수정
@@ -48,8 +35,9 @@ document.getElementById('confirm-btn').addEventListener('click', () => {
 // 서랍 삭제
 const deleteDrawerBtn = document.getElementById('delete-drawer-btn');
 if (deleteDrawerBtn) {
-  deleteDrawerBtn.addEventListener('click', function () {
-    if (!confirm('이 서랍을 삭제할까요? 안에 담긴 목록도 함께 삭제됩니다.')) return;
+  deleteDrawerBtn.addEventListener('click', async function () {
+    const ok = await showConfirm('이 서랍을 삭제할까요? 안에 담긴 목록도 함께 삭제됩니다.');
+    if (!ok) return;
 
     const drawerId = this.dataset.drawerId;
     const loginMemberName = document.body.dataset.loginMemberName;

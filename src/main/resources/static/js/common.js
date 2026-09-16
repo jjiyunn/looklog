@@ -118,9 +118,13 @@ if (overlay) {
 
                 currentBtn.classList.toggle('saved', saved);
 
+                const drawerName = li.querySelector('.drawer-modal-item-name').textContent;
+
                 if (saved) {
+                    showToast(`'${drawerName}'에 저장되었습니다.`);
                     closeDrawerModal();
                 }
+
             })
             .catch(msg => showToast(msg, 'error'));
     }
@@ -179,6 +183,7 @@ if (overlay) {
                     .then(res => res.ok ? res.json() : Promise.reject('오류가 발생했습니다.'))
                     .then(saved => {
                         btn.classList.toggle('saved', saved);
+                        showToast('서랍에서 제거되었습니다.');
                     });
             })
             .catch(msg => showToast(msg, 'error'));
@@ -506,4 +511,56 @@ function showToast(message, type = 'default', duration = 2500) {
         toast.classList.remove('show');
         toast.addEventListener('transitionend', () => toast.remove(), { once: true });
     }, duration);
+}
+
+
+// 더보기 메뉴
+const moreMenuBtn = document.getElementById('more-menu-btn');
+const moreMenuDropdown = document.getElementById('more-menu-dropdown');
+
+if (moreMenuBtn) {
+    moreMenuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        moreMenuDropdown.hidden = !moreMenuDropdown.hidden;
+    });
+
+    document.addEventListener('click', () => {
+        moreMenuDropdown.hidden = true;
+    });
+}
+
+
+// confirm 삭제 모달
+function showConfirm(message) {
+    return new Promise(resolve => {
+        const overlay = document.getElementById('confirm-modal-overlay');
+        if (!overlay) {
+            resolve(window.confirm(message)); // 모달 없는 페이지 대비 폴백
+            return;
+        }
+
+        document.getElementById('confirm-modal-message').textContent = message;
+        overlay.hidden = false;
+
+        const okBtn = document.getElementById('confirm-modal-ok');
+        const cancelBtn = document.getElementById('confirm-modal-cancel');
+
+        function cleanup(result) {
+            overlay.hidden = true;
+            okBtn.removeEventListener('click', onOk);
+            cancelBtn.removeEventListener('click', onCancel);
+            overlay.removeEventListener('click', onOverlayClick);
+            resolve(result);
+        }
+
+        function onOk() { cleanup(true); }
+        function onCancel() { cleanup(false); }
+        function onOverlayClick(e) {
+            if (e.target === overlay) cleanup(false);
+        }
+
+        okBtn.addEventListener('click', onOk);
+        cancelBtn.addEventListener('click', onCancel);
+        overlay.addEventListener('click', onOverlayClick);
+    });
 }

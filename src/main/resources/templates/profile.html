@@ -107,6 +107,26 @@
             <span class="drawer-folder-count" th:text="${d.itemCount} + '개'"></span>
           </div>
         </a>
+
+        <!-- 서랍 추가 -->
+        <button class="drawer-folder-add" id="add-drawer-btn" type="button">
+          <div class="drawer-thumb add">
+            <i class="ti ti-plus"></i>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- 서랍 추가 모달 -->
+    <div class="modal-overlay" id="add-drawer-modal" hidden>
+      <div class="modal-box">
+        <h3>새 서랍 만들기</h3>
+        <input type="text" id="add-drawer-input" placeholder="서랍 이름" maxlength="20">
+        <small id="add-drawer-error" class="field-hint invalid"></small>
+        <div class="modal-actions">
+          <button id="add-drawer-cancel-btn" class="cancel-btn">취소</button>
+          <button id="add-drawer-confirm-btn" class="confirm-btn">만들기</button>
+        </div>
       </div>
     </div>
 
@@ -136,12 +156,12 @@
   <div class="modal-overlay" id="withdraw-modal" hidden>
     <div class="modal-box">
       <h3>정말 탈퇴하시겠어요?</h3>
-      <p>탈퇴 시 계정 정보는 삭제되고 되돌릴 수 없습니다.</p>
+      <p>탈퇴 시 계정 정보가 삭제됩니다.<br />피드는 사라지지 않습니다.</p>
       <input type="password" id="withdraw-password" placeholder="비밀번호 확인">
-      <small id="withdraw-error" class="field-hint invalid"></small>
+      <small id="withdraw-error"></small>
       <div class="modal-actions">
-        <button id="withdraw-cancel-btn">취소</button>
-        <button id="withdraw-confirm-btn" class="btn-danger">탈퇴하기</button>
+        <button id="withdraw-cancel-btn" class="cancel-btn">취소</button>
+        <button id="withdraw-confirm-btn" class="confirm-btn">탈퇴하기</button>
       </div>
     </div>
   </div>
@@ -161,20 +181,3 @@
 
 
 
-
-
-
-<!--
-
-개뜬금취업관련메모장
-
-AI도구 : Claude, Cursor, Antigravity
-
-Node.js, PHP 기반 사이트 구축, JAVA(Spring)
-, ASP.NET
-
-클라우드: AWS, Azure, NCP
-
-
-
--->

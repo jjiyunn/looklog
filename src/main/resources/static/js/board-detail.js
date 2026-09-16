@@ -1,19 +1,3 @@
-// ===============================
-// 더보기 메뉴 (수정/삭제/신고/공유)
-// ===============================
-const moreMenuBtn = document.getElementById('more-menu-btn');
-const moreMenuDropdown = document.getElementById('more-menu-dropdown');
-
-if (moreMenuBtn) {
-    moreMenuBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        moreMenuDropdown.hidden = !moreMenuDropdown.hidden;
-    });
-
-    document.addEventListener('click', () => {
-        moreMenuDropdown.hidden = true;
-    });
-}
 
 // 공유
 const shareBtn = document.getElementById('share-board-btn');
@@ -28,8 +12,9 @@ if (shareBtn) {
 // 피드 삭제
 const deleteBtn = document.getElementById('delete-board-btn');
 if (deleteBtn) {
-    deleteBtn.addEventListener('click', function () {
-        if (!confirm('정말 삭제하시겠습니까?')) return;
+    deleteBtn.addEventListener('click', async function () {
+        const ok = await showConfirm('정말 삭제하시겠습니까?');
+        if (!ok) return;
 
         const boardId = this.dataset.boardId;
 
@@ -201,6 +186,74 @@ if (withdrawBtn) {
         }
     });
 }
+
+// 서랍 추가
+const addDrawerBtn = document.getElementById('add-drawer-btn');
+const addDrawerModal = document.getElementById('add-drawer-modal');
+const addDrawerInput = document.getElementById('add-drawer-input');
+const addDrawerError = document.getElementById('add-drawer-error');
+const addDrawerCancelBtn = document.getElementById('add-drawer-cancel-btn');
+const addDrawerConfirmBtn = document.getElementById('add-drawer-confirm-btn');
+
+if (addDrawerBtn) {
+    addDrawerBtn.addEventListener('click', () => {
+        addDrawerInput.value = '';
+        addDrawerError.textContent = '';
+        addDrawerModal.hidden = false;
+        addDrawerInput.focus();
+    });
+
+    addDrawerCancelBtn.addEventListener('click', () => {
+        addDrawerModal.hidden = true;
+    });
+
+    addDrawerModal.addEventListener('click', (e) => {
+        if (e.target === addDrawerModal) addDrawerModal.hidden = true;
+    });
+
+    addDrawerConfirmBtn.addEventListener('click', () => {
+        const name = addDrawerInput.value.trim();
+
+        if (!name) {
+            addDrawerError.textContent = '서랍 이름을 입력해주세요.';
+            return;
+        }
+
+        fetch('/drawer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        })
+            .then(res => res.ok ? res.json() : Promise.reject('서랍 생성에 실패했습니다.'))
+            .then(drawerId => {
+                const newCard = document.createElement('a');
+                newCard.className = 'drawer-folder';
+                newCard.href = `/drawer/${drawerId}`;
+                newCard.innerHTML = `
+                    <div class="drawer-thumb single">
+                        <div class="drawer-thumb-empty"></div>
+                    </div>
+                    <div class="drawer-folder-info">
+                        <span class="drawer-folder-name">${name}</span>
+                        <span class="drawer-folder-count">0개</span>
+                    </div>
+                `;
+
+                addDrawerBtn.before(newCard);
+
+                addDrawerModal.hidden = true;
+                showToast('서랍이 생성되었습니다.');
+            })
+            .catch(msg => {
+                addDrawerError.textContent = msg;
+            });
+    });
+
+    addDrawerInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') addDrawerConfirmBtn.click();
+    });
+}
+
 
 
 // profile edit
