@@ -41,7 +41,7 @@ document.getElementById('confirm-btn').addEventListener('click', () => {
     body: JSON.stringify({ name: newName })
   })
       .then(res => res.ok ? location.reload() : Promise.reject('수정에 실패했습니다.'))
-      .catch(msg => alert(msg));
+      .catch(msg => showToast(msg, 'error'));
 });
 
 
@@ -56,6 +56,6 @@ if (deleteDrawerBtn) {
 
     fetch(`/drawer/${drawerId}`, { method: 'DELETE' })
         .then(res => res.ok ? window.location.href = '/profile/' + loginMemberName : Promise.reject('삭제에 실패했습니다.'))
-        .catch(msg => alert(msg));
+        .catch(msg => showToast(msg, 'error'));
   });
 }

@@ -38,7 +38,7 @@ document.querySelectorAll('.like-btn').forEach(btn => {
                 if (res.ok) {
                     return res.json();
                 } else {
-                    alert('로그인이 필요합니다.');
+                    showToast('로그인이 필요합니다.', 'error');
                 }
             })
             .then(liked => {
@@ -85,7 +85,7 @@ if (overlay) {
         fetch(`/drawer/list?boardId=${currentBoardId}`)
             .then(res => res.ok ? res.json() : Promise.reject('로그인이 필요합니다.'))
             .then(drawers => renderDrawerList(drawers))
-            .catch(msg => alert(msg));
+            .catch(msg => showToast(msg, 'error'));
     }
 
     function renderDrawerList(drawers) {
@@ -122,7 +122,7 @@ if (overlay) {
                     closeDrawerModal();
                 }
             })
-            .catch(msg => alert(msg));
+            .catch(msg => showToast(msg, 'error'));
     }
 
     const newDrawerBtn = document.getElementById('new-drawer-btn');
@@ -142,7 +142,7 @@ if (overlay) {
                     nameInput.value = '';
                     loadDrawerList();
                 })
-                .catch(msg => alert(msg));
+                .catch(msg => showToast(msg, 'error'));
         });
     }
 
@@ -181,7 +181,7 @@ if (overlay) {
                         btn.classList.toggle('saved', saved);
                     });
             })
-            .catch(msg => alert(msg));
+            .catch(msg => showToast(msg, 'error'));
     }
 }
 
@@ -325,9 +325,9 @@ if (uploadModal) {
         })
             .then(res => {
                 if (res.ok) {
-                    alert(uploadMode === 'edit' ? '수정되었습니다!' : '게시글이 등록되었습니다!');
+                    showToast(uploadMode === 'edit' ? '수정되었습니다!' : '게시글이 등록되었습니다!');
                     closeUploadModal();
-                    location.reload();
+                    setTimeout(() => location.reload(), 800);
                 } else {
                     return res.text().then(msg => {
                         errorBox.textContent = msg;
@@ -353,7 +353,7 @@ if (uploadModal) {
 
             const file = e.dataTransfer.files[0];
             if (!file || !file.type.startsWith('image/')) {
-                alert('이미지 파일만 업로드할 수 있어요.');
+                showToast('이미지 파일만 업로드할 수 있어요.', 'error');
                 return;
             }
 
@@ -374,7 +374,7 @@ if (uploadModal) {
                 btn.classList.remove('selected');
             } else {
                 if (selectedTags.length >= 6) {
-                    alert('태그는 최대 6개까지 선택할 수 있어요.');
+                    showToast('태그는 최대 6개까지 선택할 수 있어요.', 'error');
                     return;
                 }
                 selectedTags.push(tag);
@@ -412,9 +412,6 @@ if (contentTextarea) {
         contentCount.textContent = `${contentTextarea.value.length}/300`;
     });
 }
-
-
-
 
 
 // ===============================
@@ -473,12 +470,12 @@ if (reportModalOverlay) {
         })
             .then(res => res.ok ? Promise.resolve() : res.text().then(msg => Promise.reject(msg)))
             .then(() => {
-                alert('신고가 접수되었습니다.');
+                showToast('신고가 접수되었습니다.');
                 reportModalOverlay.hidden = true;
                 document.querySelectorAll('input[name="report-reason"]').forEach(r => r.checked = false);
                 document.getElementById('report-detail').value = '';
             })
-            .catch(msg => alert(msg));
+            .catch(msg => showToast(msg, 'error'));
     });
 }
 // 신고 상세보기
@@ -488,3 +485,25 @@ document.addEventListener('click', function (e) {
 
     cell.classList.toggle('expanded');
 });
+
+
+//toast
+function showToast(message, type = 'default', duration = 2500) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = 'toast' + (type === 'error' ? ' toast-error' : '');
+    toast.textContent = message;
+
+    container.appendChild(toast);
+
+    requestAnimationFrame(() => {
+        toast.classList.add('show');
+    });
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+        toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+    }, duration);
+}

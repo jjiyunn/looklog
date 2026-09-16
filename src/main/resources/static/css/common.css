@@ -152,17 +152,6 @@ form .ti-search {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 /* ======================== 피드 hover */
 .feed-info {
     padding: 10px;
@@ -799,4 +788,43 @@ form .ti-search {
 
 #report-submit-btn:hover {
     background: #b8281f;
+}
+
+
+
+
+
+/* toast */
+#toast-container {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 99999;
+    pointer-events: none;
+}
+
+.toast {
+    padding: 12px 22px;
+    border-radius: 30px;
+    background: #0c3ca7;
+    color: #f6f4eb;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .3s ease, transform .3s ease;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast.toast-error {
+    background: #c0392b;
 }

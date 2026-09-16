@@ -20,7 +20,8 @@ const shareBtn = document.getElementById('share-board-btn');
 if (shareBtn) {
     shareBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(window.location.href)
-            .then(() => alert('링크가 복사되었습니다.'));
+            .then(() => showToast('링크가 복사되었습니다.'))
+            .catch(() => showToast('복사에 실패했습니다.', 'error'));
     });
 }
 
@@ -35,16 +36,14 @@ if (deleteBtn) {
         fetch(`/board/${boardId}`, { method: 'DELETE' })
             .then(res => {
                 if (res.ok) {
-                    alert('삭제되었습니다.');
-                    window.location.href = '/looklog';
+                    showToast('삭제되었습니다.');
+                    setTimeout(() => window.location.href = '/looklog', 800);
                 } else {
-                    alert('삭제에 실패했습니다.');
+                    showToast('삭제에 실패했습니다.', 'error');
                 }
             });
     });
 }
-
-
 
 
 // ==============================
@@ -79,15 +78,14 @@ if (followBtn) {
                     followBtn.classList.remove('following');
                 }
 
-                // 팔로워 카운트 업데이트
                 const countEl = document.getElementById('follower-count');
                 if (countEl) {
                     const currentCount = parseInt(countEl.textContent, 10) || 0;
                     const newCount = following ? currentCount + 1 : currentCount - 1;
-                    countEl.textContent = newCount;   // ★ 숫자만 넣기
+                    countEl.textContent = newCount;
                 }
             })
-            .catch(msg => alert(msg));
+            .catch(msg => showToast(msg, 'error'));
     });
 }
 
@@ -99,7 +97,7 @@ document.addEventListener('click', function (e) {
     const btn = e.target.closest('.follow-count-btn');
     if (!btn) return;
 
-    const type = btn.dataset.type;       // 'followers' or 'followings'
+    const type = btn.dataset.type;
     const memberId = btn.dataset.memberId;
 
     openFollowModal(type, memberId);
@@ -111,7 +109,7 @@ function openFollowModal(type, memberId) {
     fetch(`/follow/${type}/${memberId}`)
         .then(res => res.ok ? res.json() : Promise.reject('오류가 발생했습니다.'))
         .then(users => renderFollowList(users))
-        .catch(msg => alert(msg));
+        .catch(msg => showToast(msg, 'error'));
 
     followModalOverlay.hidden = false;
 }
@@ -145,7 +143,6 @@ if (followModalOverlay) {
     });
 }
 
-// 모달 안에서 "팔로우" 버튼 클릭 → 팔로우 처리 후 버튼만 사라지게
 document.addEventListener('click', function (e) {
     const btn = e.target.closest('.follow-modal-follow-btn');
     if (!btn) return;
@@ -159,11 +156,11 @@ document.addEventListener('click', function (e) {
                 btn.remove();
             }
         })
-        .catch(msg => alert(msg));
+        .catch(msg => showToast(msg, 'error'));
 });
 
 
-//회원 탈퇴
+// 회원 탈퇴
 const withdrawBtn = document.getElementById('withdraw-btn');
 const withdrawModal = document.getElementById('withdraw-modal');
 const withdrawCancelBtn = document.getElementById('withdraw-cancel-btn');
@@ -173,7 +170,7 @@ const withdrawError = document.getElementById('withdraw-error');
 
 if (withdrawBtn) {
     withdrawBtn.addEventListener('click', () => {
-        document.getElementById('more-menu-dropdown').hidden = true; // 드롭다운 닫기
+        moreMenuDropdown.hidden = true;
         withdrawModal.hidden = false;
         withdrawPasswordInput.value = '';
         withdrawError.textContent = '';
@@ -206,9 +203,7 @@ if (withdrawBtn) {
 }
 
 
-
 // profile edit
-// 파일 선택하고 바로 화면에 반영
 const profileImgInput = document.getElementById('profileImg');
 const profilePreview = document.getElementById('edit-profile-preview');
 if (profileImgInput) {
@@ -220,7 +215,6 @@ if (profileImgInput) {
     });
 }
 
-// 히스토리 안쌓이게
 const editProfileForm = document.getElementById('edit-profile-form');
 if (editProfileForm) {
     editProfileForm.addEventListener('submit', function (e) {
@@ -234,16 +228,16 @@ if (editProfileForm) {
         })
             .then(res => {
                 if (res.redirected) {
-                    window.location.replace(res.url); // ★ back()으로 안 돌아오게
+                    window.location.replace(res.url);
                 } else {
                     return res.text().then(html => {
                         document.open();
-                        document.write(html); // 에러 페이지면 그대로 표시
+                        document.write(html);
                         document.close();
                     });
                 }
             })
-            .catch(() => alert('오류가 발생했습니다.'));
+            .catch(() => showToast('오류가 발생했습니다.', 'error'));
     });
 }
 const editProfileBtn = document.getElementById('edit-profile-btn');
@@ -284,5 +278,3 @@ function attachValidation(inputId, hintId) {
 
 attachValidation('name', 'nameHint');
 attachValidation('userName', 'userNameHint');
-
-

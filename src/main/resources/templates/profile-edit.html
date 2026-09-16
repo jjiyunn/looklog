@@ -2,64 +2,67 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/nav :: head('profile')}"></head>
 <body>
-<div th:replace="~{fragments/nav :: nav}"></div>
+  <div th:replace="~{fragments/nav :: nav}"></div>
 
-<section class="edit-profile-wrap">
+  <section class="edit-profile-wrap">
 
-  <div class="edit-profile-header">
-    <i class="bi bi-chevron-left back-btn"></i>
-    <h2>프로필 수정</h2>
-  </div>
-
-  <p th:if="${welcome}" class="edit-profile-welcome">
-    환영해요! 사용할 사용자이름을 설정해주세요 🎉
-  </p>
-
-  <form id="edit-profile-form" method="post" enctype="multipart/form-data" class="edit-profile-form">
-
-    <div class="edit-profile-img-wrap">
-      <img id="edit-profile-preview" th:src="${member.profileImg}" alt="프로필 미리보기" class="edit-profile-avatar">
-      <label for="profileImg" class="edit-profile-img-label">사진 변경</label>
-      <input type="file" id="profileImg" name="profileImg" accept="image/*" hidden>
+    <div class="edit-profile-header">
+      <i class="bi bi-chevron-left back-btn"></i>
+      <h2>프로필 수정</h2>
     </div>
 
-    <div class="edit-profile-field">
-      <label for="name">이름</label>
-      <input type="text" id="name" name="name" th:value="${member.name}"
-             pattern="^[a-zA-Z0-9_.]{6,12}$"
-             minlength="6" maxlength="12"
-             title="영문, 숫자, _, . 만 사용 가능 (6~12자)"
-             required>
-      <small id="nameHint" class="field-hint"></small>
-    </div>
+    <p th:if="${welcome}" class="edit-profile-welcome">
+      환영해요! 사용할 사용자이름을 설정해주세요 🎉
+    </p>
 
-    <div class="edit-profile-field">
-      <label for="userName">사용자이름</label>
-      <input type="text" id="userName" name="userName" th:value="${member.userName}"
-             pattern="^[a-zA-Z0-9_.]{6,12}$"
-             minlength="6" maxlength="12"
-             title="영문, 숫자, _, . 만 사용 가능 (6~12자)"
-             required>
-      <small id="userNameHint" class="field-hint"></small>
-    </div>
+    <form id="edit-profile-form" method="post" enctype="multipart/form-data" class="edit-profile-form">
 
-    <div class="edit-profile-field">
-      <label for="bio">한줄소개</label>
-      <textarea id="bio" name="bio" maxlength="70" th:text="${member.bio}"></textarea>
-    </div>
+      <div class="edit-profile-img-wrap">
+        <img id="edit-profile-preview" th:src="${member.profileImg}" alt="프로필 미리보기" class="edit-profile-avatar">
+        <label for="profileImg" class="edit-profile-img-label">사진 변경</label>
+        <input type="file" id="profileImg" name="profileImg" accept="image/*" hidden>
+      </div>
+
+      <div class="edit-profile-field">
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" th:value="${member.name}"
+               pattern="^[a-zA-Z0-9_.]{6,12}$"
+               minlength="6" maxlength="12"
+               title="영문, 숫자, _, . 만 사용 가능 (6~12자)"
+               required>
+        <small id="nameHint" class="field-hint"></small>
+      </div>
+
+      <div class="edit-profile-field">
+        <label for="userName">사용자이름</label>
+        <input type="text" id="userName" name="userName" th:value="${member.userName}"
+               pattern="^[a-zA-Z0-9_.]{6,12}$"
+               minlength="6" maxlength="12"
+               title="영문, 숫자, _, . 만 사용 가능 (6~12자)"
+               required>
+        <small id="userNameHint" class="field-hint"></small>
+      </div>
+
+      <div class="edit-profile-field">
+        <label for="bio">한줄소개</label>
+        <textarea id="bio" name="bio" maxlength="70" th:text="${member.bio}"></textarea>
+      </div>
 
 
-    <p th:if="${error}" th:text="${error}" class="edit-profile-error"></p>
+      <p th:if="${error}" th:text="${error}" class="edit-profile-error"></p>
 
-    <div class="edit-profile-actions">
-      <a th:href="@{/profile/{userName}(userName=${member.userName})}" class="cancel-btn">취소</a>
-      <button type="submit" class="confirm-btn">저장</button>
-    </div>
+      <div class="edit-profile-actions">
+        <a th:href="@{/profile/{userName}(userName=${member.userName})}" class="cancel-btn">취소</a>
+        <button type="submit" class="confirm-btn">저장</button>
+      </div>
 
-  </form>
-</section>
+    </form>
+  </section>
 
-<script src="/js/common.js"></script>
-<script src="/js/board-detail.js"></script>
+
+  <div id="toast-container"></div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/board-detail.js"></script>
 </body>
 </html>
