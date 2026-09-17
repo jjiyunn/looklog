@@ -564,3 +564,43 @@ function showConfirm(message) {
         overlay.addEventListener('click', onOverlayClick);
     });
 }
+
+
+// 비공개
+const toggleDrawerVisibilityBtn = document.getElementById('toggle-drawer-visibility-btn');
+if (toggleDrawerVisibilityBtn) {
+    toggleDrawerVisibilityBtn.addEventListener('click', async function () {
+        const drawerId = this.dataset.drawerId;
+        const isPublic = this.dataset.public === 'true';
+
+        const confirmed = await showConfirm(
+            isPublic ? '이 서랍을 비공개로 전환할까요?' : '이 서랍을 공개로 전환할까요?'
+        );
+        if (!confirmed) return;
+
+        try {
+            const res = await fetch(`/drawer/${drawerId}/visibility`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ drawerPublic: !isPublic })
+            });
+            if (!res.ok) throw new Error();
+
+            this.dataset.public = String(!isPublic);
+            this.querySelector('span').textContent = !isPublic ? '비공개로 전환' : '공개로 전환';
+            showToast(!isPublic ? '서랍을 공개로 전환했습니다.' : '서랍을 비공개로 전환했습니다.');
+        } catch (e) {
+            showToast('처리 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+

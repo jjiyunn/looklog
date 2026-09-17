@@ -16,6 +16,10 @@
           <button class="more-menu-btn" id="more-menu-btn">편집</button>
 
           <div class="more-menu-dropdown" id="more-menu-dropdown" hidden>
+            <button th:if="${drawer.owner}" class="menu-item" id="toggle-drawer-visibility-btn"
+                    th:attr="data-drawer-id=${drawer.id}, data-public=${drawer.drawerPublic}">
+              <span th:text="${drawer.drawerPublic} ? '서랍 비공개' : '서랍 공개'"></span>
+            </button>
             <button class="menu-item" id="rename-drawer-btn" th:attr="data-drawer-id=${drawer.id}">서랍 수정</button>
             <button class="menu-item" id="delete-drawer-btn" th:attr="data-drawer-id=${drawer.id}">서랍 삭제</button>
           </div>

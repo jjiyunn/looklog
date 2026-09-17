@@ -22,9 +22,6 @@
           <i class="ti ti-search"></i>
         </button>
       </li>
-      <li th:if="${session.loginMemberRole == 'ADMIN'}">
-        <a href="/admin/reports">admin</a>
-      </li>
       <li><a href="profile">CLOSET</a></li>
     </ul>
 
@@ -89,6 +86,11 @@
       <span>+</span>
     </button>
 
+    <!-- admin -->
+    <a th:if="${session.loginMemberRole == 'ADMIN'}" href="/admin/reports" class="admin-link">
+      ADMIN
+    </a>
+
 
     <div class="feed">
       <div class="feed-item" th:each="board : ${boards}">
@@ -134,3 +136,4 @@
   <script src="/js/looklog.js"></script>
 </body>
 </html>
+

@@ -53,6 +53,9 @@ public class Member {
     @Column(nullable = false, length = 20)
     private String provider = "LOCAL";   // LOCAL/ GOOGLE
 
+    @Column(name = "profile_public", nullable = false)
+    private boolean profilePublic = true;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private MemberStatus status = MemberStatus.ACTIVE;

@@ -32,6 +32,9 @@ public class Drawer {
   @Column(name = "reg_date", updatable = false)
   private LocalDateTime regDate;
 
+  @Column(name = "drawer_public", nullable = false)
+  private boolean drawerPublic = true;
+
   @PrePersist
   protected void onCreate() {
     this.regDate = LocalDateTime.now();
