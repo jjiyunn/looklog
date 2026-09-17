@@ -35,6 +35,10 @@ public class DrawerViewController {
 
     boolean isOwner = drawer.getMember().getId().equals(loginMemberId);
 
+    // 서랍 비공개면 안보이게
+    if (!drawer.isDrawerPublic() && !isOwner) {
+      return "redirect:/";
+    }
 
     model.addAttribute("isLoggedIn", true);
     model.addAttribute("loginMemberName", session.getAttribute("loginMemberName"));

@@ -254,6 +254,35 @@ if (addDrawerBtn) {
     });
 }
 
+// 프로필 비공개
+const toggleProfileVisibilityBtn = document.getElementById('toggle-profile-visibility-btn');
+if (toggleProfileVisibilityBtn) {
+    toggleProfileVisibilityBtn.addEventListener('click', async function () {
+        const isPublic = this.dataset.public === 'true';
+
+        const confirmed = await showConfirm(
+            isPublic ? '프로필을 비공개로 전환할까요?' : '프로필을 공개로 전환할까요?'
+        );
+        if (!confirmed) return;
+
+        try {
+            const res = await fetch('/member/profile-visibility', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ profilePublic: !isPublic })
+            });
+            if (!res.ok) throw new Error();
+
+            this.dataset.public = String(!isPublic);
+            this.querySelector('span').textContent = !isPublic ? '프로필 비공개' : '프로필 공개';
+            showToast(!isPublic ? '프로필을 비공개로 전환했습니다.' : '프로필을 공개로 전환했습니다.');
+        } catch (e) {
+            showToast('처리 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+
 
 
 // profile edit

@@ -110,10 +110,13 @@ public class DrawerService {
 
 
   // 프로필 옷장탭 - 서랍 폴더 목록
-  public List<DrawerFolderDto> getDrawerFolders(Long memberId) {
+  public List<DrawerFolderDto> getDrawerFolders(Long memberId, Long viewerId) {
+    boolean isOwner = memberId.equals(viewerId);
+
     List<Drawer> drawers = drawerRepository.findByMember_IdOrderByIsDefaultDescRegDateAsc(memberId);
 
     return drawers.stream()
+            .filter(d -> isOwner || d.isDrawerPublic()) // 본인 아니면 비공개 서랍 제외
             .map(d -> {
               List<DrawerItem> items = drawerItemRepository.findByDrawer_IdOrderByRegDateDesc(d.getId());
               List<String> thumbnails = items.stream()
@@ -126,7 +129,8 @@ public class DrawerService {
                       d.getName(),
                       items.size(),
                       thumbnails,
-                      d.isDefault()
+                      d.isDefault(),
+                      d.isDrawerPublic()
               );
             })
             .toList();
@@ -138,15 +142,17 @@ public class DrawerService {
     private final Long id;
     private final String name;
     private final int itemCount;
-    private final List<String> thumbnails; // 최신순 최대 4개
+    private final List<String> thumbnails;
     private final boolean isDefault;
+    private final boolean drawerPublic;
 
-    public DrawerFolderDto(Long id, String name, int itemCount, List<String> thumbnails, boolean isDefault) {
+    public DrawerFolderDto(Long id, String name, int itemCount, List<String> thumbnails, boolean isDefault, boolean drawerPublic) {
       this.id = id;
       this.name = name;
       this.itemCount = itemCount;
       this.thumbnails = thumbnails;
       this.isDefault = isDefault;
+      this.drawerPublic = drawerPublic;
     }
   }
 
@@ -172,5 +178,16 @@ public class DrawerService {
       this.itemCount = itemCount;
       this.saved = saved;
     }
+  }
+
+  // 서랍 비공개
+  @Transactional
+  public void updateVisibility(Long drawerId, Long memberId, boolean drawerPublic) {
+    Drawer drawer = drawerRepository.findById(drawerId)
+            .orElseThrow(() -> new IllegalArgumentException("서랍이 존재하지 않습니다."));
+    if (!drawer.getMember().getId().equals(memberId)) {
+      throw new IllegalStateException("권한이 없습니다.");
+    }
+    drawer.setDrawerPublic(drawerPublic);
   }
 }

@@ -28,8 +28,6 @@ public class HomeController {
 
     private final BoardService boardService;
     private final TagRepository tagRepository;
-    private final MemberRepository memberRepository;
-    private final MemberService memberService;
 
 
     @GetMapping("/")
@@ -98,41 +96,6 @@ public class HomeController {
         return "redirect:/profile/" + loginMemberName;
     }
 
-    // 프로필 수정
-    @GetMapping("/profile/edit")
-    public String editForm(HttpSession session, Model model,
-                           @RequestParam(required = false) Boolean welcome) {
-        Long loginMemberId = (Long) session.getAttribute("loginMemberId");
-        if (loginMemberId == null) return "redirect:/";
 
-        Member member = memberRepository.findById(loginMemberId).orElseThrow();
-        model.addAttribute("member", member);
-        model.addAttribute("welcome", welcome != null && welcome);
-        return "profile-edit";
-    }
-
-    @PostMapping("/profile/edit")
-    public String edit(@RequestParam String name,
-                       @RequestParam String userName,
-                       @RequestParam(required = false) String bio,
-                       @RequestParam(required = false) MultipartFile profileImg,
-                       HttpSession session,
-                       RedirectAttributes redirectAttributes) {
-
-        Long loginMemberId = (Long) session.getAttribute("loginMemberId");
-        if (loginMemberId == null) return "redirect:/";
-
-        try {
-            memberService.updateProfile(loginMemberId, name, userName, bio, profileImg);
-        } catch (IllegalStateException | IOException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/profile/edit";
-        }
-
-        Member member = memberRepository.findById(loginMemberId).orElseThrow();
-        session.setAttribute("loginMemberName", member.getUserName());
-
-        return "redirect:/profile/" + member.getUserName();
-    }
 
 }

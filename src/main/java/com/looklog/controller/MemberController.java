@@ -6,9 +6,9 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -72,7 +72,6 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    //회원 탈퇴
     // 회원 탈퇴
     @PostMapping("/profile/withdraw")
     @ResponseBody
@@ -86,4 +85,17 @@ public class MemberController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    
+    // 프로필 비공개
+    @PatchMapping("/member/profile-visibility")
+    @ResponseBody
+    public ResponseEntity<?> toggleProfileVisibility(@RequestBody Map<String, Boolean> body, HttpSession session) {
+        Long loginMemberId = (Long) session.getAttribute("loginMemberId");
+        if (loginMemberId == null) return ResponseEntity.status(401).build();
+
+        memberService.updateProfileVisibility(loginMemberId, body.get("profilePublic"));
+        return ResponseEntity.ok().build();
+    }
+
 }

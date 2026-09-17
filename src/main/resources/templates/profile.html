@@ -16,6 +16,10 @@
         <div class="more-menu-dropdown" id="more-menu-dropdown" hidden>
           <a th:if="${isOwner}" class="menu-item" id="edit-profile-btn" href="/profile/edit">프로필 수정</a>
           <button class="menu-item" id="share-profile-btn">공유</button>
+          <button th:if="${isOwner}" class="menu-item" id="toggle-profile-visibility-btn"
+                  th:attr="data-public=${profileMember.profilePublic}">
+            <span th:text="${profileMember.profilePublic} ? '프로필 비공개' : '프로필 공개'"></span>
+          </button>
           <button th:unless="${isOwner}" class="menu-item" id="report-member-btn" th:attr="data-member-id=${profileMember.id}">신고</button>
           <button th:if="${isOwner}" class="menu-item menu-item-danger" id="withdraw-btn">회원탈퇴</button>
         </div>
@@ -50,39 +54,46 @@
 
 
 <!--    피드/ 옷장-->
-    <div class="profile-tabs">
-      <button class="tab-btn active" data-tab="feed">피드</button>
-      <button class="tab-btn" data-tab="closet">옷장</button>
+    <div th:if="${isPrivateBlocked}" class="private-profile-message">
+      <i class="ti ti-lock"></i>
+      <p>비공개 계정입니다</p>
     </div>
 
-    <div class="tab-content" id="tab-feed">
-      <div class="feed">
-        <div class="feed-item" th:each="board : ${boards}">
-          <a class="feed-img-wrap" th:href="@{/board/{id}(id=${board.id})}">
-            <img th:src="${board.img}" alt="게시글" class="feed-img">
-          </a>
+    <div th:unless="${isPrivateBlocked}">
+      <div class="profile-tabs">
+        <button class="tab-btn active" data-tab="feed">피드</button>
+        <button class="tab-btn" data-tab="closet">옷장</button>
+      </div>
 
-          <div class="feed-info">
-            <span class="feed-username" th:text="${board.userName}"></span>
+      <div class="tab-content" id="tab-feed">
+        <div class="feed">
+          <div class="feed-item" th:each="board : ${boards}">
+            <a class="feed-img-wrap" th:href="@{/board/{id}(id=${board.id})}">
+              <img th:src="${board.img}" alt="게시글" class="feed-img">
+            </a>
 
-            <div class="feed-tags">
-              <span class="feed-tag" th:each="t : ${board.tags}" th:text="'#' + ${t}"></span>
+            <div class="feed-info">
+              <span class="feed-username" th:text="${board.userName}"></span>
+
+              <div class="feed-tags">
+                <span class="feed-tag" th:each="t : ${board.tags}" th:text="'#' + ${t}"></span>
+              </div>
+
+              <button class="closet-btn" th:attr="data-board-id=${board.id}"
+                      th:classappend="${board.savedByMe} ? ' saved' : ''">
+                <i class="ti ti-hanger"></i>
+                <span class="check material-symbols-rounded">check</span>
+              </button>
+
+              <button class="like-btn"
+                      th:attr="data-board-id=${board.id}"
+                      th:classappend="${board.likedByMe} ? ' liked' : ''">
+                <i class="bi bi-heart-fill"></i>
+                <span class="like-count" th:text="${board.likeCount}"></span>
+              </button>
             </div>
 
-            <button class="closet-btn" th:attr="data-board-id=${board.id}"
-                    th:classappend="${board.savedByMe} ? ' saved' : ''">
-              <i class="ti ti-hanger"></i>
-              <span class="check material-symbols-rounded">check</span>
-            </button>
-
-            <button class="like-btn"
-                    th:attr="data-board-id=${board.id}"
-                    th:classappend="${board.likedByMe} ? ' liked' : ''">
-              <i class="bi bi-heart-fill"></i>
-              <span class="like-count" th:text="${board.likeCount}"></span>
-            </button>
           </div>
-
         </div>
       </div>
     </div>
@@ -109,7 +120,7 @@
         </a>
 
         <!-- 서랍 추가 -->
-        <button class="drawer-folder-add" id="add-drawer-btn" type="button">
+        <button class="drawer-folder-add" id="add-drawer-btn" type="button" th:if="${session.loginMemberId == profileMember.id}">
           <div class="drawer-thumb add">
             <i class="ti ti-plus"></i>
           </div>

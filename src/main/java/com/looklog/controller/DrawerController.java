@@ -99,4 +99,18 @@ public class DrawerController {
       return ResponseEntity.badRequest().body(e.getMessage());
     }
   }
+
+  // 서랍 비공개
+  @PatchMapping("/drawer/{id}/visibility")
+  @ResponseBody
+  public ResponseEntity<?> toggleDrawerVisibility(@PathVariable Long id,
+                                                  @RequestBody Map<String, Boolean> body,
+                                                  HttpSession session) {
+    Long loginMemberId = (Long) session.getAttribute("loginMemberId");
+    if (loginMemberId == null) return ResponseEntity.status(401).build();
+
+    drawerService.updateVisibility(id, loginMemberId, body.get("drawerPublic"));
+    return ResponseEntity.ok().build();
+  }
+
 }

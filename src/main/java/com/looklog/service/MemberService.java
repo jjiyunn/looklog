@@ -153,5 +153,12 @@ public class MemberService {
     }
 
 
+    // 프로필 비공개
+    @Transactional
+    public void updateProfileVisibility(Long memberId, boolean profilePublic) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+        member.setProfilePublic(profilePublic);
+    }
 }
 
