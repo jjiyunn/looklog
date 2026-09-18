@@ -7,39 +7,124 @@
   <section class="admin-wrap">
     <h2>신고 관리</h2>
 
+    <div class="admin-filter-bar">
+      <div class="filter-group">
+        <a th:href="@{/admin/reports(targetType='ALL', sort=${sort})}"
+           th:classappend="${targetType == 'ALL'} ? ' active' : ''" class="filter-btn">전체(<span th:text="${pendingCounts['ALL']}"></span>)</a>
+        <a th:href="@{/admin/reports(targetType='MEMBER', sort=${sort})}"
+           th:classappend="${targetType == 'MEMBER'} ? ' active' : ''" class="filter-btn">유저(<span th:text="${pendingCounts['MEMBER']}"></span>)</a>
+        <a th:href="@{/admin/reports(targetType='BOARD', sort=${sort})}"
+           th:classappend="${targetType == 'BOARD'} ? ' active' : ''" class="filter-btn">게시물(<span th:text="${pendingCounts['BOARD']}"></span>)</a>
+      </div>
+
+      <div class="filter-group">
+        <a th:href="@{/admin/reports(targetType=${targetType}, sort='desc')}"
+           th:classappend="${sort == 'desc'} ? ' active' : ''" class="filter-btn">최신순</a>
+        <a th:href="@{/admin/reports(targetType=${targetType}, sort='asc')}"
+           th:classappend="${sort == 'asc'} ? ' active' : ''" class="filter-btn">오래된순</a>
+      </div>
+    </div>
+
     <table class="admin-report-table">
       <thead>
       <tr>
-        <th>신고자</th>
-        <th>대상</th>
-        <th>사유</th>
-        <th>상세</th>
-        <th>날짜</th>
-        <th>처리</th>
+        <th>신고자</th><th>대상</th><th>사유</th><th>상세</th><th>날짜</th><th>처리</th>
       </tr>
       </thead>
       <tbody>
       <tr th:each="r : ${reports}">
         <td class="reporter-cell" th:text="${r.reporter.userName}"></td>
         <td>
-          <span class="target-badge" th:classappend="${r.targetType == 'BOARD'} ? ' target-board' : ' target-member'"
-                th:text="${r.targetType == 'BOARD'} ? '게시물' : '유저'"></span>
+      <span class="target-badge" th:classappend="${r.targetType == 'BOARD'} ? ' target-board' : ' target-member'"
+            th:text="${r.targetType == 'BOARD'} ? '게시물' : '유저'"></span>
           <a th:if="${r.targetType == 'BOARD'}" class="view-link" th:href="@{/board/{id}(id=${r.targetId})}">보기</a>
+          <a th:if="${r.targetType == 'MEMBER'}" class="view-link" th:href="@{/admin/member/{id}/profile(id=${r.targetId})}">보러가기</a>
         </td>
         <td><span class="reason-badge" th:text="${r.reason}"></span></td>
         <td class="detail-cell" th:text="${r.detail}"></td>
         <td class="date-cell" th:text="${#temporals.format(r.regDate, 'yyyy-MM-dd HH:mm')}"></td>
         <td>
-          <form th:action="@{/admin/reports/{id}/resolve(id=${r.id})}" method="post">
+          <form th:action="@{/admin/reports/{id}/resolve(id=${r.id})}" method="post" class="inline-form">
             <button type="submit" class="resolve-btn">처리완료</button>
+          </form>
+          <form th:if="${r.targetType == 'BOARD'}"
+                th:action="@{/admin/reports/{id}/delete-board(id=${r.id})}"
+                method="post" class="inline-form"
+                onsubmit="return confirm('이 게시물을 삭제할까요?')">
+            <button type="submit" class="delete-btn">게시물 삭제</button>
           </form>
         </td>
       </tr>
       </tbody>
     </table>
 
+    <div class="pagination" th:if="${reports.totalPages > 1}">
+      <a th:each="i : ${#numbers.sequence(0, reports.totalPages - 1)}"
+         th:href="@{/admin/reports(targetType=${targetType}, sort=${sort}, p=${i}, rTargetType=${rTargetType}, rSort=${rSort}, rp=${rp})}"
+         th:text="${i + 1}"
+         th:classappend="${i == p} ? ' active' : ''"
+         class="page-btn"></a>
+    </div>
+
     <p class="empty-msg" th:if="${reports.isEmpty()}">대기 중인 신고가 없습니다.</p>
+
+
+
+    <h2 style="margin-top:40px;">처리된 신고</h2>
+
+    <div class="admin-filter-bar">
+      <div class="filter-group">
+        <a th:href="@{/admin/reports(rTargetType='ALL', rSort=${rSort}, targetType=${targetType}, sort=${sort})}"
+           th:classappend="${rTargetType == 'ALL'} ? ' active' : ''" class="filter-btn">전체(<span th:text="${resolvedCounts['ALL']}"></span>)</a>
+        <a th:href="@{/admin/reports(rTargetType='MEMBER', rSort=${rSort}, targetType=${targetType}, sort=${sort})}"
+           th:classappend="${rTargetType == 'MEMBER'} ? ' active' : ''" class="filter-btn">유저(<span th:text="${resolvedCounts['MEMBER']}"></span>)</a>
+        <a th:href="@{/admin/reports(rTargetType='BOARD', rSort=${rSort}, targetType=${targetType}, sort=${sort})}"
+           th:classappend="${rTargetType == 'BOARD'} ? ' active' : ''" class="filter-btn">게시물(<span th:text="${resolvedCounts['BOARD']}"></span>)</a>
+      </div>
+
+      <div class="filter-group">
+        <a th:href="@{/admin/reports(rTargetType=${rTargetType}, rSort='desc', targetType=${targetType}, sort=${sort})}"
+           th:classappend="${rSort == 'desc'} ? ' active' : ''" class="filter-btn">최신순</a>
+        <a th:href="@{/admin/reports(rTargetType=${rTargetType}, rSort='asc', targetType=${targetType}, sort=${sort})}"
+           th:classappend="${rSort == 'asc'} ? ' active' : ''" class="filter-btn">오래된순</a>
+      </div>
+    </div>
+
+    <table class="admin-report-table">
+      <thead>
+      <tr>
+        <th>신고자</th><th>대상</th><th>사유</th><th>상세</th><th>날짜</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="r : ${resolvedReports}">
+        <td class="reporter-cell" th:text="${r.reporter.userName}"></td>
+        <td>
+      <span class="target-badge" th:classappend="${r.targetType == 'BOARD'} ? ' target-board' : ' target-member'"
+            th:text="${r.targetType == 'BOARD'} ? '게시물' : '유저'"></span>
+          <a th:if="${r.targetType == 'BOARD'}" class="view-link" th:href="@{/board/{id}(id=${r.targetId})}">보기</a>
+          <a th:if="${r.targetType == 'MEMBER'}" class="view-link" th:href="@{/admin/member/{id}/profile(id=${r.targetId})}">보러가기</a>
+        </td>
+        <td><span class="reason-badge" th:text="${r.reason}"></span></td>
+        <td class="detail-cell" th:text="${r.detail}"></td>
+        <td class="date-cell" th:text="${#temporals.format(r.regDate, 'yyyy-MM-dd HH:mm')}"></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <p class="empty-msg" th:if="${resolvedReports.isEmpty()}">처리된 신고가 없습니다.</p>
+
+    <div class="pagination" th:if="${resolvedReports.totalPages > 1}">
+      <a th:each="i : ${#numbers.sequence(0, resolvedReports.totalPages - 1)}"
+         th:href="@{/admin/reports(rTargetType=${rTargetType}, rSort=${rSort}, rp=${i}, targetType=${targetType}, sort=${sort}, p=${p})}"
+         th:text="${i + 1}"
+         th:classappend="${i == rp} ? ' active' : ''"
+         class="page-btn"></a>
+    </div>
+
+
   </section>
+
 
 
   <div id="toast-container"></div>

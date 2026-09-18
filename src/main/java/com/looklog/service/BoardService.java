@@ -257,6 +257,15 @@ public class BoardService {
     }
 
 
+    // 관리자 강제 삭제
+    public void deleteBoardByAdmin(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalStateException("게시글을 찾을 수 없습니다."));
+
+        deleteImageFile(board.getImg());
+        boardRepository.delete(board);
+    }
+
 
     @Getter
     public static class BoardViewDto {
