@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -29,6 +31,7 @@ public class BoardService {
 
     // feed upload
     public Board createBoard(Member member, MultipartFile imageFile, String content) throws IOException {
+        validateImageFile(imageFile);
         String originalFilename = imageFile.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
         String savedFilename = UUID.randomUUID() + extension;
@@ -45,8 +48,25 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
+    // feed upload img 제한
+    private void validateImageFile(MultipartFile imageFile) throws IOException {
+        String contentType = imageFile.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            throw new IllegalArgumentException("이미지 파일만 업로드 가능합니다.");
+        }
+
+        BufferedImage img = ImageIO.read(imageFile.getInputStream());
+        if (img == null) {
+            throw new IllegalArgumentException("이미지 파일을 읽을 수 없습니다.");
+        }
+        if (img.getWidth() < 200 || img.getHeight() < 300) {
+            throw new IllegalArgumentException("이미지는 최소 200x300 이상이어야 합니다.");
+        }
+    }
+
     // 게시글 업로드 시 태그
     public Board createBoard(Member member, MultipartFile imageFile, String content, String tagsInput) throws IOException {
+        validateImageFile(imageFile);
         String originalFilename = imageFile.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
         String savedFilename = UUID.randomUUID() + extension;
@@ -115,6 +135,7 @@ public class BoardService {
 
         // 이미지 새로 선택했을 때만 교체
         if (imageFile != null && !imageFile.isEmpty()) {
+            validateImageFile(imageFile);
             String originalFilename = imageFile.getOriginalFilename();
             String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
             String savedFilename = UUID.randomUUID() + extension;
