@@ -56,6 +56,21 @@ public class Member {
     @Column(name = "profile_public", nullable = false)
     private boolean profilePublic = true;
 
+    @Column(name = "email_verified", nullable = false)
+    private boolean emailVerified = false;
+
+    @Column(name = "email_verification_code", length = 10)
+    private String emailVerificationCode;
+
+    @Column(name = "email_verification_expiry")
+    private LocalDateTime emailVerificationExpiry;
+
+    @Column(name = "password_reset_code", length = 10)
+    private String passwordResetCode;
+
+    @Column(name = "password_reset_expiry")
+    private LocalDateTime passwordResetExpiry;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private MemberStatus status = MemberStatus.ACTIVE;

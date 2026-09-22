@@ -24,16 +24,16 @@ public class MemberController {
             @RequestParam String password,
             @RequestParam String name,
             @RequestParam String userName,
-            HttpSession session   // 추가
+            HttpSession session
     ) {
         try {
             Member member = memberService.signUp(email, password, name, userName);
 
             // 회원가입 성공 -> 바로 세션에 로그인 정보 저장 (자동 로그인)
             session.setAttribute("loginMemberId", member.getId());
-            session.setAttribute("loginMemberId", member.getId());
             session.setAttribute("loginMemberName", member.getUserName());
             session.setAttribute("loginMemberRole", member.getRole());
+            session.setAttribute("emailVerified", member.isEmailVerified());
 
             return ResponseEntity.ok().build();
         } catch (IllegalStateException e) {
@@ -52,11 +52,10 @@ public class MemberController {
         try {
             Member member = memberService.login(email, password);
 
-            // 로그인 성공 -> 세션에 회원 정보 저장
-            session.setAttribute("loginMemberId", member.getId());
             session.setAttribute("loginMemberId", member.getId());
             session.setAttribute("loginMemberName", member.getUserName());
             session.setAttribute("loginMemberRole", member.getRole());
+            session.setAttribute("emailVerified", member.isEmailVerified());
 
             return ResponseEntity.ok().build();
         } catch (IllegalStateException e) {

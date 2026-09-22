@@ -237,13 +237,24 @@ if (joinSubmitBtn) {
             window.location.href = '/looklog';
           } else {
             return res.text().then(msg => {
-              setFieldError(emailError, msg);
+              setSignupServerError(msg);
             });
           }
         });
   });
 }
 
+function setSignupServerError(msg) {
+  if (msg.includes('이메일')) {
+    setFieldError(emailError, msg);
+  } else if (msg.includes('비밀번호')) {
+    setFieldError(passwordError, msg);
+  } else if (msg.includes('이름') || msg.includes('사용자이름')) {
+    setFieldError(usernameError, msg);
+  } else {
+    setFieldError(emailError, msg); // 어느 것도 안 걸리면 기본 자리
+  }
+}
 
 
 //로그인

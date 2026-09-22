@@ -84,11 +84,11 @@ public class SecurityConfig {
         member.setUserName(generateUniqueUserName());
         member.setProvider("GOOGLE");
         member.setPassword(null);
+        member.setEmailVerified(true);   // 추가 — 구글이 이미 인증해준 이메일
         member = memberRepository.save(member);
 
         Drawer defaultDrawer = new Drawer(member, "기본서랍", true);
         drawerRepository.save(defaultDrawer);
-
 
         ServletRequestAttributes attrForNew = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         attrForNew.getRequest().getSession().setAttribute("needsUsernameSetup", true);
@@ -104,6 +104,7 @@ public class SecurityConfig {
       request.getSession().setAttribute("loginMemberId", member.getId());
       request.getSession().setAttribute("loginMemberName", member.getUserName());
       request.getSession().setAttribute("loginMemberRole", member.getRole());
+      request.getSession().setAttribute("emailVerified", member.isEmailVerified());   // 추가
 
       return oAuth2User;
     }

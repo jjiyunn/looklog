@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -26,6 +27,7 @@ public class MemberService {
     private final DrawerRepository drawerRepository;
     private final PasswordEncoder passwordEncoder;
     private final FollowRepository followRepository;
+    private final EmailService emailService;
 
     private final String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
 
@@ -68,12 +70,56 @@ public class MemberService {
         member.setName(name);
         member.setUserName(userName);
 
+        String code = emailService.generateCode();
+        member.setEmailVerificationCode(code);
+        member.setEmailVerificationExpiry(LocalDateTime.now().plusMinutes(10));
+
         Member savedMember = memberRepository.save(member);
 
         Drawer defaultDrawer = new Drawer(savedMember, "기본서랍", true);
         drawerRepository.save(defaultDrawer);
 
+        emailService.sendVerificationEmail(email, code);
+
         return savedMember;
+    }
+
+    // 이메일 인증
+    public void verifyEmail(Long memberId, String inputCode) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalStateException("회원을 찾을 수 없습니다."));
+
+        if (member.isEmailVerified()) {
+            throw new IllegalStateException("이미 인증된 이메일입니다.");
+        }
+
+        if (member.getEmailVerificationExpiry() == null
+                || member.getEmailVerificationExpiry().isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("인증 코드가 만료되었습니다. 재전송해주세요.");
+        }
+
+        if (!member.getEmailVerificationCode().equals(inputCode)) {
+            throw new IllegalStateException("인증 코드가 일치하지 않습니다.");
+        }
+
+        member.setEmailVerified(true);
+        member.setEmailVerificationCode(null);
+        member.setEmailVerificationExpiry(null);
+    }
+
+    public void resendVerificationCode(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalStateException("회원을 찾을 수 없습니다."));
+
+        if (member.isEmailVerified()) {
+            throw new IllegalStateException("이미 인증된 이메일입니다.");
+        }
+
+        String code = emailService.generateCode();
+        member.setEmailVerificationCode(code);
+        member.setEmailVerificationExpiry(LocalDateTime.now().plusMinutes(10));
+
+        emailService.sendVerificationEmail(member.getEmail(), code);
     }
 
 
@@ -159,6 +205,66 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
         member.setProfilePublic(profilePublic);
+    }
+
+
+
+    // 1. 비밀번호 재설정 코드 발송
+    public void requestPasswordReset(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("가입되지 않은 이메일입니다."));
+
+        if (member.getStatus() == MemberStatus.WITHDRAWN) {
+            throw new IllegalStateException("탈퇴한 계정입니다.");
+        }
+
+        if (!"LOCAL".equals(member.getProvider())) {
+            throw new IllegalStateException("소셜 로그인 계정은 비밀번호 재설정을 이용할 수 없습니다.");
+        }
+
+        String code = emailService.generateCode();
+        member.setPasswordResetCode(code);
+        member.setPasswordResetExpiry(LocalDateTime.now().plusMinutes(10));
+
+        emailService.sendPasswordResetEmail(email, code);
+    }
+
+    // 2. 코드만 확인 (다음 화면으로 넘어가기 위한 체크)
+    public void verifyPasswordResetCode(String email, String inputCode) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("가입되지 않은 이메일입니다."));
+
+        if (member.getPasswordResetExpiry() == null
+                || member.getPasswordResetExpiry().isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("인증 코드가 만료되었습니다. 다시 시도해주세요.");
+        }
+
+        if (!member.getPasswordResetCode().equals(inputCode)) {
+            throw new IllegalStateException("인증 코드가 일치하지 않습니다.");
+        }
+    }
+
+    // 3. 새 비밀번호로 변경
+    public void resetPassword(String email, String inputCode, String newPassword) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("가입되지 않은 이메일입니다."));
+
+        if (member.getPasswordResetExpiry() == null
+                || member.getPasswordResetExpiry().isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("인증 코드가 만료되었습니다. 다시 시도해주세요.");
+        }
+
+        if (!member.getPasswordResetCode().equals(inputCode)) {
+            throw new IllegalStateException("인증 코드가 일치하지 않습니다.");
+        }
+
+        if (!PASSWORD_PATTERN.matcher(newPassword).matches()) {
+            throw new IllegalStateException("비밀번호는 8~20자이며 영문, 숫자, 특수문자를 포함해야 합니다.");
+        }
+
+        member.setPassword(passwordEncoder.encode(newPassword));
+        member.setPasswordResetCode(null);
+        member.setPasswordResetExpiry(null);
     }
 }
 
