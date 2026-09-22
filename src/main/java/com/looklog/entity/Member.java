@@ -36,6 +36,12 @@ public class Member {
     @Column(name = "profile_img", length = 255)
     private String profileImg;
 
+    public String getProfileImg() {
+        return (profileImg == null || profileImg.isBlank())
+                ? "/imgs/default-profile.png"
+                : profileImg;
+    }
+
     @Column(length = 150)
     private String bio;
 
