@@ -284,8 +284,40 @@ if (uploadModal) {
                 uploadPlaceholder.hidden = true;
             };
             reader.readAsDataURL(file);
+
+            suggestTagsFromImage(file);
         }
     });
+
+    function suggestTagsFromImage(file) {
+        // 기존 선택된 태그 초기화
+        selectedTags = [];
+        uploadTagsInput.value = '';
+        tagOptions.forEach(btn => btn.classList.remove('selected'));
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        uploadPreviewBox.classList.add('ai-loading');
+
+        fetch('/board/suggest-tags', {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(suggestedTags => {
+                suggestedTags.forEach(tag => {
+                    const btn = document.querySelector(`.tag-option[data-tag="${tag}"]`);
+                    if (btn && !selectedTags.includes(tag) && selectedTags.length < 6) {
+                        btn.click();
+                    }
+                });
+            })
+            .catch(() => {})
+            .finally(() => {
+                uploadPreviewBox.classList.remove('ai-loading');
+            });
+    }
 
     function resetUploadForm() {
         uploadImageInput.value = '';

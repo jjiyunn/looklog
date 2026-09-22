@@ -647,6 +647,18 @@ form .ti-search {
 }
 
 /* upBtn tag */
+.upload-preview-box.ai-loading::after {
+    content: "✨ 태그 분석 중...";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    font-weight: 500;
+}
+
 
 .tag-category {
     margin-bottom: 18px;

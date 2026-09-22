@@ -4,6 +4,7 @@ import com.looklog.entity.Board;
 import com.looklog.entity.Member;
 import com.looklog.repository.MemberRepository;
 import com.looklog.service.BoardService;
+import com.looklog.service.GeminiTagService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +20,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final MemberRepository memberRepository;
+    private final GeminiTagService geminiTagService;
 
     @PostMapping("/board/create")
     public ResponseEntity<?> createBoard(
@@ -71,6 +74,17 @@ public class BoardController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("게시글 수정에 실패했습니다: " + e.getMessage());
+        }
+    }
+
+    // 제미나이태그
+    @PostMapping("/board/suggest-tags")
+    public ResponseEntity<?> suggestTags(@RequestParam MultipartFile image) {
+        try {
+            List<String> tags = geminiTagService.suggestTags(image);
+            return ResponseEntity.ok(tags);
+        } catch (Exception e) {
+            return ResponseEntity.ok(List.of()); // 실패해도 빈 배열
         }
     }
 }
