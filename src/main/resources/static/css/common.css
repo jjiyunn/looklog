@@ -73,6 +73,12 @@ header form {
     z-index: 888;
 }
 
+@media (max-width: 850px) {
+    header form {
+        margin: 20px auto;
+    }
+}
+
 header input {
     width: 100%;
     padding: 0 70px 0 clamp(15px,2vw,30px);
