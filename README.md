@@ -1,10 +1,11 @@
-                                 # LOOK LOG (룩로그)
+
+# LOOK LOG (룩로그)
 
 패션 코디 사진을 기록하고 공유하는 소셜 플랫폼입니다. Instagram과 Pinterest를 참고해 "오늘의 착장(OOTD)"을 아카이빙하고, 다른 사람들의 스타일을 태그로 탐색할 수 있도록 만들었습니다.
 
 > 개인 포트폴리오 프로젝트로 1인 개발했습니다.
-
-<!-- 여기에 대표 스크린샷 또는 GIF 삽입 예정 -->
+> 
+<img width="1118" height="853" alt="화면 캡처 2026-09-30 164632" src="https://github.com/user-attachments/assets/88b48aaf-8c1b-4cae-8891-798ae569f787" />
 
 ## 주요 기능
 
