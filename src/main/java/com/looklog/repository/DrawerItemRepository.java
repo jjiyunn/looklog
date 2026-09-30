@@ -31,4 +31,6 @@ public interface DrawerItemRepository extends JpaRepository<DrawerItem, DrawerIt
   void deleteByBoard_IdAndDrawer_Member_Id(Long boardId, Long memberId);
 
   Optional<DrawerItem> findByBoard_IdAndDrawer_Member_Id(Long boardId, Long memberId);
+
+  void deleteByBoard_Id(Long boardId);
 }

@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface LikesRepository extends JpaRepository<Likes, LikesId> {
     long countByBoard(Board board);
     boolean existsByMemberIdAndBoardId(Long memberId, Long boardId);
+    void deleteById_BoardId(Long boardId);
 }

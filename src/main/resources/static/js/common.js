@@ -289,6 +289,7 @@ if (uploadModal) {
         }
     });
 
+
     function suggestTagsFromImage(file) {
         // 기존 선택된 태그 초기화
         selectedTags = [];

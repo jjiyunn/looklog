@@ -246,8 +246,16 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalStateException("게시글을 찾을 수 없습니다."));
 
-        deleteImageFile(board.getImg());
+        if (!board.getMember().getId().equals(loginMemberId)) {
+            throw new IllegalStateException("삭제 권한이 없습니다.");
+        }
+
+        likesRepository.deleteById_BoardId(boardId);
+        boardTagRepository.deleteByBoard(board);
+        drawerItemRepository.deleteByBoard_Id(boardId);
+
         boardRepository.delete(board);
+        deleteImageFile(board.getImg());
     }
 
     private void deleteImageFile(String imgPath) {
@@ -283,8 +291,12 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalStateException("게시글을 찾을 수 없습니다."));
 
-        deleteImageFile(board.getImg());
+        likesRepository.deleteById_BoardId(boardId);
+        boardTagRepository.deleteByBoard(board);
+        drawerItemRepository.deleteByBoard_Id(boardId);
+
         boardRepository.delete(board);
+        deleteImageFile(board.getImg());
     }
 
 
