@@ -237,7 +237,15 @@ $(".oo-sort-toggle p").on("click", function () {
 
   const sort = isPopular ? "popular" : "latest";
 
+  // 현재 선택된 태그 가져오기
+  const activeTag = document.querySelector('.oo-tag li.active a');
+  const currentTag = activeTag ? new URL(activeTag.href).searchParams.get('tag') : null;
+
+  const url = currentTag
+      ? `/looklog?tag=${currentTag}&sort=${sort}`
+      : `/looklog?sort=${sort}`;
+
   setTimeout(function () {
-    window.location.href = `/looklog?sort=${sort}`;
+    window.location.href = url;
   }, 350);
 });

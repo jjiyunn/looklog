@@ -111,10 +111,21 @@ public class BoardService {
 
         if (tagName != null && !tagName.isBlank()) {
             boards = boardRepository.findByTagName(tagName);
-        } else if ("popular".equals(sort)) {
-            boards = boardRepository.findAllOrderByLikeCountDesc();   // ★ 새로 필요
         } else {
-            boards = boardRepository.findAllByOrderByRegDateDesc();
+            boards = boardRepository.findAll();
+        }
+
+        if ("popular".equals(sort)) {
+            boards = boards.stream()
+                    .sorted((b1, b2) -> Long.compare(
+                            likesRepository.countByBoard(b2),
+                            likesRepository.countByBoard(b1)
+                    ))
+                    .toList();
+        } else {
+            boards = boards.stream()
+                    .sorted((b1, b2) -> b2.getRegDate().compareTo(b1.getRegDate()))
+                    .toList();
         }
 
         return boards.stream().map(board -> toDto(board, loginMemberId)).toList();

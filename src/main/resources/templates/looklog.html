@@ -72,11 +72,11 @@
     <div class="oo-tag-wrap">
       <ul class="oo-tag">
         <li th:classappend="${selectedTag == null} ? ' active' : ''">
-          <a th:href="@{/looklog}"><span>전체</span></a>
+          <a th:href="@{/looklog(sort=${selectedSort})}"><span>전체</span></a>
         </li>
         <li th:each="tag : ${allTags}"
             th:classappend="${selectedTag == tag.name} ? ' active' : ''">
-          <a th:href="@{/looklog(tag=${tag.name})}"><span th:text="${tag.name}"></span></a>
+          <a th:href="@{/looklog(tag=${tag.name}, sort=${selectedSort})}"><span th:text="${tag.name}"></span></a>
         </li>
       </ul>
     </div>
