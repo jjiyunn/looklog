@@ -20,21 +20,32 @@ https://github.com/user-attachments/assets/9476f9fa-be2e-45a3-a909-4aad4e3b37eb
 ### 서랍(Drawer) 시스템
 마음에 드는 게시글을 폴더별로 모아 저장할 수 있는 기능입니다. 옷장을 정리하듯 개인 취향으로 컬렉션을 만들 수 있습니다.
 
+https://github.com/user-attachments/assets/53087bb5-44ae-42fa-a493-ee5c52482a34
+
 ### 팔로우 & 프로필/서랍 공개 설정
 사용자 간 팔로우 기능과, 프로필/서랍 단위로 전체공개·비공개를 설정할 수 있는 프라이버시 옵션을 제공합니다.
+
+https://github.com/user-attachments/assets/9d307be8-87dd-44e6-9c01-7983f663e81c
 
 ### 인증
 - 이메일 인증 (Gmail SMTP 6자리 코드 발송, 인터셉터로 미인증 세션 접근 제한)
 - Google OAuth2 소셜 로그인
 - 세션 기반 인증
 
+https://github.com/user-attachments/assets/1bf5ff41-5943-4953-b91c-45b360200058
+
+
 ### 신고 & 관리자 모더레이션
 부적절한 게시글/회원을 신고할 수 있고, 관리자 페이지에서 신고 내역을 확인해 강제 삭제 등 조치를 취할 수 있습니다.
 
+<img width="377" height="425" alt="화면 캡처 2026-10-02 111036" src="https://github.com/user-attachments/assets/bbb7f937-aec0-4f1a-9fd2-fca44b0241e9" />
 <img width="1009" height="333" alt="화면 캡처 2026-10-02 105825" src="https://github.com/user-attachments/assets/821283ad-2ad3-4365-a46f-37514318d4b5" />
 
 ### 태그 기반 검색
 Style / Season / Color 카테고리로 나뉜 태그를 조합해 원하는 스타일의 게시글을 탐색할 수 있습니다.
+
+https://github.com/user-attachments/assets/1c2b8fe9-15dc-4211-ac86-62cadce169ef
+
 
 ## 기술 스택
 
