@@ -4,22 +4,24 @@
 
 > 개인 포트폴리오 프로젝트로 1인 개발했습니다.
 
-<!-- 여기에 대표 스크린샷 또는 GIF 삽입 예정 -->
+https://github.com/user-attachments/assets/01bf0d81-541a-4ec1-bb6a-da9c598f5092
 
 ## 주요 기능
 
 ### 게시글 업로드 + AI 태그 자동 추천
 사진을 업로드하면 Google Gemini API가 이미지를 분석해 어울리는 태그를 자동으로 추천합니다. 태그는 미리 정의된 Style / Season / Color 목록 안에서만 선택되도록 프롬프트를 설계해, AI가 임의의 문자열을 반환해도 서버에서 검증 후 필터링합니다.
 
-- 사진 선택 시 자동으로 서버에 전송 → AI 분석(약 3~5초) → 해당 태그 버튼 자동 선택
+- 사진 선택 시 자동으로 서버에 전송 → AI 분석(약 5초) → 해당 태그 버튼 자동 선택
 - API 실패(트래픽 초과 등) 시 재시도 로직 + 실패해도 게시글 작성은 정상 진행되도록 예외 처리
 - 이미지 리사이즈 후 전송으로 속도 최적화
+
+https://github.com/user-attachments/assets/9476f9fa-be2e-45a3-a909-4aad4e3b37eb
 
 ### 서랍(Drawer) 시스템
 마음에 드는 게시글을 폴더별로 모아 저장할 수 있는 기능입니다. 옷장을 정리하듯 개인 취향으로 컬렉션을 만들 수 있습니다.
 
-### 팔로우 & 프로필 공개 설정
-사용자 간 팔로우 기능과, 프로필/서랍 단위로 전체공개·맞팔공개·비공개를 설정할 수 있는 프라이버시 옵션을 제공합니다.
+### 팔로우 & 프로필/서랍 공개 설정
+사용자 간 팔로우 기능과, 프로필/서랍 단위로 전체공개·비공개를 설정할 수 있는 프라이버시 옵션을 제공합니다.
 
 ### 인증
 - 이메일 인증 (Gmail SMTP 6자리 코드 발송, 인터셉터로 미인증 세션 접근 제한)
@@ -28,6 +30,8 @@
 
 ### 신고 & 관리자 모더레이션
 부적절한 게시글/회원을 신고할 수 있고, 관리자 페이지에서 신고 내역을 확인해 강제 삭제 등 조치를 취할 수 있습니다.
+
+<img width="1009" height="333" alt="화면 캡처 2026-10-02 105825" src="https://github.com/user-attachments/assets/821283ad-2ad3-4365-a46f-37514318d4b5" />
 
 ### 태그 기반 검색
 Style / Season / Color 카테고리로 나뉜 태그를 조합해 원하는 스타일의 게시글을 탐색할 수 있습니다.
@@ -46,7 +50,7 @@ Style / Season / Color 카테고리로 나뉜 태그를 조합해 원하는 스�
 `Google OAuth2` (소셜 로그인)
 
 **Frontend**
-`Vanilla JS` `jQuery` `Bootstrap Icons`
+`JS` `jQuery` `Bootstrap Icons`
 
 **Tools**
 `IntelliJ IDEA` `DBeaver` `Git/GitHub`
@@ -63,19 +67,6 @@ Gemini API가 트래픽 몰릴 때 503 에러를 반환하는 경우가 있어, 
 - 해결: 연관 테이블(좋아요, 게시글-태그, 서랍 담기)을 먼저 삭제한 뒤 게시글을 삭제하도록 순서 변경
 - 추가로, 이미지 파일 삭제 순서를 DB 삭제 성공 이후로 옮겨 중간 실패 시에도 데이터 정합성이 깨지지 않도록 수정
 
-## 실행 방법
-
-```bash
-git clone [저장소 URL]
-```
-
-1. `src/main/resources/application.properties`에 아래 값 설정
-    - MySQL 연결 정보
-    - Gemini API 키 (`gemini.api.key`)
-    - Gmail SMTP 계정 정보
-    - Google OAuth2 클라이언트 ID/Secret
-2. MySQL에 스키마 생성 후 실행
-3. IntelliJ에서 `Application` 클래스 실행 또는 `./gradlew bootRun`
 
 ## 앞으로의 계획
 
