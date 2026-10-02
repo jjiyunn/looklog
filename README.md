@@ -22,6 +22,11 @@ https://github.com/user-attachments/assets/9476f9fa-be2e-45a3-a909-4aad4e3b37eb
 
 https://github.com/user-attachments/assets/53087bb5-44ae-42fa-a493-ee5c52482a34
 
+### 최신순/인기순 정렬 시스템
+최신 게시글을 먼저 볼 수 있는 최신순과 좋아요 순으로 게시글을 볼 수 있는 기능입니다.
+
+https://github.com/user-attachments/assets/a89d23b7-e2a4-4f06-b64b-035912d13c9b
+
 ### 팔로우 & 프로필/서랍 공개 설정
 사용자 간 팔로우 기능과, 프로필/서랍 단위로 전체공개·비공개를 설정할 수 있는 프라이버시 옵션을 제공합니다.
 
