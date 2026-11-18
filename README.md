@@ -1,4 +1,4 @@
-# LOOK LOG (룩로그)
+<img width="309" height="425" alt="image" src="https://github.com/user-attachments/assets/dfb89aae-5c1e-449d-a22b-bb800f58bee4" /># LOOK LOG (룩로그)
 
 패션 코디 사진을 기록하고 공유하는 소셜 플랫폼입니다. Instagram과 Pinterest를 참고해 "오늘의 착장(OOTD)"을 아카이빙하고, 다른 사람들의 스타일을 태그로 탐색할 수 있도록 만들었습니다.
 
@@ -7,6 +7,37 @@
 https://github.com/user-attachments/assets/01bf0d81-541a-4ec1-bb6a-da9c598f5092
 
 ## 주요 기능
+
+### 회원가입 / 로그인 + 이메일 인증 시스템
+이메일 인증을 거쳐야 서비스를 이용할 수 있는 세션 기반 인증 시스템입니다. 이메일·비밀번호 로그인과 Google OAuth2 소셜 로그인을 모두 지원하고, 비밀번호를 잊은 경우 이메일 인증으로 재설정할 수 있습니다.
+
+**회원가입**
+- 이메일, 비밀번호, 이름, 사용자이름 입력 후 가입
+- 입력값 형식 검증, 이메일·사용자이름 중복 차단
+- 가입 완료 후 이메일 인증 페이지로 자동 이동
+  
+<img width="292" height="512" alt="image" src="https://github.com/user-attachments/assets/d76cc5c7-3042-452a-bba8-a611b28306e3" />
+
+**이메일 인증**
+- 가입 시 Gmail SMTP로 6자리 인증 코드 발송
+- `/email-verify`에서 코드 검증 및 재전송 지원
+- 인터셉터로 미인증 세션은 인증 페이지로 강제 이동
+
+<img width="426" height="425" alt="image" src="https://github.com/user-attachments/assets/8cc88407-9554-489c-a422-a96a2b399a78" />
+
+**로그인 / 로그아웃**
+- 이메일·비밀번호 로그인 또는 Google 로그인
+- 로그인 시 세션 생성, 로그아웃 시 세션 삭제
+- 비로그인 사용자가 접근하면 로그인 페이지로 이동
+  
+<img width="309" height="425" alt="image" src="https://github.com/user-attachments/assets/f16f3a30-537a-49e4-a948-83ddde574238" />
+
+**비밀번호 찾기**
+- 가입한 이메일 입력 후 인증 메일 발송
+- 인증 완료 후 새 비밀번호 설정
+- 재설정이 끝나면 로그인 페이지로 이동
+
+<img width="392" height="298" alt="image" src="https://github.com/user-attachments/assets/677d43a1-d090-444e-8794-2508ddbe4a36" />
 
 ### 게시글 업로드 + AI 태그 자동 추천
 사진을 업로드하면 Google Gemini API가 이미지를 분석해 어울리는 태그를 자동으로 추천합니다. 태그는 미리 정의된 Style / Season / Color 목록 안에서만 선택되도록 프롬프트를 설계해, AI가 임의의 문자열을 반환해도 서버에서 검증 후 필터링합니다.
@@ -55,7 +86,7 @@ https://github.com/user-attachments/assets/1c2b8fe9-15dc-4211-ac86-62cadce169ef
 ## 기술 스택
 
 **Backend**
-`Spring Boot` `Spring Data JPA` `Spring Security` `Thymeleaf` `Lombok`
+`JAVA` `Spring Boot` `Spring Data JPA` `Spring Security` `Thymeleaf` `Lombok` `Gradle`
 
 **Database**
 `MySQL`
@@ -66,7 +97,7 @@ https://github.com/user-attachments/assets/1c2b8fe9-15dc-4211-ac86-62cadce169ef
 `Google OAuth2` (소셜 로그인)
 
 **Frontend**
-`JS` `jQuery` `Bootstrap Icons`
+`JS` `jQuery` `Bootstrap Icons` `HTML` `CSS`
 
 **Tools**
 `IntelliJ IDEA` `DBeaver` `Git/GitHub`
